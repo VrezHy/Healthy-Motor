@@ -1,0 +1,59 @@
+body{
+            margin:0;
+            font-family: Helvetica;
+            background-color:#9aa3b1;
+            text-align:center;
+        }
+
+        /* Header */
+        .header{
+            background-color:#6f78b3;
+            padding:15px 30px;
+            text-align:left;
+            font-size:24px;
+            font-weight:bold;
+            color:black;
+        }
+
+        /* Container tengah */
+        .container{
+            display:flex;
+            flex-direction:column;
+            justify-content:center;
+            align-items:center;
+            height:85vh;
+        }
+
+        /* Logo mesin */
+        .logo img{
+            width:200px;
+            margin-bottom:10px;
+        }
+
+        /* Judul */
+        .title{
+            font-size:36px;
+            font-weight:600;
+            margin-bottom:30px;
+        }
+
+        /* Tombol */
+        .button-group{
+            display:flex;
+            gap:20px;
+        }
+
+        .btn{
+            background-color:#6f78b3;
+            border:none;
+            padding:10px 35px;
+            border-radius:20px;
+            font-size:16px;
+            cursor:pointer;
+            color:black;
+            font-weight:600;
+        }
+
+        .btn:hover{
+            opacity:0.85;
+        }
