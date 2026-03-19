@@ -1,0 +1,95 @@
+    body{
+            margin:0;
+            font-family: Arial, Helvetica, sans-serif;
+            background:#e9edf7;
+        }
+
+        .header{
+            background:#6c7ae0;
+            color:white;
+            padding:15px 25px;
+            font-weight:bold;
+        }
+
+        .container{
+            display:flex;
+        }
+
+        /* SIDEBAR */
+        .sidebar{
+            width:260px;
+            background:#7d88e6;
+            min-height:100vh;
+            padding:25px;
+            color:white;
+        }
+
+        .profile{
+            text-align:center;
+            margin-bottom:35px;
+        }
+
+        .profile img{
+            width:100px;
+            height:100px;
+            border-radius:50%;
+            background:white;
+        }
+
+        .profile h3{
+            margin:15px 0 5px 0;
+        }
+
+        .menu a{
+            display:block;
+            padding:12px;
+            margin-bottom:12px;
+            border-radius:10px;
+            text-decoration:none;
+            color:white;
+            background:#8d97ef;
+        }
+
+        .menu a:hover{
+            background:#5f6ce0;
+        }
+
+        .logout{
+            margin-top:40px;
+            background:#6c7ae0;
+            text-align:center;
+        }
+
+        /* CONTENT */
+        .content{
+            flex:1;
+            padding:30px;
+        }
+
+        .title{
+            font-size:22px;
+            font-weight:bold;
+            margin-bottom:30px;
+        }
+
+        /* BUTTON MULAI DIAGNOSA */
+        .center-box{
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            height:70vh;
+        }
+
+        .btn-diagnosa{
+            background:#3f48cc;
+            color:white;
+            border:none;
+            padding:18px 45px;
+            font-size:16px;
+            border-radius:30px;
+            cursor:pointer;
+        }
+
+        .btn-diagnosa:hover{
+            background:#2f37b8;
+        }

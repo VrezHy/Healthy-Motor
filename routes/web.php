@@ -11,11 +11,20 @@ Route::get('/register', function () {
     return view('register');
 });
 
-Route::POST('/register', [RegisterController::class, 'regis']) -> name('register.regis');
+Route::post('/register', [RegisterController::class, 'register']) -> name('register.regis');
 
 Route::get('/login', function () {
     return view('login');
 });
 
-Route::POST('/login', [RegisterController::class, 'login']) -> name('login.login');
+Route::post('/login', [RegisterController::class, 'login']) -> name('login.login');
+
+
+Route::get('/admin/dashboard_admin', function () {
+    return view('admin.dashboard_admin');
+})->name('admin.dashboard');
+
+Route::get('/mekanik/dashboard_mekanik', function () {
+    return view('mekanik.dashboard_mekanik');
+})->name('mekanik.dashboard');
 

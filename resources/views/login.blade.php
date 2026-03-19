@@ -27,9 +27,15 @@
 
                 <label>Username</label>
                 <input type="text" name="username" required>
+                @error('username')
+                    <small style="color: red;">{{ $message }}</small>
+                @enderror
 
                 <label>Password</label>
                 <input type="password" name="password" required>
+                @error('password')
+                    <small style="color: red;">{{ $message }}</small>
+                @enderror
 
                 <button type="submit">Login</button>
 
