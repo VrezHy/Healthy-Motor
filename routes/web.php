@@ -13,11 +13,11 @@ Route::get('/register', function () {
 
 Route::post('/register', [RegisterController::class, 'register']) -> name('register.regis');
 
-Route::get('/login', function () {
-    return view('login');
-});
+// Route::get('/login', function () {
+//     return view('login');
+// });
 
-Route::post('/login', [RegisterController::class, 'login']) -> name('login.login');
+// Route::post('/login', [RegisterController::class, 'login']) -> name('login.login');
 
 
 Route::get('/admin/dashboard_admin', function () {
@@ -28,3 +28,8 @@ Route::get('/mekanik/dashboard_mekanik', function () {
     return view('mekanik.dashboard_mekanik');
 })->name('mekanik.dashboard');
 
+use App\Http\Controllers\LoginController;
+
+Route::get('/login', [LoginController::class, 'index'])->name('login');
+Route::post('/login', [LoginController::class, 'login'])->name('login.login');
+// Route::post('/logout', [LoginController::class, 'logout'])->name('logout');

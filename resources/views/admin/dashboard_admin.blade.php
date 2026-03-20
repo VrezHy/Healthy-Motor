@@ -7,10 +7,11 @@
     <title>Dashboard Admin</title>
 
 </head>
+
 <body>
 
     <div class="header">
-        DMSS
+        DM5S
     </div>
 
     <div class="container">
@@ -18,9 +19,9 @@
         <!-- SIDEBAR -->
         <div class="sidebar">
             <div class="profile">
-                <img src="{{asset('assets/images/admin.png')}}" alt="Foto Profil">
-                <h3>{{auth()->user()->name}}</h3>
-                <small>{{auth()->user()->username}}</small>
+                <img src="{{ asset('assets/images/admin.png') }}" alt="Foto Profil">
+                <h3>{{ auth()->check() ? auth()->user()->name : session('username') }}</h3>
+                <small>{{ auth()->check() ? auth()->user()->username : session('username') }}</small>
             </div>
 
             <div class="menu">

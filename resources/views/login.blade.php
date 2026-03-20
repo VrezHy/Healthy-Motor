@@ -50,6 +50,75 @@
 
     </div>
 
+    <script>
+        const rules = {
+            username: {
+                messages: {
+                    empty: 'Username tidak boleh kosong.',
+                }
+            },
+            password: {
+                messages: {
+                    empty: 'Password tidak boleh kosong.',
+                }
+            },
+        };
+
+        function showError(fieldName, message) {
+            const input = document.querySelector(`input[name="${fieldName}"]`);
+            let errorEl = input.nextElementSibling;
+
+            if (!errorEl || !errorEl.classList.contains('js-error')) {
+                errorEl = document.createElement('small');
+                errorEl.classList.add('js-error');
+                errorEl.style.color = 'red';
+                input.insertAdjacentElement('afterend', errorEl);
+            }
+
+            errorEl.textContent = message;
+        }
+
+        function clearError(fieldName) {
+            const input = document.querySelector(`input[name="${fieldName}"]`);
+            const errorEl = input.nextElementSibling;
+
+            if (errorEl && errorEl.classList.contains('js-error')) {
+                errorEl.textContent = '';
+            }
+        }
+
+        function validate(fieldName, value) {
+            const rule = rules[fieldName];
+            if (!rule) return true;
+
+            if (value.trim() === '') {
+                showError(fieldName, rule.messages.empty);
+                return false;
+            }
+
+            clearError(fieldName);
+            return true;
+        }
+
+        ['username', 'password'].forEach(fieldName => {
+            const input = document.querySelector(`input[name="${fieldName}"]`);
+
+            input.addEventListener('input', () => validate(fieldName, input.value));
+            input.addEventListener('blur', () => validate(fieldName, input.value));
+        });
+
+        document.querySelector('form').addEventListener('submit', (e) => {
+            let valid = true;
+
+            ['username', 'password'].forEach(fieldName => {
+                const input = document.querySelector(`input[name="${fieldName}"]`);
+                if (!validate(fieldName, input.value)) valid = false;
+            });
+
+            if (!valid) e.preventDefault();
+        });
+    </script>
+
 </body>
 
 </html>

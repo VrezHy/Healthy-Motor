@@ -24,7 +24,13 @@ class RegisterRequest extends FormRequest{
     public function messages(): array
     {
         return [
-             'username.unique'    => 'Username sudah digunakan.',
+            'name.required'      => 'Nama tidak boleh kosong.',
+            'name.max'           => 'Nama maksimal 50 karakter.',
+            'username.required'  => 'Username tidak boleh kosong.',
+            'username.max'       => 'Username maksimal 30 karakter.',
+            'username.unique'    => 'Username sudah digunakan.',
+            'username.regex'     => 'Format username harus nama.admin atau nama.mekanik.',
+            'password.required'  => 'Password tidak boleh kosong.',
             'password.min'       => 'Password minimal 8 karakter.',
             'password.regex'     => 'Password harus mengandung huruf kapital, angka, dan karakter spesial (@$!%*?&).',
         ];
