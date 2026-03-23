@@ -7,6 +7,7 @@ class OwnerRegistration{
 
     private array $blockedUsername = [
         'pemilik',
+        'pemilik bengkel',
         'pemilikbengkel',
         'owner',
     ];

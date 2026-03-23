@@ -7,17 +7,13 @@ Route::get('/', function () {
     return view('home');
 });
 
-Route::get('/register', function () {
-    return view('register');
+Route::get('/register', [RegisterController::class, 'showForm'])->name('register.form');
+Route::post('/register', [RegisterController::class, 'register'])->name('register.regis');
+Route::get('/login', function () {
+    return view('login');
 });
 
-Route::post('/register', [RegisterController::class, 'register']) -> name('register.regis');
-
-// Route::get('/login', function () {
-//     return view('login');
-// });
-
-// Route::post('/login', [RegisterController::class, 'login']) -> name('login.login');
+Route::post('/login', [RegisterController::class, 'login']) -> name('login.login');
 
 
 Route::get('/admin/dashboard_admin', function () {

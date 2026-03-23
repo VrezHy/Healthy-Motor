@@ -21,16 +21,23 @@ class RegisterController extends Controller
 
     public function register(RegisterRequest $request)
     {
+
+
         try {
+
             $redirectRoute = $this->registerService->register(
                 name:     $request->input('name'),
                 username: $request->input('username'),
                 password: $request->input('password'),
             );
 
+
             return redirect()->route($redirectRoute);
 
         } catch (\Exception $e) {
+
+
+
             return back()
                 ->withInput($request->only('name', 'username'))
                 ->withErrors(['blocked' => $e->getMessage()]);
@@ -61,6 +68,6 @@ class RegisterController extends Controller
 
         return back()
         -> withInput($request->only('username'))
-        ->withErrors(['username' => 'Username atau Password salah']);
+        ->withErrors(['username' => 'Username atau Password Salah']);
     }
 }

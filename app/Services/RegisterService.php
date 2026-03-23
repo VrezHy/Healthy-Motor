@@ -28,6 +28,7 @@ class RegisterService
 
 
         $cleanUsername = $this->roleResolver->stripSuffix($username);
+         //dd($name, $username, $password, $role);
 
         $user = User::create([
             'name' => $name,

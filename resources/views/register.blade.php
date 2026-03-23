@@ -17,7 +17,7 @@
 
             <div class="title">REGISTER</div>
 
-            <form method="POST" action="{{ route('register.regis') }}">
+            <form method="POST" action="{{ route('register.regis') }}" id="registerForm">
                 @csrf
 
 
@@ -27,12 +27,22 @@
                 <label>Username</label>
                 <input type="text" name="username" required>
 
-                @error('blocked')
-                    <small style="color: red;">{{ $message }}</small>
-                @enderror
+
 
                 <label>Password</label>
                 <input type="password" name="password" required>
+                <div id="password-strength"></div>
+                <ul id="password-checklist" style="font-size: 12px; padding-left: 16px; margin: 4px 0;">
+                    <li id="check-length" style="color: red;">✗ Minimal 8 karakter</li>
+                    <li id="check-upper" style="color: red;">✗ Mengandung huruf kapital</li>
+                    <li id="check-number" style="color: red;">✗ Mengandung angka</li>
+                    <li id="check-special" style="color: red;">✗ Mengandung karakter spesial (~`!@#$%^&*-+=|\:;"</>?,.)
+                    </li>
+                </ul>
+
+                @error('blocked')
+                    <small style="color: red;">{{ $message }}</small>
+                @enderror
 
                 <button type="submit">Register</button>
 
@@ -61,7 +71,6 @@
             username: {
                 minLength: 4,
                 maxLength: 30,
-                noSpace: true,
                 messages: {
                     empty: 'Username tidak boleh kosong.',
                     min: 'Username minimal 4 karakter.',
@@ -70,7 +79,7 @@
                 }
             },
             password: {
-                minLength: 6,
+                minLength: 8,
                 maxLength: 255,
                 messages: {
                     empty: 'Password tidak boleh kosong.',
@@ -131,11 +140,50 @@
             return true;
         }
 
+        function checkPasswordStrength(value) {
+            const hasLength = value.length >= 8;
+            const hasUpper = /[A-Z]/.test(value);
+            const hasNumber = /[0-9]/.test(value);
+            const hasSpecial = /[~`!@#$%^&*-+=|\:;"</>?,.]/.test(value);
+
+        // Update checklist
+        document.getElementById('check-length').style.color = hasLength ? 'green' : 'red';
+        document.getElementById('check-upper').style.color = hasUpper ? 'green' : 'red';
+        document.getElementById('check-number').style.color = hasNumber ? 'green' : 'red';
+        document.getElementById('check-special').style.color = hasSpecial ? 'green' : 'red';
+
+        document.getElementById('check-length').textContent = (hasLength ? '✓' : '✗') + ' Minimal 8 karakter';
+        document.getElementById('check-upper').textContent = (hasUpper ? '✓' : '✗') + ' Mengandung huruf kapital';
+        document.getElementById('check-number').textContent = (hasNumber ? '✓' : '✗') + ' Mengandung angka';
+        document.getElementById('check-special').textContent = (hasSpecial ? '✓' : '✗') +
+            ' Mengandung karakter spesial (~`!@#$%^&*-+=|:";</>?,\.)';
+
+            // Hitung strength
+            const score = [hasLength, hasUpper, hasNumber, hasSpecial].filter(Boolean).length;
+
+            const strengthEl = document.getElementById('password-strength');
+            if (value.length === 0) {
+                strengthEl.textContent = '';
+            } else if (score <= 1) {
+                strengthEl.textContent = 'Kekuatan password: Lemah';
+                strengthEl.style.color = 'red';
+            } else if (score === 2 || score === 3) {
+                strengthEl.textContent = 'Kekuatan password: Sedang';
+                strengthEl.style.color = 'orange';
+            } else {
+                strengthEl.textContent = 'Kekuatan password: Kuat';
+                strengthEl.style.color = 'green';
+            }
+        }
+
         // Pasang event listener ke semua input
         ['name', 'username', 'password'].forEach(fieldName => {
             const input = document.querySelector(`input[name="${fieldName}"]`);
 
-            input.addEventListener('input', () => validate(fieldName, input.value));
+            input.addEventListener('input', () => {
+                validate(fieldName, input.value);
+                if (fieldName === 'password') checkPasswordStrength(input.value);
+            });
             input.addEventListener('blur', () => validate(fieldName, input.value));
         });
 
@@ -145,12 +193,23 @@
 
             ['name', 'username', 'password'].forEach(fieldName => {
                 const input = document.querySelector(`input[name="${fieldName}"]`);
-                if (!validate(fieldName, input.value)) valid = false;
+                const result = validate(fieldName, input.value);
+                console.log(fieldName, ':', input.value, '→ valid:', result);
+                if (!result) valid = false;
             });
 
-            if (!valid) e.preventDefault();
+            console.log('overall valid:', valid);
+
+            if (!valid) {
+                console.log('Form Tidak Submit');
+                e.preventDefault();
+            } else {
+                console.log('Form Submit');
+            }
         });
     </script>
+
+
 
 </body>
 
