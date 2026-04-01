@@ -108,23 +108,23 @@
                     class="nav-item {{ request()->routeIs('admin.motor.*') ? 'active' : '' }}">
                     Data Motor
                 </a>
-                <a href="#"
-                    class="nav-item {{ request()->routeIs('admin.gejala.*') ? 'active' : '' }}">
-                    Data Gejala
-                </a>
                 <a href="{{ route('admin.kerusakan') }}"
-                    class="nav-item {{ request()->routeIs('admin.kerusakan.*') ? 'active' : '' }}">
+                    class="nav-item {{ request()->is('admin/kerusakan*') ? 'active' : '' }}">
                     Data Kerusakan
                 </a>
-                <a href="#"
-                    class="nav-item {{ request()->routeIs('admin.solusi.*') ? 'active' : '' }}">
+                <a href="{{ route('admin.gejala') }}"
+                    class="nav-item {{ request()->is('admin/gejala*') ? 'active' : '' }}">
+                    Data Gejala
+                </a>
+                <a href="{{ route('admin.solusi') }}"
+                    class="nav-item {{ request()->is('admin/solusi*') ? 'active' : '' }}">
                     Data Solusi
                 </a>
             </nav>
 
             {{-- Logout --}}
             <div class="mt-8 text-center">
-                    <button type="submit" class="logout-btn">Logout</button>
+                <button type="submit" class="logout-btn">Logout</button>
                 </form>
             </div>
         </div>
