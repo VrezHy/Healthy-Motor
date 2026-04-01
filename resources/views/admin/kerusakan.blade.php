@@ -208,7 +208,7 @@
       <tbody>
         @forelse($kerusakans as $item)
         <tr>
-          <td class="px-5 py-3 font-semibold text-gray-700">{{ $item->id }}</td>
+          <td class="px-5 py-3 font-semibold text-gray-700">{{ $loop->iteration }}</td>
           <td class="px-5 py-3 text-gray-700">{{ $item->nama_kerusakan }}</td>
           <td class="px-5 py-3 text-right">
             {{-- Tombol Hapus --}}
@@ -222,7 +222,9 @@
 
             {{-- Tombol Ubah --}}
             <button type="button" class="btn-ubah"
-              onclick="openEditModal({{ $item->id }}, @json($item->nama_kerusakan))">
+              data-id="{{ $item->id }}"
+              data-nama="{{ $item->nama_kerusakan }}"
+              onclick="openEditModal(this.dataset.id, this.dataset.nama)">
               Ubah
             </button>
           </td>
@@ -354,19 +356,23 @@
     const input = document.getElementById('inputUbah');
 
     // Set action URL dengan ID
-    form.action = '/kerusakan/' + id;
+    form.action = '/admin/kerusakan/' + id;
     input.value = nama;
 
     openModal('modalUbah');
   }
 
   // ===== AUTO-BUKA MODAL jika ada error validasi =====
-  @if($errors->has('nama_kerusakan') && !session('edit_id'))
-    openModal('modalTambah');
+  @if($errors -> has('nama_kerusakan') && !session('edit_id'))
+  openModal('modalTambah');
   @endif
 
-@if($errors->has('nama_kerusakan') && session('edit_id'))
-    openEditModal({{ session('edit_id') }}, @json(old('nama_kerusakan')));
-@endif
+  @if($errors -> has('nama_kerusakan') && session('edit_id'))
+  openEditModal({
+    {
+      session('edit_id')
+    }
+  }, @json(old('nama_kerusakan')));
+  @endif
 </script>
 @endpush

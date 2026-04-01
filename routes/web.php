@@ -12,11 +12,7 @@ Route::get('/', function () {
     return redirect()->route('admin.kerusakan');
 });
 
-Route::resource('admin/kerusakan', KerusakanController::class)
-    ->names([
-        'index'   => 'admin.kerusakan',
-        'store'   => 'admin.kerusakan.store',
-        'update'  => 'admin.kerusakan.update',
-        'destroy' => 'admin.kerusakan.destroy',
-    ])
-    ->only(['index', 'store', 'update', 'destroy']);
+Route::get('/admin/kerusakan', [KerusakanController::class, 'index'])->name('admin.kerusakan');
+Route::post('/admin/kerusakan', [KerusakanController::class, 'store'])->name('admin.kerusakan.store');
+Route::put('/admin/kerusakan/{kerusakan}', [KerusakanController::class, 'update'])->name('admin.kerusakan.update');
+Route::delete('/admin/kerusakan/{kerusakan}', [KerusakanController::class, 'destroy'])->name('admin.kerusakan.destroy');
