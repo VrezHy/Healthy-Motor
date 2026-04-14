@@ -19,7 +19,7 @@ class LoginController extends Controller
             'password' => 'required|string',
         ]);
 
-        // Pemilik bengkel - hardcoded, langsung redirect ke dashboard admin
+        
         if (
             $request->username === 'pemilik bengkel' &&
             $request->password === 'DM5SPM'
@@ -28,7 +28,7 @@ class LoginController extends Controller
             return redirect()->route('dashboard.admin');
         }
 
-        // Admin & mekanik - dari database
+
         $credentials = [
             'username' => $request->username,
             'password' => $request->password,

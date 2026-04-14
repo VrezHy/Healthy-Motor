@@ -22,15 +22,18 @@
 
 
                 <label>Your Name</label>
-                <input type="text" name="name" required>
+                <input type="text" name="name" data-required>
+                <div class="error-message" data-error="name" style="color: red; font-size: 12px; display: none;"></div>
 
                 <label>Username</label>
-                <input type="text" name="username" required>
+                <input type="text" name="username" data-required>
+                <div class="error-message" data-error="username" style="color: red; font-size: 12px; display: none;"></div>
 
 
 
                 <label>Password</label>
-                <input type="password" name="password" required>
+                <input type="password" name="password" data-required>
+                <div class="error-message" data-error="password" style="color: red; font-size: 12px; display: none;"></div>
                 <div id="password-strength"></div>
                 <ul id="password-checklist" style="font-size: 12px; padding-left: 16px; margin: 4px 0;">
                     <li id="check-length" style="color: red;">✗ Minimal 8 karakter</li>
@@ -89,6 +92,20 @@
             },
         };
 
+        //baru
+        // Tambahkan daftar username yang diblokir
+const blockedUsernames = [
+    'pemilik',
+    'pemilik bengkel',
+    'pemilikbengkel',
+    'owner',
+];
+
+// Tambahkan fungsi untuk cek username terblokir
+function isBlockedUsername(username) {
+    return blockedUsernames.includes(username.toLowerCase().trim());
+}
+
         function showError(fieldName, message) {
             const input = document.querySelector(`input[name="${fieldName}"]`);
             let errorEl = input.nextElementSibling;
@@ -112,33 +129,83 @@
             }
         }
 
+        // function validate(fieldName, value) {
+        //     const rule = rules[fieldName];
+        //     if (!rule) return true;
+
+        //     if (value.trim() === '') {
+        //         showError(fieldName, rule.messages.empty);
+        //         return false;
+        //     }
+        //     if (fieldName === 'username') {
+        //         const formatValid = /^[a-zA-Z0-9]+\.(admin|mekanik)$/.test(value);
+        //         if (!formatValid) {
+        //             showError(fieldName, rule.messages.format);
+        //             return false;
+        //         }
+        //     }
+        //     if (value.length < rule.minLength) {
+        //         showError(fieldName, rule.messages.min);
+        //         return false;
+        //     }
+        //     if (value.length > rule.maxLength) {
+        //         showError(fieldName, rule.messages.max);
+        //         return false;
+        //     }
+
+        //     clearError(fieldName);
+        //     return true;
+        // }
+
+        // validate new
         function validate(fieldName, value) {
-            const rule = rules[fieldName];
-            if (!rule) return true;
+    const rule = rules[fieldName];
+    if (!rule) return true;
 
-            if (value.trim() === '') {
-                showError(fieldName, rule.messages.empty);
-                return false;
-            }
-            if (fieldName === 'username') {
-                const formatValid = /^[a-zA-Z0-9]+\.(admin|mekanik)$/.test(value);
-                if (!formatValid) {
-                    showError(fieldName, rule.messages.format);
-                    return false;
-                }
-            }
-            if (value.length < rule.minLength) {
-                showError(fieldName, rule.messages.min);
-                return false;
-            }
-            if (value.length > rule.maxLength) {
-                showError(fieldName, rule.messages.max);
-                return false;
-            }
+    if (value.trim() === '') {
+        showError(fieldName, rule.messages.empty);
+        return false;
+    }
 
-            clearError(fieldName);
-            return true;
+    // Validasi khusus untuk username - cek blocked username
+    if (fieldName === 'username') {
+        // Cek apakah username termasuk yang diblokir
+        if (isBlockedUsername(value)) {
+            showError(fieldName, 'Username ini tidak diizinkan untuk registrasi.');
+            return false;
         }
+
+        // Validasi format .admin atau .mekanik
+        const formatValid = /^[a-zA-Z0-9]+\.(admin|mekanik)$/.test(value);
+        if (!formatValid) {
+            showError(fieldName, rule.messages.format);
+            return false;
+        }
+    }
+
+    if (fieldName === 'password') {
+        // Cek kombinasi username + password yang diblokir
+        const usernameInput = document.querySelector('input[name="username"]');
+        const username = usernameInput ? usernameInput.value : '';
+
+        if (isBlockedUsername(username) && value === 'DM5SPM') {
+            showError(fieldName, 'Kombinasi username dan password ini tidak diizinkan untuk registrasi.');
+            return false;
+        }
+    }
+
+    if (value.length < rule.minLength) {
+        showError(fieldName, rule.messages.min);
+        return false;
+    }
+    if (value.length > rule.maxLength) {
+        showError(fieldName, rule.messages.max);
+        return false;
+    }
+
+    clearError(fieldName);
+    return true;
+}
 
         function checkPasswordStrength(value) {
             const hasLength = value.length >= 8;
@@ -146,6 +213,25 @@
             const hasNumber = /[0-9]/.test(value);
             const hasSpecial = /[~`!@#$%^&*-+=|\:;"</>?,.]/.test(value);
 
+            //new ce passwrd
+            // Fungsi untuk real-time mengecek password terlarang
+function checkBlockedPassword() {
+    const username = document.querySelector('input[name="username"]').value;
+    const password = document.querySelector('input[name="password"]').value;
+    const errorDiv = document.querySelector('.error-message[data-error="password"]');
+
+    if (isBlockedUsername(username) && password === 'DM5SPM') {
+        errorDiv.textContent = 'Kombinasi username dan password ini tidak diizinkan untuk registrasi.';
+        errorDiv.style.display = 'block';
+        return false;
+    } else if (password === 'DM5SPM') {
+        errorDiv.textContent = 'Password ini tidak diizinkan. Silakan gunakan password lain.';
+        errorDiv.style.display = 'block';
+        return false;
+    }
+
+    return true;
+}
         // Update checklist
         document.getElementById('check-length').style.color = hasLength ? 'green' : 'red';
         document.getElementById('check-upper').style.color = hasUpper ? 'green' : 'red';
@@ -177,36 +263,179 @@
         }
 
         // Pasang event listener ke semua input
-        ['name', 'username', 'password'].forEach(fieldName => {
-            const input = document.querySelector(`input[name="${fieldName}"]`);
+//         ['name', 'username', 'password'].forEach(fieldName => {
+//             const input = document.querySelector(`input[name="${fieldName}"]`);
 
-            input.addEventListener('input', () => {
-                validate(fieldName, input.value);
-                if (fieldName === 'password') checkPasswordStrength(input.value);
-            });
-            input.addEventListener('blur', () => validate(fieldName, input.value));
-        });
+//             input.addEventListener('input', () => {
+//                 validate(fieldName, input.value);
+//                 if (fieldName === 'password') checkPasswordStrength(input.value);
+//             });
+//             input.addEventListener('blur', () => validate(fieldName, input.value));
+//         });
+
+//         function validateRequiredFields() {
+//     let isValid = true;
+
+//     document.querySelectorAll('input[data-required]').forEach(input => {
+//         const fieldName = input.getAttribute('name');
+//         const errorDiv = document.querySelector(`.error-message[data-error="${fieldName}"]`);
+
+//         if (input.value.trim() === '') {
+//             // Tentukan label pesan error
+//             let label = '';
+//             if (fieldName === 'name') label = 'Nama';
+//             else if (fieldName === 'username') label = 'Username';
+//             else if (fieldName === 'password') label = 'Password';
+
+//             errorDiv.textContent = `${label} tidak boleh kosong.`;
+//             errorDiv.style.display = 'block';
+//             isValid = false;
+//         } else {
+//             errorDiv.style.display = 'none';
+//         }
+//     });
+
+//     return isValid;
+// }
+
+//gntu
+// Fungsi untuk cek kombinasi password terlarang (TAMBAHKAN sebelum event listener)
+function checkBlockedPassword() {
+    const username = document.querySelector('input[name="username"]').value;
+    const password = document.querySelector('input[name="password"]').value;
+    const errorDiv = document.querySelector('.error-message[data-error="password"]');
+
+    if (isBlockedUsername(username) && password === 'DM5SPM') {
+        errorDiv.textContent = 'Kombinasi username dan password ini tidak diizinkan untuk registrasi.';
+        errorDiv.style.display = 'block';
+        return false;
+    } else if (password === 'DM5SPM') {
+        errorDiv.textContent = 'Password ini tidak diizinkan. Silakan gunakan password lain.';
+        errorDiv.style.display = 'block';
+        return false;
+    }
+
+    return true;
+}
+
+// GANTI event listener yang lama dengan yang baru
+['name', 'username', 'password'].forEach(fieldName => {
+    const input = document.querySelector(`input[name="${fieldName}"]`);
+
+    input.addEventListener('input', () => {
+        validate(fieldName, input.value);
+        if (fieldName === 'password') {
+            checkPasswordStrength(input.value);
+            checkBlockedPassword(); // Tambahkan ini
+        }
+    });
+    input.addEventListener('blur', () => validate(fieldName, input.value));
+});
+
+// TAMBAHKAN event listener khusus untuk username
+const usernameInput = document.querySelector('input[name="username"]');
+if (usernameInput) {
+    usernameInput.addEventListener('input', () => {
+        const passwordInput = document.querySelector('input[name="password"]');
+        if (passwordInput.value) {
+            checkBlockedPassword();
+        }
+    });
+}
+
+// GANTI fungsi validateRequiredFields (perbaiki sedikit)
+function validateRequiredFields() {
+    let isValid = true;
+
+    document.querySelectorAll('input[data-required]').forEach(input => {
+        const fieldName = input.getAttribute('name');
+        const errorDiv = document.querySelector(`.error-message[data-error="${fieldName}"]`);
+
+        if (input.value.trim() === '') {
+            let label = '';
+            if (fieldName === 'name') label = 'Nama';
+            else if (fieldName === 'username') label = 'Username';
+            else if (fieldName === 'password') label = 'Password';
+
+            errorDiv.textContent = `${label} tidak boleh kosong.`;
+            errorDiv.style.display = 'block';
+            isValid = false;
+        } else {
+            // Hanya hide jika tidak ada error lain
+            if (errorDiv.textContent === `${label} tidak boleh kosong.`) {
+                errorDiv.style.display = 'none';
+            }
+        }
+    });
+
+    return isValid;
+}
 
         // Cegah submit kalau masih ada error
+
+        // Cegah submit kalau masih ada error
+// document.querySelector('form').addEventListener('submit', (e) => {
+//     let valid = true;
+
+//     // Validasi dari rules yang sudah ada (format, length, dll)
+//     ['name', 'username', 'password'].forEach(fieldName => {
+//         const input = document.querySelector(`input[name="${fieldName}"]`);
+//         const result = validate(fieldName, input.value);
+//         if (!result) valid = false;
+//     });
+
+//     // Validasi field kosong dari data-required
+//     if (!validateRequiredFields()) valid = false;
+//     console.log('Final valid:', valid);
+//     if (!valid) {
+//         e.preventDefault();
+//     }
+// });
+
+
+        // document.querySelector('form').addEventListener('submit', (e) => {
+        //     let valid = true;
+
+        //     ['name', 'username', 'password'].forEach(fieldName => {
+        //         const input = document.querySelector(`input[name="${fieldName}"]`);
+        //         const result = validate(fieldName, input.value);
+        //         console.log(fieldName, ':', input.value, '→ valid:', result);
+        //         if (!result) valid = false;
+        //     });
+
+        //     console.log('overall valid:', valid);
+
+        //     if (!valid) {
+        //         console.log('Form Tidak Submit');
+        //         e.preventDefault();
+        //     } else {
+        //         console.log('Form Submit');
+        //     }
+        // });
+
+        // new
         document.querySelector('form').addEventListener('submit', (e) => {
-            let valid = true;
+    let valid = true;
 
-            ['name', 'username', 'password'].forEach(fieldName => {
-                const input = document.querySelector(`input[name="${fieldName}"]`);
-                const result = validate(fieldName, input.value);
-                console.log(fieldName, ':', input.value, '→ valid:', result);
-                if (!result) valid = false;
-            });
+    const name = document.querySelector('input[name="name"]').value;
+    const username = document.querySelector('input[name="username"]').value;
+    const password = document.querySelector('input[name="password"]').value;
 
-            console.log('overall valid:', valid);
+    if (!validate('name', name)) valid = false;
+    if (!validate('username', username)) valid = false;
+    if (!validate('password', password)) valid = false;
 
-            if (!valid) {
-                console.log('Form Tidak Submit');
-                e.preventDefault();
-            } else {
-                console.log('Form Submit');
-            }
-        });
+    if (isBlockedUsername(username) && password === 'DM5SPM') {
+        const errorDiv = document.querySelector('.error-message[data-error="password"]');
+        errorDiv.textContent = 'Kombinasi username dan password ini tidak diizinkan untuk registrasi.';
+        errorDiv.style.display = 'block';
+        valid = false;
+    }
+
+    if (!valid) {
+        e.preventDefault();
+    }
+});
     </script>
 
 
