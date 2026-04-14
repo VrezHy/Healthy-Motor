@@ -19,7 +19,7 @@ class LoginController extends Controller
             'password' => 'required|string',
         ]);
 
-        
+
         if (
             $request->username === 'pemilik bengkel' &&
             $request->password === 'DM5SPM'
@@ -40,7 +40,7 @@ class LoginController extends Controller
             $role = Auth::user()->role;
 
             return match ($role) {
-                'admin'   => redirect()->route('dashboard.admin'),
+                'admin'   => redirect()->route('admin.kerusakan'),
                 'mekanik' => redirect()->route('dashboard.mekanik'),
                 default   => $this->invalidRole($request),
             };

@@ -8,14 +8,14 @@ use App\Http\Controllers\GejalaController;
 use App\Http\Controllers\SolusiController;
 
 
-// Route::get('/', function () {
-//     return view('home');
-// });
-
-
 Route::get('/', function () {
-    return redirect()->route('admin.kerusakan');
+    return view('home');
 });
+
+
+// Route::get('/', function () {
+//     return redirect()->route('admin.kerusakan');
+// });
 
 Route::get('/register', [RegisterController::class, 'showForm'])->name('register.form');
 Route::post('/register', [RegisterController::class, 'register'])->name('register.regis');
