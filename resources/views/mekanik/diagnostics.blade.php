@@ -199,119 +199,34 @@ body{font-family:'Plus Jakarta Sans',sans-serif;height:100vh;display:flex;flex-d
 </div>
 
 <script>
-const TOTAL_STEPS = 9;
+let TOTAL_STEPS = 9;
 let currentStep = 0;
 let answers = {};
 
-const questions = [
-  {
-    id: 'merek',
-    title: 'Pilih Merek\nKendaraan',
-    layout: 'grid',
-    options: [
-      {val:'yamaha', label:'Yamaha'},
-      {val:'honda', label:'Honda'},
-      {val:'suzuki', label:'Suzuki'},
-      {val:'kawasaki', label:'Kawasaki'},
-      {val:'vespa', label:'Vespa'},
-      {val:'tvs', label:'TVS'},
-      {val:'bajaj', label:'Bajaj'},
-      {val:'lainnya', label:'Lainnya'},
-    ]
-  },
-  {
-    id: 'jenis',
-    title: 'Jenis Motor',
-    options: [
-      {val:'bebek', label:'Motor Bebek (Supra, Vega, dll)'},
-      {val:'matic', label:'Motor Matic (Vario, Mio, dll)'},
-      {val:'sport', label:'Motor Sport (CBR, R15, dll)'},
-      {val:'trail', label:'Motor Trail / Off-road'},
-    ]
-  },
-  {
-    id: 'keluhan',
-    title: 'Keluhan Utama',
-    subtitle: 'Pilih keluhan yang paling dominan',
-    options: [
-      {val:'mesin_mati', label:'Mesin tidak mau hidup'},
-      {val:'mati_mendadak', label:'Mesin mati tiba-tiba saat jalan'},
-      {val:'brebet', label:'Motor brebet / tersendat'},
-      {val:'suara_aneh', label:'Suara mesin tidak normal'},
-      {val:'boros_bbm', label:'Boros bahan bakar'},
-      {val:'asap_knalpot', label:'Asap knalpot berlebih'},
-      {val:'rem_blong', label:'Rem tidak pakem / blong'},
-      {val:'kelistrikan', label:'Masalah kelistrikan (lampu, aki)'},
-      {val:'getaran', label:'Getaran berlebih'},
-      {val:'overheat', label:'Mesin cepat panas'},
-    ],
-    scroll: true
-  },
-  {
-    id: 'kapan',
-    title: 'Kapan Keluhan\nMuncul?',
-    options: [
-      {val:'start', label:'Saat pertama dinyalakan'},
-      {val:'jalan', label:'Saat sedang berkendara'},
-      {val:'berhenti', label:'Saat berhenti / idle'},
-      {val:'selalu', label:'Sepanjang waktu'},
-    ]
-  },
-  {
-    id: 'durasi',
-    title: 'Sudah Berapa\nLama Keluhan Ini?',
-    options: [
-      {val:'kurang1hari', label:'Kurang dari 1 hari'},
-      {val:'1_7hari', label:'1 - 7 hari'},
-      {val:'1_4minggu', label:'1 - 4 minggu'},
-      {val:'lebih1bulan', label:'Lebih dari 1 bulan'},
-    ]
-  },
-  {
-    id: 'suara',
-    title: 'Apakah Ada\nSuara Aneh?',
-    options: [
-      {val:'ketukan', label:'Suara ketukan (tok-tok)'},
-      {val:'decit', label:'Suara berdecit / gesekan'},
-      {val:'gemuruh', label:'Suara gemuruh / dengung'},
-      {val:'letupan', label:'Suara letupan dari knalpot'},
-      {val:'tidak_ada', label:'Tidak ada suara aneh'},
-    ]
-  },
-  {
-    id: 'oli',
-    title: 'Kondisi Oli\nMesin?',
-    options: [
-      {val:'baru', label:'Baru diganti (< 1 bulan)'},
-      {val:'waktunya', label:'Sudah waktunya ganti'},
-      {val:'berkurang', label:'Oli berkurang drastis'},
-      {val:'hitam', label:'Oli sangat hitam & kental'},
-      {val:'belum_cek', label:'Belum pernah dicek'},
-    ]
-  },
-  {
-    id: 'servis',
-    title: 'Kapan Terakhir\nServis?',
-    options: [
-      {val:'lt1bulan', label:'Kurang dari 1 bulan lalu'},
-      {val:'1_3bulan', label:'1 - 3 bulan lalu'},
-      {val:'3_6bulan', label:'3 - 6 bulan lalu'},
-      {val:'gt6bulan', label:'Lebih dari 6 bulan'},
-      {val:'belum_pernah', label:'Belum pernah servis'},
-    ]
-  },
-  {
-    id: 'bbm',
-    title: 'Kondisi Bahan\nBakar?',
-    options: [
-      {val:'penuh', label:'Tangki penuh / baru isi'},
-      {val:'hampir_habis', label:'Hampir habis'},
-      {val:'pertamax', label:'Menggunakan Pertamax / Ron 92+'},
-      {val:'pertalite', label:'Menggunakan Pertalite / Premium'},
-      {val:'campur', label:'Kadang campur jenis BBM'},
-    ]
-  }
-];
+let questions = [];  // akan diisi dari API
+
+async function loadQuestions() {
+    try {
+        const res = await fetch('/api/diagnostic-questions');
+        questions = await res.json();
+        TOTAL_STEPS = questions.length;  // update jumlah langkah
+    } catch (e) {
+        console.error('Gagal memuat pertanyaan:', e);
+    }
+}
+
+// Panggil loadQuestions() sebelum startDiagnosa()
+async function startDiagnosa() {
+    await loadQuestions();  // ← tambahkan ini
+
+    document.getElementById('startScreen').style.display = 'none';
+    const card = document.getElementById('diagCard');
+    card.classList.add('visible');
+    currentStep = 0;
+    answers = {};
+    buildStepDots();
+    renderStep();
+}
 
 function startDiagnosa(){
   document.getElementById('startScreen').style.display='none';
