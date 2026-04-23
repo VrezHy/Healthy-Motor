@@ -15,7 +15,7 @@
     border-radius: 999px; font-size: 12px; font-weight: 700;
     border: none; cursor: pointer; transition: background 0.2s;
   }
-  .btn-ubah:hover { background: #4a5298; }
+  .btn-ubah:hover { background: #707BBC; }
   .btn-add {
     background: #7c84d0; color: white; width: 36px; height: 36px;
     border-radius: 10px; font-size: 22px; font-weight: 700; border: none;
