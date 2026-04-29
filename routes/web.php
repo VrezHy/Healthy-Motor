@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KerusakanController;
 use App\Http\Controllers\GejalaController;
 use App\Http\Controllers\SolusiController;
+use App\Http\Controllers\DiagnosaMekanikController;
 
 
 Route::get('/', function () {
@@ -33,6 +34,8 @@ Route::get('/admin/dashboard_admin', function () {
 Route::get('/mekanik/dashboard_mekanik', function () {
     return view('mekanik.dashboard_mekanik');
 })->name('dashboard.mekanik');
+Route::get('/mekanik/diagnosa', [DiagnosaMekanikController::class, 'index'])->name('mekanik.diagnosa');
+Route::post('/mekanik/diagnosa', [DiagnosaMekanikController::class, 'proses'])->name('mekanik.diagnosa.proses');
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'login'])->name('login.login');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');

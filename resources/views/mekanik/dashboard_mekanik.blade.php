@@ -23,7 +23,7 @@
             </div>
 
         <div class="menu">
-            <a href="#">Analisis Diagnosa</a>
+            <a href="{{ route('mekanik.diagnosa') }}">Analisis Diagnosa</a>
             <a href="#">Log Riwayat</a>
 
             <form action="{{ route('logout') }}" method="POST" class="logout-form">
@@ -39,14 +39,48 @@
         <div class="title">Dashboard Mekanik</div>
 
         <div class="center-box">
-            <button class="btn-diagnosa">
+            <a href="{{ route('mekanik.diagnosa') }}" class="btn-diagnosa">
                 MULAI<br>DIAGNOSA
-            </button>
+            </a>
         </div>
 
     </div>
 
 </div>
+
+<div class="logout-modal" id="logoutModal">
+    <div class="logout-modal-box">
+        <h2>Yakin Keluar Dari Aplikasi?</h2>
+        <div class="logout-modal-actions">
+            <button type="button" class="modal-btn cancel" id="cancelLogout">batal</button>
+            <button type="button" class="modal-btn confirm" id="confirmLogout">keluar</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let pendingLogoutForm = null;
+    const logoutModal = document.getElementById('logoutModal');
+
+    document.querySelectorAll('.logout-form').forEach((form) => {
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+            pendingLogoutForm = form;
+            logoutModal.classList.add('active');
+        });
+    });
+
+    document.getElementById('cancelLogout').addEventListener('click', () => {
+        pendingLogoutForm = null;
+        logoutModal.classList.remove('active');
+    });
+
+    document.getElementById('confirmLogout').addEventListener('click', () => {
+        if (pendingLogoutForm) {
+            pendingLogoutForm.submit();
+        }
+    });
+</script>
 
 </body>
 </html>
