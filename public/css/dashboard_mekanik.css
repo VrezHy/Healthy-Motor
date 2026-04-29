@@ -94,7 +94,6 @@ textarea {
     text-align: center;
 }
 
-.menu a:first-child,
 .menu a.active,
 .menu a:hover {
     background: #334cf0;
@@ -492,6 +491,172 @@ textarea {
     margin-top: 6px;
 }
 
+.save-diagnosa-form {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: auto;
+    padding-top: 12px;
+}
+
+.btn-save-riwayat {
+    background: #334cf0;
+    border: none;
+    border-radius: 999px;
+    color: white;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 800;
+    padding: 8px 18px;
+}
+
+.btn-save-riwayat:hover {
+    background: #2035d8;
+}
+
+/* LOG RIWAYAT */
+.riwayat-panel {
+    align-self: center;
+    background: #dddddd;
+    margin: auto;
+    max-width: 900px;
+    width: 92%;
+}
+
+.riwayat-table-title {
+    background: #8189cc;
+    color: #050505;
+    font-size: 13px;
+    font-weight: 800;
+    padding: 10px 24px;
+}
+
+.riwayat-alert {
+    background: #d1fae5;
+    color: #065f46;
+    font-size: 13px;
+    font-weight: 800;
+    margin: 14px 12px 0;
+    padding: 10px 12px;
+}
+
+.riwayat-table-wrap {
+    max-height: 330px;
+    overflow-y: auto;
+    padding: 16px 10px 20px;
+}
+
+.riwayat-table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.riwayat-table th,
+.riwayat-table td {
+    border: 2px solid #7f7f7f;
+    color: #050505;
+    padding: 8px 10px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.riwayat-table th {
+    font-size: 22px;
+    font-weight: 500;
+}
+
+.riwayat-table td {
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.damage-info {
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    text-align: left;
+}
+
+.damage-info span {
+    color: #555555;
+    font-size: 12px;
+}
+
+.status-badge {
+    color: #239d19;
+    font-size: 22px;
+    font-weight: 800;
+}
+
+.status-badge::after {
+    content: " ▼";
+    color: #050505;
+    font-size: 14px;
+}
+
+.btn-view,
+.btn-cancel-riwayat {
+    border: none;
+    border-radius: 999px;
+    color: white;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 800;
+    min-width: 84px;
+    padding: 8px 16px;
+}
+
+.btn-view {
+    background: #5863e8;
+}
+
+.btn-cancel-riwayat {
+    background: #ff0000;
+}
+
+.btn-view:hover,
+.btn-cancel-riwayat:hover {
+    filter: brightness(0.9);
+}
+
+.riwayat-detail {
+    display: none;
+}
+
+.riwayat-detail.active {
+    display: table-row;
+}
+
+.riwayat-detail-box {
+    background: #eef1ff;
+    display: grid;
+    gap: 12px;
+    grid-template-columns: repeat(3, 1fr);
+    padding: 14px;
+    text-align: left;
+}
+
+.riwayat-detail-box strong {
+    color: #334cf0;
+    display: block;
+    font-size: 13px;
+    margin-bottom: 6px;
+}
+
+.riwayat-detail-box p {
+    color: #3c4668;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.4;
+    margin: 0 0 4px;
+}
+
+.empty-riwayat {
+    color: #555555;
+    font-size: 15px;
+    padding: 28px;
+}
+
 /* LOGOUT MODAL */
 .logout-modal {
     align-items: center;
@@ -589,5 +754,13 @@ textarea {
     .diagnosa-result {
         height: auto;
         max-width: 92vw;
+    }
+
+    .riwayat-panel {
+        width: 96vw;
+    }
+
+    .riwayat-detail-box {
+        grid-template-columns: 1fr;
     }
 }

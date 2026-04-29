@@ -23,7 +23,7 @@
 
         <div class="menu">
             <a href="{{ route('mekanik.diagnosa') }}" class="active">Analisis Diagnosa</a>
-            <a href="#">Log Riwayat</a>
+            <a href="{{ route('mekanik.riwayat') }}">Log Riwayat</a>
 
             <form action="{{ route('logout') }}" method="POST" class="logout-form">
                 @csrf
@@ -124,6 +124,15 @@
                             @endif
                         </div>
                     @endforeach
+
+                    <form action="{{ route('mekanik.diagnosa.simpan') }}" method="POST" class="save-diagnosa-form">
+                        @csrf
+                        @foreach($selectedGejalas as $gejala)
+                            <input type="hidden" name="gejala_ids[]" value="{{ $gejala->id }}">
+                        @endforeach
+
+                        <button type="submit" class="btn-save-riwayat">Simpan</button>
+                    </form>
                 @endif
             </div>
         </div>

@@ -23,8 +23,8 @@
             </div>
 
         <div class="menu">
-            <a href="{{ route('mekanik.diagnosa') }}">Analisis Diagnosa</a>
-            <a href="#">Log Riwayat</a>
+            <a href="{{ route('mekanik.diagnosa') }}" class="active">Analisis Diagnosa</a>
+            <a href="{{ route('mekanik.riwayat') }}">Log Riwayat</a>
 
             <form action="{{ route('logout') }}" method="POST" class="logout-form">
                 @csrf

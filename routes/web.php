@@ -36,6 +36,9 @@ Route::get('/mekanik/dashboard_mekanik', function () {
 })->name('dashboard.mekanik');
 Route::get('/mekanik/diagnosa', [DiagnosaMekanikController::class, 'index'])->name('mekanik.diagnosa');
 Route::post('/mekanik/diagnosa', [DiagnosaMekanikController::class, 'proses'])->name('mekanik.diagnosa.proses');
+Route::post('/mekanik/diagnosa/simpan', [DiagnosaMekanikController::class, 'simpan'])->name('mekanik.diagnosa.simpan');
+Route::get('/mekanik/riwayat', [DiagnosaMekanikController::class, 'riwayat'])->name('mekanik.riwayat');
+Route::delete('/mekanik/riwayat/{riwayatDiagnosa}', [DiagnosaMekanikController::class, 'hapusRiwayat'])->name('mekanik.riwayat.hapus');
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'login'])->name('login.login');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
