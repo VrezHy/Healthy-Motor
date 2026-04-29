@@ -35,7 +35,7 @@ Route::get('/mekanik/dashboard_mekanik', function () {
 })->name('dashboard.mekanik');
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'login'])->name('login.login');
-// Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('/admin/kerusakan', [KerusakanController::class, 'index'])->name('admin.kerusakan');
 Route::post('/admin/kerusakan', [KerusakanController::class, 'store'])->name('admin.kerusakan.store');
 Route::put('/admin/kerusakan/{kerusakan}', [KerusakanController::class, 'update'])->name('admin.kerusakan.update');

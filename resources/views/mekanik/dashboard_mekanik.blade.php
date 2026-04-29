@@ -26,7 +26,10 @@
             <a href="#">Analisis Diagnosa</a>
             <a href="#">Log Riwayat</a>
 
-            <a href="#" class="logout">Logout</a>
+            <form action="{{ route('logout') }}" method="POST" class="logout-form">
+                @csrf
+                <button type="submit" class="logout">Logout</button>
+            </form>
         </div>
     </div>
 
