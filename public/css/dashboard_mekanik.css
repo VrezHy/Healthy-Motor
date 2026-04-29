@@ -1,95 +1,128 @@
-    body{
-            margin:0;
-            font-family: Arial, Helvetica, sans-serif;
-            background:#e9edf7;
-        }
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #a5b3c9;
+    color: #050505;
+}
 
-        .header{
-            background:#4A5298;
-            color:white;
-            padding:15px 25px;
-            font-weight:bold;
-        }
+.header {
+    background: #7884bd;
+    color: #050505;
+    padding: 20px 24px;
+    border: 2px solid #0a8bd8;
+    font-size: 22px;
+    font-style: italic;
+    font-weight: 700;
+}
 
-        .container{
-            display:flex;
-        }
+.container {
+    display: flex;
+    min-height: calc(100vh - 66px);
+}
 
-        /* SIDEBAR */
-        .sidebar{
-            width:260px;
-            background:#707BBC;
-            min-height:100vh;
-            padding:25px;
-            color:white;
-        }
+/* SIDEBAR */
+.sidebar {
+    width: 156px;
+    background: #94a4c0;
+    padding: 28px 20px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+}
 
-        .profile{
-            text-align:center;
-            margin-bottom:35px;
-        }
+.profile {
+    text-align: center;
+    margin-bottom: 56px;
+}
 
-        .profile img{
-            width:100px;
-            height:100px;
-            border-radius:50%;
-            background:white;
-        }
+.profile img {
+    width: 94px;
+    height: 94px;
+    border-radius: 50%;
+    background: #dddddd;
+    object-fit: cover;
+}
 
-        .profile h3{
-            margin:15px 0 5px 0;
-        }
+.profile h3 {
+    margin: 8px 0 0 0;
+    color: #050505;
+    font-size: 20px;
+    line-height: 1;
+}
 
-        .menu a{
-            display:block;
-            padding:12px;
-            margin-bottom:12px;
-            border-radius:10px;
-            text-decoration:none;
-            color:white;
-            background:#8d97ef;
-        }
+.profile small {
+    color: #333333;
+    font-size: 10px;
+}
 
-        .menu a:hover{
-            background:#5f6ce0;
-        }
+.menu {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+}
 
-        .logout{
-            margin-top:40px;
-            background:#707BBC;
-            text-align:center;
-        }
+.menu a {
+    display: block;
+    padding: 10px 10px;
+    margin-bottom: 22px;
+    border-radius: 10px;
+    text-decoration: none;
+    color: white;
+    background: transparent;
+    font-size: 15px;
+    text-align: center;
+}
 
-        /* CONTENT */
-        .content{
-            flex:1;
-            padding:30px;
-        }
+.menu a:first-child,
+.menu a:hover {
+    background: #334cf0;
+}
 
-        .title{
-            font-size:22px;
-            font-weight:bold;
-            margin-bottom:30px;
-        }
+.logout {
+    margin-top: auto;
+    margin-bottom: 0;
+    background: #7C87C6;
+    color: #050505;
+    text-align: center;
+    font-size: 15px;
+    font-weight: 700;
+}
 
-        /* BUTTON MULAI DIAGNOSA */
-        .center-box{
-            display:flex;
-            justify-content:center;
-            align-items:center;
-            height:70vh;
-        }
+/* CONTENT */
+.content {
+    flex: 1;
+    padding: 22px 18px;
+    background: #a5b3c9;
+    display: flex;
+    flex-direction: column;
+}
 
-        .btn-diagnosa{
-            background:#7C84D0;
-            color:white;
-            border:none;
-            padding:18px 45px;
-            font-size:16px;
-            border-radius:30px;
-            cursor:pointer;
-        }
+.title {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 0;
+}
 
-        .btn-diagnosa:hover{
-            background:#2f37b8;
-        }
+/* BUTTON MULAI DIAGNOSA */
+.center-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+}
+
+.btn-diagnosa {
+    background: #334cf0;
+    color: white;
+    border: none;
+    padding: 12px 48px;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.15;
+    border-radius: 14px;
+    cursor: pointer;
+}
+
+.btn-diagnosa:hover {
+    background: #2035d8;
+}
