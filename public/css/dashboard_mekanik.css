@@ -522,6 +522,10 @@ textarea {
     width: 92%;
 }
 
+.riwayat-panel.is-hidden {
+    display: none;
+}
+
 .riwayat-table-title {
     background: #8189cc;
     color: #050505;
@@ -570,11 +574,17 @@ textarea {
 }
 
 .damage-info {
-    align-items: flex-start;
+    align-items: center;
+    display: flex;
+    gap: 12px;
+    justify-content: space-between;
+    text-align: left;
+}
+
+.damage-info div {
     display: flex;
     flex-direction: column;
     gap: 4px;
-    text-align: left;
 }
 
 .damage-info span {
@@ -582,16 +592,62 @@ textarea {
     font-size: 12px;
 }
 
-.status-badge {
-    color: #239d19;
-    font-size: 22px;
-    font-weight: 800;
+.btn-detail-kerusakan {
+    align-items: center;
+    background: #050505;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+    display: inline-flex;
+    flex-shrink: 0;
+    font-size: 18px;
+    font-weight: 900;
+    height: 32px;
+    justify-content: center;
+    letter-spacing: 1px;
+    line-height: 1;
+    padding: 0 0 5px;
+    width: 32px;
 }
 
-.status-badge::after {
-    content: " ▼";
+.btn-detail-kerusakan:hover {
+    background: #334cf0;
+}
+
+.status-form {
+    margin: 0;
+}
+
+.status-select {
+    appearance: none;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 22px;
+    font-weight: 800;
+    outline: none;
+    padding: 2px 20px 2px 0;
+}
+
+.status-form::after {
     color: #050505;
+    content: "▼";
     font-size: 14px;
+    margin-left: -16px;
+    pointer-events: none;
+}
+
+.status-select.status-draft {
+    color: #7f7f7f;
+}
+
+.status-select.status-aktif {
+    color: #239d19;
+}
+
+.status-select.status-done {
+    color: #334cf0;
 }
 
 .btn-view,
@@ -657,8 +713,117 @@ textarea {
     padding: 28px;
 }
 
+.pelanggan-panel {
+    display: none;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+}
+
+.pelanggan-panel.active {
+    display: flex;
+}
+
+.pelanggan-form {
+    background: #7580c5;
+    border-radius: 10px;
+    box-shadow: 0 18px 42px rgba(55, 68, 137, 0.22);
+    color: white;
+    max-width: 360px;
+    min-height: 430px;
+    padding: 54px 32px 28px;
+    position: relative;
+    width: 100%;
+}
+
+.pelanggan-back {
+    align-items: center;
+    background: rgba(255, 255, 255, 0.22);
+    border: none;
+    border-radius: 50%;
+    color: white;
+    cursor: pointer;
+    display: inline-flex;
+    font-size: 20px;
+    font-weight: 900;
+    height: 32px;
+    justify-content: center;
+    left: 24px;
+    line-height: 1;
+    position: absolute;
+    top: 18px;
+    width: 32px;
+}
+
+.pelanggan-back:hover {
+    background: #334cf0;
+}
+
+.pelanggan-form h2 {
+    font-size: 20px;
+    font-weight: 800;
+    margin: 0 0 24px;
+}
+
+.pelanggan-form label {
+    display: block;
+    font-size: 12px;
+    font-weight: 800;
+    margin: 0 0 5px;
+}
+
+.pelanggan-form input {
+    background: #e6e6e6;
+    border: none;
+    border-radius: 7px;
+    color: #1f273f;
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    outline: none;
+    padding: 7px 10px;
+    width: 100%;
+}
+
+.pelanggan-form input:focus {
+    box-shadow: 0 0 0 3px rgba(51, 76, 240, 0.26);
+}
+
+.pelanggan-error {
+    color: #ff0000;
+    font-size: 11px;
+    font-weight: 900;
+    margin: 2px 0 0;
+}
+
+.pelanggan-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 22px;
+    margin-top: 46px;
+}
+
+.pelanggan-btn {
+    background: #aab6cd;
+    border: none;
+    border-radius: 999px;
+    color: #050505;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 800;
+    min-width: 76px;
+    padding: 5px 16px;
+}
+
+.pelanggan-btn:hover {
+    background: #334cf0;
+    color: white;
+}
+
 /* LOGOUT MODAL */
-.logout-modal {
+.logout-modal,
+.cancel-riwayat-modal {
     align-items: center;
     background: rgba(165, 179, 201, 0.82);
     display: none;
@@ -669,11 +834,13 @@ textarea {
     z-index: 100;
 }
 
-.logout-modal.active {
+.logout-modal.active,
+.cancel-riwayat-modal.active {
     display: flex;
 }
 
-.logout-modal-box {
+.logout-modal-box,
+.cancel-riwayat-modal-box {
     background: #dddddd;
     border-radius: 10px;
     box-shadow: 0 18px 45px rgba(42, 51, 88, 0.18);
@@ -682,14 +849,16 @@ textarea {
     width: min(494px, 92vw);
 }
 
-.logout-modal-box h2 {
+.logout-modal-box h2,
+.cancel-riwayat-modal-box h2 {
     color: #050505;
     font-size: 20px;
     font-weight: 800;
     margin: 0;
 }
 
-.logout-modal-actions {
+.logout-modal-actions,
+.cancel-riwayat-actions {
     display: flex;
     gap: 18px;
     justify-content: flex-end;
@@ -711,6 +880,84 @@ textarea {
 .modal-btn:hover {
     background: #334cf0;
     color: white;
+}
+
+/* DETAIL KERUSAKAN MODAL */
+.kerusakan-modal {
+    align-items: center;
+    background: rgba(165, 179, 201, 0.82);
+    display: none;
+    inset: 0;
+    justify-content: center;
+    padding: 24px;
+    position: fixed;
+    z-index: 110;
+}
+
+.kerusakan-modal.active {
+    display: flex;
+}
+
+.kerusakan-modal-box {
+    background: #f1f2f7;
+    border-radius: 12px;
+    box-shadow: 0 18px 45px rgba(42, 51, 88, 0.2);
+    max-height: 82vh;
+    overflow-y: auto;
+    padding: 28px;
+    position: relative;
+    width: min(560px, 92vw);
+}
+
+.kerusakan-modal-close {
+    align-items: center;
+    background: #aab6cd;
+    border: none;
+    border-radius: 50%;
+    color: #050505;
+    cursor: pointer;
+    display: inline-flex;
+    font-size: 20px;
+    font-weight: 900;
+    height: 30px;
+    justify-content: center;
+    position: absolute;
+    right: 18px;
+    top: 18px;
+    width: 30px;
+}
+
+.kerusakan-modal-close:hover {
+    background: #334cf0;
+    color: white;
+}
+
+.kerusakan-modal-box h2 {
+    color: #252a49;
+    font-size: 22px;
+    margin: 0 38px 18px 0;
+}
+
+.kerusakan-detail-section {
+    background: white;
+    border-radius: 10px;
+    margin-top: 12px;
+    padding: 14px;
+}
+
+.kerusakan-detail-section strong {
+    color: #334cf0;
+    display: block;
+    font-size: 13px;
+    margin-bottom: 8px;
+}
+
+.kerusakan-detail-section p {
+    color: #3c4668;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.45;
+    margin: 0 0 6px;
 }
 
 @media (max-width: 920px) {

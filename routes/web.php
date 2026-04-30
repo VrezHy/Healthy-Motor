@@ -38,6 +38,8 @@ Route::get('/mekanik/diagnosa', [DiagnosaMekanikController::class, 'index'])->na
 Route::post('/mekanik/diagnosa', [DiagnosaMekanikController::class, 'proses'])->name('mekanik.diagnosa.proses');
 Route::post('/mekanik/diagnosa/simpan', [DiagnosaMekanikController::class, 'simpan'])->name('mekanik.diagnosa.simpan');
 Route::get('/mekanik/riwayat', [DiagnosaMekanikController::class, 'riwayat'])->name('mekanik.riwayat');
+Route::put('/mekanik/riwayat/{riwayatDiagnosa}/status', [DiagnosaMekanikController::class, 'updateStatus'])->name('mekanik.riwayat.status');
+Route::put('/mekanik/riwayat/{riwayatDiagnosa}/pelanggan', [DiagnosaMekanikController::class, 'simpanPelanggan'])->name('mekanik.riwayat.pelanggan');
 Route::delete('/mekanik/riwayat/{riwayatDiagnosa}', [DiagnosaMekanikController::class, 'hapusRiwayat'])->name('mekanik.riwayat.hapus');
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'login'])->name('login.login');

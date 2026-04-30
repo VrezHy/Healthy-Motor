@@ -21,6 +21,10 @@ class RiwayatDiagnosa extends Model
         'gejala_terpilih',
         'solusi',
         'status',
+        'nama_pelanggan',
+        'alamat_pelanggan',
+        'nomor_polisi',
+        'nomor_telepon',
     ];
 
     protected $casts = [

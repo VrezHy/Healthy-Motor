@@ -7,6 +7,7 @@ use App\Models\Kerusakan;
 use App\Models\RiwayatDiagnosa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class DiagnosaMekanikController extends Controller
 {
@@ -113,6 +114,45 @@ class DiagnosaMekanikController extends Controller
 
         return redirect()->route('mekanik.riwayat')
             ->with('success', 'Log riwayat berhasil dibatalkan.');
+    }
+
+    public function updateStatus(Request $request, RiwayatDiagnosa $riwayatDiagnosa)
+    {
+        $validated = $request->validate([
+            'status' => 'required|in:Draft,Aktif,Done',
+        ]);
+
+        $riwayatDiagnosa->update($validated);
+
+        return redirect()->route('mekanik.riwayat')
+            ->with('success', 'Status berhasil diperbarui.');
+    }
+
+    public function simpanPelanggan(Request $request, RiwayatDiagnosa $riwayatDiagnosa)
+    {
+        $validator = Validator::make($request->all(), [
+            'nama_pelanggan' => ['required', 'string', 'max:255', 'regex:/^[A-Za-z\s.\']+$/'],
+            'alamat_pelanggan' => 'required|string|max:255',
+            'nomor_polisi' => ['required', 'string', 'max:50', 'regex:/^[A-Za-z0-9\s-]+$/'],
+            'nomor_telepon' => ['required', 'string', 'regex:/^[0-9]{10,13}$/'],
+        ], [
+            '*.required' => 'Field Not Must Be Empty!',
+            'nama_pelanggan.regex' => 'Nama hanya boleh berisi huruf, spasi, titik, dan apostrof.',
+            'nomor_polisi.regex' => 'Nomor polisi hanya boleh berisi huruf, angka, spasi, dan tanda hubung.',
+            'nomor_telepon.regex' => 'Nomor telepon harus berisi 10 sampai 13 angka.',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->route('mekanik.riwayat')
+                ->withErrors($validator)
+                ->withInput()
+                ->with('pelanggan_form_id', $riwayatDiagnosa->id);
+        }
+
+        $riwayatDiagnosa->update($validator->validated());
+
+        return redirect()->route('mekanik.riwayat')
+            ->with('success', 'Data pelanggan berhasil disimpan.');
     }
 
     private function hitungHasil($selectedIds)
