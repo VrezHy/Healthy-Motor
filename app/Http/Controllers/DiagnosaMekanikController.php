@@ -83,7 +83,7 @@ class DiagnosaMekanikController extends Controller
             ->values();
 
         RiwayatDiagnosa::create([
-            'user_id' => Auth::id(),
+            'user_id' => Auth::user()?->id,
             'kerusakan_id' => $hasilUtama->kerusakan->id,
             'nama_kerusakan' => $hasilUtama->kerusakan->nama_kerusakan,
             'persentase' => $hasilUtama->persentase,
