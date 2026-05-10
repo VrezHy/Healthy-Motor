@@ -13,15 +13,10 @@ Route::get('/', function () {
 });
 
 
-// Route::get('/', function () {
-//     return redirect()->route('admin.kerusakan');
-// });
+
 
 Route::get('/register', [RegisterController::class, 'showForm'])->name('register.form');
 Route::post('/register', [RegisterController::class, 'register'])->name('register.regis');
-// Route::get('/login', function () {
-//     return view('login');
-// });
 
 Route::post('/login', [RegisterController::class, 'login'])->name('login.login');
 

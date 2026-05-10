@@ -76,7 +76,8 @@ class RegisterController extends Controller
             );
 
 
-            return redirect()->route($redirectRoute);
+            //return redirect()->route($redirectRoute);
+            return redirect()->route('login')->with('success', 'Registrasi berhasil! Silahkan login');
 
         } catch (\Exception $e) {
 
@@ -106,12 +107,13 @@ class RegisterController extends Controller
             return match ($role) {
                 'admin' => redirect() -> route('admin.dashboard'),
                 'mekanik' => redirect()-> route('mekanik.dashboard'),
-                default => redirect() -> route ('login.login'),
+                default => redirect() -> route ('login.login')->with('success', 'Registrasi berhasil! Silahkan login'),
             };
         }
 
         return back()
         -> withInput($request->only('username'))
-        ->withErrors(['username' => 'Username atau Password Salah']);
+        ->withErrors(['username' => 'Username atau Password Salah'])
+        -> with('error', 'Registrasi gagal, coba lagi');
     }
 }

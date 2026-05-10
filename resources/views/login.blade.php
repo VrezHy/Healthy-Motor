@@ -18,6 +18,32 @@
 
     <div class="container">
 
+         @if(session('success'))
+            <div id="successPopup" style="
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: white;
+                padding: 25px 40px;
+                border-radius: 12px;
+                text-align: center;
+                box-shadow: 0 5px 25px rgba(0,0,0,0.2);
+                z-index: 9999;
+                border-left: 5px solid green;
+            ">
+                <div style="font-size: 45px; color: green; margin-bottom: 10px;">✓</div>
+                <div style="font-size: 18px; font-weight: bold; margin-bottom: 8px;">{{ session('success') }}</div>
+                <div style="font-size: 13px; color: gray;">Mengalihkan ke halaman login</div>
+            </div>
+             <script>
+                setTimeout(() => {
+                    const popup = document.getElementById('successPopup');
+                    if(popup) popup.style.display = 'none';
+                }, 4000);
+            </script>
+        @endif
+
         <div class="card">
 
             <div class="title">LOGIN</div>

@@ -78,7 +78,7 @@
                     empty: 'Username tidak boleh kosong.',
                     min: 'Username minimal 4 karakter.',
                     max: 'Username maksimal 30 karakter.',
-                    format: 'Username harus memiliki .role'
+                    format: 'Username harus mengandung .role (.admin/.mekanik)'
                 }
             },
             password: {
@@ -129,35 +129,6 @@ function isBlockedUsername(username) {
             }
         }
 
-        // function validate(fieldName, value) {
-        //     const rule = rules[fieldName];
-        //     if (!rule) return true;
-
-        //     if (value.trim() === '') {
-        //         showError(fieldName, rule.messages.empty);
-        //         return false;
-        //     }
-        //     if (fieldName === 'username') {
-        //         const formatValid = /^[a-zA-Z0-9]+\.(admin|mekanik)$/.test(value);
-        //         if (!formatValid) {
-        //             showError(fieldName, rule.messages.format);
-        //             return false;
-        //         }
-        //     }
-        //     if (value.length < rule.minLength) {
-        //         showError(fieldName, rule.messages.min);
-        //         return false;
-        //     }
-        //     if (value.length > rule.maxLength) {
-        //         showError(fieldName, rule.messages.max);
-        //         return false;
-        //     }
-
-        //     clearError(fieldName);
-        //     return true;
-        // }
-
-        // validate new
         function validate(fieldName, value) {
     const rule = rules[fieldName];
     if (!rule) return true;
@@ -184,7 +155,7 @@ function isBlockedUsername(username) {
     }
 
     if (fieldName === 'password') {
-        // Cek kombinasi username + password yang diblokir
+
         const usernameInput = document.querySelector('input[name="username"]');
         const username = usernameInput ? usernameInput.value : '';
 
@@ -213,8 +184,7 @@ function isBlockedUsername(username) {
             const hasNumber = /[0-9]/.test(value);
             const hasSpecial = /[~`!@#$%^&*-+=|\:;"</>?,.]/.test(value);
 
-            //new ce passwrd
-            // Fungsi untuk real-time mengecek password terlarang
+
 function checkBlockedPassword() {
     const username = document.querySelector('input[name="username"]').value;
     const password = document.querySelector('input[name="password"]').value;
@@ -232,7 +202,7 @@ function checkBlockedPassword() {
 
     return true;
 }
-        // Update checklist
+
         document.getElementById('check-length').style.color = hasLength ? 'green' : 'red';
         document.getElementById('check-upper').style.color = hasUpper ? 'green' : 'red';
         document.getElementById('check-number').style.color = hasNumber ? 'green' : 'red';
@@ -262,44 +232,6 @@ function checkBlockedPassword() {
             }
         }
 
-        // Pasang event listener ke semua input
-//         ['name', 'username', 'password'].forEach(fieldName => {
-//             const input = document.querySelector(`input[name="${fieldName}"]`);
-
-//             input.addEventListener('input', () => {
-//                 validate(fieldName, input.value);
-//                 if (fieldName === 'password') checkPasswordStrength(input.value);
-//             });
-//             input.addEventListener('blur', () => validate(fieldName, input.value));
-//         });
-
-//         function validateRequiredFields() {
-//     let isValid = true;
-
-//     document.querySelectorAll('input[data-required]').forEach(input => {
-//         const fieldName = input.getAttribute('name');
-//         const errorDiv = document.querySelector(`.error-message[data-error="${fieldName}"]`);
-
-//         if (input.value.trim() === '') {
-//             // Tentukan label pesan error
-//             let label = '';
-//             if (fieldName === 'name') label = 'Nama';
-//             else if (fieldName === 'username') label = 'Username';
-//             else if (fieldName === 'password') label = 'Password';
-
-//             errorDiv.textContent = `${label} tidak boleh kosong.`;
-//             errorDiv.style.display = 'block';
-//             isValid = false;
-//         } else {
-//             errorDiv.style.display = 'none';
-//         }
-//     });
-
-//     return isValid;
-// }
-
-//gntu
-// Fungsi untuk cek kombinasi password terlarang (TAMBAHKAN sebelum event listener)
 function checkBlockedPassword() {
     const username = document.querySelector('input[name="username"]').value;
     const password = document.querySelector('input[name="password"]').value;
@@ -343,7 +275,6 @@ if (usernameInput) {
     });
 }
 
-// GANTI fungsi validateRequiredFields (perbaiki sedikit)
 function validateRequiredFields() {
     let isValid = true;
 
@@ -361,7 +292,6 @@ function validateRequiredFields() {
             errorDiv.style.display = 'block';
             isValid = false;
         } else {
-            // Hanya hide jika tidak ada error lain
             if (errorDiv.textContent === `${label} tidak boleh kosong.`) {
                 errorDiv.style.display = 'none';
             }
@@ -371,50 +301,7 @@ function validateRequiredFields() {
     return isValid;
 }
 
-        // Cegah submit kalau masih ada error
-
-        // Cegah submit kalau masih ada error
-// document.querySelector('form').addEventListener('submit', (e) => {
-//     let valid = true;
-
-//     // Validasi dari rules yang sudah ada (format, length, dll)
-//     ['name', 'username', 'password'].forEach(fieldName => {
-//         const input = document.querySelector(`input[name="${fieldName}"]`);
-//         const result = validate(fieldName, input.value);
-//         if (!result) valid = false;
-//     });
-
-//     // Validasi field kosong dari data-required
-//     if (!validateRequiredFields()) valid = false;
-//     console.log('Final valid:', valid);
-//     if (!valid) {
-//         e.preventDefault();
-//     }
-// });
-
-
-        // document.querySelector('form').addEventListener('submit', (e) => {
-        //     let valid = true;
-
-        //     ['name', 'username', 'password'].forEach(fieldName => {
-        //         const input = document.querySelector(`input[name="${fieldName}"]`);
-        //         const result = validate(fieldName, input.value);
-        //         console.log(fieldName, ':', input.value, '→ valid:', result);
-        //         if (!result) valid = false;
-        //     });
-
-        //     console.log('overall valid:', valid);
-
-        //     if (!valid) {
-        //         console.log('Form Tidak Submit');
-        //         e.preventDefault();
-        //     } else {
-        //         console.log('Form Submit');
-        //     }
-        // });
-
-        // new
-        document.querySelector('form').addEventListener('submit', (e) => {
+    document.querySelector('form').addEventListener('submit', (e) => {
     let valid = true;
 
     const name = document.querySelector('input[name="name"]').value;
@@ -437,8 +324,6 @@ function validateRequiredFields() {
     }
 });
     </script>
-
-
 
 </body>
 
