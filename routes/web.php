@@ -1,7 +1,8 @@
 <?php
 
 use App\Http\Controllers\RegisterController;
-use App\Http\Controllers\LoginController;
+use App\Http\Controllers\AdminController; // Tambahan import AdminController
+use App\Http\Controllers\LoginController; // Tambahan import LoginController
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KerusakanController;
 use App\Http\Controllers\GejalaController;
@@ -20,10 +21,8 @@ Route::post('/register', [RegisterController::class, 'register'])->name('registe
 
 Route::post('/login', [RegisterController::class, 'login'])->name('login.login');
 
-
-Route::get('/admin/dashboard_admin', function () {
-    return view('admin.dashboard_admin');
-})->name('dashboard.admin');
+// UBAH: Menggunakan AdminController agar bisa mengirim data motor ke tampilan
+Route::get('/admin/dashboard_admin', [AdminController::class, 'index'])->name('admin.dashboard');
 
 Route::get('/mekanik/dashboard_mekanik', function () {
     return view('mekanik.dashboard_mekanik');
@@ -47,3 +46,5 @@ Route::get('/admin/solusi', [SolusiController::class, 'index'])->name('admin.sol
 Route::post('/admin/solusi', [SolusiController::class, 'store'])->name('admin.solusi.store');
 Route::put('/admin/solusi/{solusi}', [SolusiController::class, 'update'])->name('admin.solusi.update');
 Route::delete('/admin/solusi/{solusi}', [SolusiController::class, 'destroy'])->name('admin.solusi.destroy');
+// TAMBAHAN: Route untuk memproses Logout
+Route::post('/logout', [LoginController::class, 'logout']) -> name('logout');
