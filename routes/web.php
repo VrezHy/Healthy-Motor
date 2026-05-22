@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KerusakanController;
 use App\Http\Controllers\GejalaController;
 use App\Http\Controllers\SolusiController;
+use App\Http\Controllers\DiagnosaMekanikController;
 
 
 Route::get('/', function () {
@@ -24,9 +25,25 @@ Route::post('/login', [RegisterController::class, 'login'])->name('login.login')
 // UBAH: Menggunakan AdminController agar bisa mengirim data motor ke tampilan
 Route::get('/admin/dashboard_admin', [AdminController::class, 'index'])->name('admin.dashboard');
 
-Route::get('/mekanik/dashboard_mekanik', function () {
-    return view('mekanik.dashboard_mekanik');
-})->name('dashboard.mekanik');
+// Route::get('/mekanik/dashboard_mekanik', function () {
+//     return view('mekanik.dashboard_mekanik');
+// })->name('dashboard.mekanik');
+
+Route::get('/mekanik/diagnosa', [DiagnosaMekanikController::class, 'index'])->name('mekanik.diagnosa');
+Route::post('/mekanik/diagnosa', [DiagnosaMekanikController::class, 'proses'])->name('mekanik.diagnosa.proses');
+Route::post('/mekanik/diagnosa/simpan', [DiagnosaMekanikController::class, 'simpan'])->name('mekanik.diagnosa.simpan');
+Route::get('/mekanik/riwayat', [DiagnosaMekanikController::class, 'riwayat'])->name('mekanik.riwayat');
+Route::put('/mekanik/riwayat/{riwayatDiagnosa}/status', [DiagnosaMekanikController::class, 'updateStatus'])->name('mekanik.riwayat.status');
+Route::put('/mekanik/riwayat/{riwayatDiagnosa}/pelanggan', [DiagnosaMekanikController::class, 'simpanPelanggan'])->name('mekanik.riwayat.pelanggan');
+Route::delete('/mekanik/riwayat/{riwayatDiagnosa}', [DiagnosaMekanikController::class, 'hapusRiwayat'])->name('mekanik.riwayat.hapus');
+Route::get('/admin/data-motor', [AdminController::class, 'dataMotor'])
+    ->name('admin.motor');
+
+
+
+// Route::get('/admin/motor', [AdminController::class, 'motor'])
+//     ->name('admin.motor');
+
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'login'])->name('login.login');
 // Route::post('/logout', [LoginController::class, 'logout'])->name('logout');

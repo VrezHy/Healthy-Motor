@@ -24,14 +24,15 @@
             </div>
 
             <div class="menu">
-                <a href="#">Data Motor</a>
+                <a href="{{ route('admin.motor') }}">Data Motor</a>
                 <a href="#">Data Gejala</a>
                 <a href="#">Data Penyakit</a>
                 <a href="#">Data Solusi</a>
 
                 <form method="POST" action="{{ route('logout') }}" style="display: inline-block; width: 100%;">
                     @csrf
-                    <button type="submit" class="logout" style="background: transparent; border: none; cursor: pointer; text-align: left; width: 100%; font-family: inherit; font-size: inherit; color: inherit; padding: 0;">
+                    <button type="submit" class="logout"
+                        style="background: transparent; border: none; cursor: pointer; text-align: left; width: 100%; font-family: inherit; font-size: inherit; color: inherit; padding: 0;">
                         Logout
                     </button>
                 </form>
@@ -71,28 +72,29 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Data Motor</th>
-                            <th>Status / Kendala</th>
+                            <th>Nama Pelanggan</th>
+                            <th>Nomor Polisi</th>
+                            <th>Kerusakan</th>
+                            <th>Status</th>
                         </tr>
                     </thead>
 
                     <tbody>
-                        @if(isset($dataMotor) && $dataMotor->count() > 0)
-                            @foreach($dataMotor as $index => $motor)
+                        @forelse($dataMotor as $index => $motor)
                             <tr>
                                 <td>{{ $index + 1 }}</td>
-                                
-                                <td>{{ $motor->nama_pemilik }} ({{ $motor->plat_nomor }})</td>
-                                <td>{{ $motor->kendala }}</td>
+                                <td>{{ $motor->nama_pelanggan ?? '-' }}</td>
+                                <td>{{ $motor->nomor_polisi ?? '-' }}</td>
+                                <td>{{ $motor->nama_kerusakan ?? '-' }}</td>
+                                <td>{{ $motor->status ?? '-' }}</td>
                             </tr>
-                            @endforeach
-                        @else
+                        @empty
                             <tr>
-                                <td colspan="3" style="text-align: center; padding: 20px;">
-                                    Belum ada log riwayat motor di database.
+                                <td colspan="5" style="text-align:center; padding:20px;">
+                                    Belum ada motor dengan status Done.
                                 </td>
                             </tr>
-                        @endif
+                        @endforelse
                     </tbody>
                 </table>
             </div>

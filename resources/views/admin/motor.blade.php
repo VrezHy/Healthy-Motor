@@ -42,13 +42,19 @@
 {{-- Tabel --}}
 <div class="rounded-2xl overflow-hidden shadow-sm">
   <div class="table-header px-5 py-3">
-    <span class="font-bold text-sm">🏍️ Tabel Data Motor (dari Log Riwayat Mekanik)</span>
+    <a href="{{ route('admin.motor') }}">Data Motor</a>
+    {{-- <span class="font-bold text-sm">🏍️ Tabel Data Motor (dari Log Riwayat Mekanik)</span> --}}
   </div>
   <div class="bg-white overflow-x-auto">
     <table class="w-full text-sm">
       <thead>
         <tr style="background:#f0f1fa;">
-          <th class="text-left px-4 py-3 font-bold text-gray-700 w-10">#</th>
+            <th>No</th>
+            <th>Nama Pelanggan</th>
+            <th>Nomor Polisi</th>
+            <th>Kerusakan</th>
+            <th>Status</th>
+          {{-- <th class="text-left px-4 py-3 font-bold text-gray-700 w-10">#</th>
           <th class="text-left px-4 py-3 font-bold text-gray-700">Nama Pemilik</th>
           <th class="text-left px-4 py-3 font-bold text-gray-700">Merk / Tipe</th>
           <th class="text-left px-4 py-3 font-bold text-gray-700">Plat Nomor</th>
@@ -57,7 +63,7 @@
           <th class="text-left px-4 py-3 font-bold text-gray-700">Status</th>
           <th class="text-left px-4 py-3 font-bold text-gray-700">Catatan Mekanik</th>
           <th class="text-left px-4 py-3 font-bold text-gray-700">Tanggal</th>
-        </tr>
+        </tr> --}}
       </thead>
       <tbody>
         @forelse($motors as $item)

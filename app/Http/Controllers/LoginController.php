@@ -25,7 +25,7 @@ class LoginController extends Controller
             $request->password === 'DM5SPM'
         ) {
              session(['username' => 'pemilik bengkel']);
-            return redirect()->route('dashboard.admin');
+            return redirect()->route('admin.kerusakan');
         }
 
 
@@ -41,7 +41,7 @@ class LoginController extends Controller
 
             return match ($role) {
                 'admin'   => redirect()->route('admin.kerusakan'),
-                'mekanik' => redirect()->route('dashboard.mekanik'),
+                'mekanik' => redirect()->route('mekanik.diagnosa'),
                 default   => $this->invalidRole($request),
             };
         }
