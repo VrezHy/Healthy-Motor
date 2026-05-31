@@ -8,13 +8,18 @@ use App\Models\Gejala;
 use App\Models\Solusi;
 use Illuminate\Http\Request;
 use App\Models\RiwayatDiagnosa;
+use Illuminate\Support\Facades\Schema;
 
 class MotorController extends Controller
 {
     public function index()
     {
-        $motors = RiwayatDiagnosa::orderBy('id', 'desc')->get();
-        $totalMotor     = RiwayatDiagnosa::count();
+        $motors = Schema::hasTable('riwayat_diagnosas')
+            ? RiwayatDiagnosa::orderBy('id', 'desc')->get()
+            : collect();
+        $totalMotor = Schema::hasTable('riwayat_diagnosas')
+            ? RiwayatDiagnosa::count()
+            : 0;
         $totalKerusakan = Kerusakan::count();
         $totalGejala    = Gejala::count();
         $totalSolusi    = Solusi::count();

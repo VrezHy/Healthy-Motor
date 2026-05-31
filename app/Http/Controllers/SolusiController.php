@@ -7,6 +7,7 @@ use App\Models\Kerusakan;
 use App\Models\Gejala;
 use Illuminate\Http\Request;
 use App\Models\RiwayatDiagnosa;
+use Illuminate\Support\Facades\Schema;
 
 class SolusiController extends Controller
 {
@@ -17,7 +18,9 @@ class SolusiController extends Controller
         $totalKerusakan = Kerusakan::count();
         $totalGejala    = Gejala::count();
         $totalSolusi    = Solusi::count();
-        $totalMotor     = RiwayatDiagnosa::count();
+        $totalMotor = Schema::hasTable('riwayat_diagnosas')
+            ? RiwayatDiagnosa::count()
+            : 0;
 
         return view('admin.solusi', compact(
             'solusies',

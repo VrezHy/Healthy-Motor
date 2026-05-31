@@ -8,6 +8,7 @@ use App\Models\RiwayatDiagnosa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Schema;
 
 class DiagnosaMekanikController extends Controller
 {
@@ -32,22 +33,22 @@ class DiagnosaMekanikController extends Controller
             $threshold = $request->input('threshold', 60);
 
             $selectedIds = collect($jawaban)
-                ->filter(fn ($value) => $value === 'ya')
+                ->filter(fn($value) => $value === 'ya')
                 ->keys()
-                ->map(fn ($id) => (int) $id)
+                ->map(fn($id) => (int) $id)
                 ->values();
 
             $hasil = $this->hitungHasil($selectedIds);
 
             // Format untuk JSON response
-            $formattedHasil = $hasil->map(function($item) use ($threshold) {
+            $formattedHasil = $hasil->map(function ($item) use ($threshold) {
                 return [
                     'id' => $item->kerusakan->id,
                     'kerusakan' => $item->kerusakan->nama_kerusakan,
                     'persentase' => $item->persentase,
                     'gejala_cocok' => $item->jumlahCocok,
                     'total_gejala' => $item->totalGejala,
-                    'solusi' => $item->kerusakan->solusies->map(function($solusi) {
+                    'solusi' => $item->kerusakan->solusies->map(function ($solusi) {
                         return [
                             'nama_solusi' => $solusi->nama_solusi,
                             'deskripsi' => $solusi->deskripsi,
@@ -73,9 +74,9 @@ class DiagnosaMekanikController extends Controller
         $jawaban = collect($request->input('jawaban', []));
 
         $selectedIds = $jawaban
-            ->filter(fn ($value) => $value === 'ya')
+            ->filter(fn($value) => $value === 'ya')
             ->keys()
-            ->map(fn ($id) => (int) $id)
+            ->map(fn($id) => (int) $id)
             ->values();
 
         $selectedGejalas = Gejala::with('kerusakan')
@@ -103,7 +104,7 @@ class DiagnosaMekanikController extends Controller
             ]);
 
             $selectedIds = collect($request->input('gejala_ids'))
-                ->map(fn ($id) => (int) $id)
+                ->map(fn($id) => (int) $id)
                 ->values();
 
             $hasilUtama = $this->hitungHasil($selectedIds)->first();
@@ -118,14 +119,14 @@ class DiagnosaMekanikController extends Controller
             $selectedGejalas = Gejala::whereIn('id', $selectedIds)
                 ->orderBy('kode_gejala')
                 ->get()
-                ->map(fn ($gejala) => [
+                ->map(fn($gejala) => [
                     'kode_gejala' => $gejala->kode_gejala,
                     'nama_gejala' => $gejala->nama_gejala,
                 ])
                 ->values();
 
             $solusies = $hasilUtama->kerusakan->solusies
-                ->map(fn ($solusi) => [
+                ->map(fn($solusi) => [
                     'nama_solusi' => $solusi->nama_solusi,
                     'deskripsi' => $solusi->deskripsi,
                 ])
@@ -156,7 +157,7 @@ class DiagnosaMekanikController extends Controller
         ]);
 
         $selectedIds = collect($request->input('gejala_ids'))
-            ->map(fn ($id) => (int) $id)
+            ->map(fn($id) => (int) $id)
             ->values();
 
         $hasilUtama = $this->hitungHasil($selectedIds)->first();
@@ -169,14 +170,14 @@ class DiagnosaMekanikController extends Controller
         $selectedGejalas = Gejala::whereIn('id', $selectedIds)
             ->orderBy('kode_gejala')
             ->get()
-            ->map(fn ($gejala) => [
+            ->map(fn($gejala) => [
                 'kode_gejala' => $gejala->kode_gejala,
                 'nama_gejala' => $gejala->nama_gejala,
             ])
             ->values();
 
         $solusies = $hasilUtama->kerusakan->solusies
-            ->map(fn ($solusi) => [
+            ->map(fn($solusi) => [
                 'nama_solusi' => $solusi->nama_solusi,
                 'deskripsi' => $solusi->deskripsi,
             ])
@@ -200,9 +201,9 @@ class DiagnosaMekanikController extends Controller
 
     public function riwayat()
     {
-        $riwayats = RiwayatDiagnosa::with('user')
-            ->latest()
-            ->get();
+        $riwayats = Schema::hasTable('riwayat_diagnosas')
+            ? RiwayatDiagnosa::with('user')->latest()->get()
+            : collect();
 
         return view('mekanik.riwayat', compact('riwayats'));
     }
@@ -256,14 +257,14 @@ class DiagnosaMekanikController extends Controller
 
     private function hitungHasil($selectedIds)
     {
-        $selectedIds = collect($selectedIds)->map(fn ($id) => (int) $id)->values();
+        $selectedIds = collect($selectedIds)->map(fn($id) => (int) $id)->values();
 
         if ($selectedIds->isEmpty()) {
             return collect();
         }
 
         return Kerusakan::with(['gejalas', 'solusies'])
-            ->whereHas('gejalas', fn ($query) => $query->whereIn('id', $selectedIds))
+            ->whereHas('gejalas', fn($query) => $query->whereIn('id', $selectedIds))
             ->get()
             ->map(function ($kerusakan) use ($selectedIds) {
                 $gejalaCocok = $kerusakan->gejalas->whereIn('id', $selectedIds)->values();
@@ -276,7 +277,7 @@ class DiagnosaMekanikController extends Controller
                     'persentase' => round(($gejalaCocok->count() / $totalGejala) * 100),
                 ];
             })
-            ->sortByDesc(fn ($item) => ($item->persentase * 1000) + $item->jumlahCocok)
+            ->sortByDesc(fn($item) => ($item->persentase * 1000) + $item->jumlahCocok)
             ->values();
     }
 }
