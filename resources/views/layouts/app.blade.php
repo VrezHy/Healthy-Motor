@@ -14,6 +14,15 @@
             font-family: 'Plus Jakarta Sans', sans-serif;
         }
 
+        .header {
+            color: white;
+            font-size: 24px;
+            font-weight: 800;
+            font-style: italic;
+            padding-left: 36px;
+            padding-top: 14px;
+        }
+
         body {
             background: #6b73b3;
         }
@@ -75,13 +84,79 @@
         .logout-btn:hover {
             background: rgba(255, 255, 255, 0.25);
         }
+
+        .logout-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.45);
+        }
+
+        .logout-modal.active {
+            display: flex;
+        }
+
+        .logout-modal-box {
+            width: 90%;
+            max-width: 380px;
+            background: white;
+            border-radius: 16px;
+            padding: 28px 24px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+        }
+
+        .logout-modal-box h2 {
+            margin: 0 0 24px;
+            color: #1f2937;
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        .logout-modal-actions {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .modal-btn {
+            border: none;
+            border-radius: 10px;
+            padding: 10px 22px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: opacity 0.2s, transform 0.2s;
+        }
+
+        .modal-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .modal-btn.cancel {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+        .modal-btn.confirm {
+            background: #4a5298;
+            color: white;
+        }
     </style>
 </head>
 
 <body class="min-h-screen">
 
     {{-- Top bar --}}
-    <div class="w-full h-10" style="background: #4a5298;"></div>
+    <div class="w-full" style="background: #4a5298; height: 65px;">
+        <div class="header">
+            DM5S
+        </div>
+    </div>
 
     <div class="flex min-h-screen" style="padding: 20px; gap: 20px;">
 
@@ -104,8 +179,8 @@
 
             {{-- Navigation --}}
             <nav class="flex flex-col gap-1 flex-1">
-                <a href="#"
-                    class="nav-item {{ request()->routeIs('admin.motor.*') ? 'active' : '' }}">
+                <a href="{{ route('admin.motor') }}"
+                    class="nav-item {{ request()->routeIs('admin.motor*') ? 'active' : '' }}">
                     Data Motor
                 </a>
                 <a href="{{ route('admin.kerusakan') }}"
@@ -124,9 +199,54 @@
 
             {{-- Logout --}}
             <div class="mt-8 text-center">
-                <button type="submit" class="logout-btn">Logout</button>
+                <form action="{{ route('logout') }}" method="POST" class="logout-form">
+                    @csrf
+                    <button type="submit" class="logout-btn">Logout</button>
                 </form>
             </div>
+
+            <div class="logout-modal" id="logoutModal">
+                <div class="logout-modal-box">
+                    <h2>Yakin Keluar Dari Aplikasi?</h2>
+                    <div class="logout-modal-actions">
+                        <button type="button" class="modal-btn cancel" id="cancelLogout">batal</button>
+                        <button type="button" class="modal-btn confirm" id="confirmLogout">keluar</button>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                let pendingLogoutForm = null;
+                const logoutModal = document.getElementById('logoutModal');
+                const cancelLogout = document.getElementById('cancelLogout');
+                const confirmLogout = document.getElementById('confirmLogout');
+
+                document.querySelectorAll('.logout-form').forEach((form) => {
+                    form.addEventListener('submit', (event) => {
+                        event.preventDefault();
+                        pendingLogoutForm = form;
+                        logoutModal.classList.add('active');
+                    });
+                });
+
+                cancelLogout.addEventListener('click', () => {
+                    pendingLogoutForm = null;
+                    logoutModal.classList.remove('active');
+                });
+
+                confirmLogout.addEventListener('click', () => {
+                    if (pendingLogoutForm) {
+                        pendingLogoutForm.submit();
+                    }
+                });
+
+                logoutModal.addEventListener('click', (event) => {
+                    if (event.target === logoutModal) {
+                        pendingLogoutForm = null;
+                        logoutModal.classList.remove('active');
+                    }
+                });
+            </script>
         </div>
 
         {{-- Main Content --}}

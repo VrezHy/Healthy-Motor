@@ -8,6 +8,7 @@ use App\Http\Controllers\KerusakanController;
 use App\Http\Controllers\GejalaController;
 use App\Http\Controllers\SolusiController;
 use App\Http\Controllers\DiagnosaMekanikController;
+use App\Http\Controllers\MotorController;
 
 
 Route::get('/', function () {
@@ -41,8 +42,8 @@ Route::get('/admin/data-motor', [AdminController::class, 'dataMotor'])
 
 
 
-// Route::get('/admin/motor', [AdminController::class, 'motor'])
-//     ->name('admin.motor');
+Route::get('/admin/data-motor', [MotorController::class, 'index'])
+    ->name('admin.motor');
 
 Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'login'])->name('login.login');

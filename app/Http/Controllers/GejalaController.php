@@ -6,6 +6,7 @@ use App\Models\Gejala;
 use App\Models\Kerusakan;
 use App\Models\Solusi;
 use Illuminate\Http\Request;
+use App\Models\RiwayatDiagnosa;
 
 class GejalaController extends Controller
 {
@@ -16,7 +17,7 @@ class GejalaController extends Controller
         $totalKerusakan = Kerusakan::count();
         $totalGejala    = Gejala::count();
         $totalSolusi    = Solusi::count();
-        $totalMotor     = 0;
+        $totalMotor     = RiwayatDiagnosa::count();
 
         return view('admin.gejala', compact(
             'gejalas',

@@ -6,6 +6,7 @@ use App\Models\Solusi;
 use App\Models\Kerusakan;
 use App\Models\Gejala;
 use Illuminate\Http\Request;
+use App\Models\RiwayatDiagnosa;
 
 class SolusiController extends Controller
 {
@@ -16,7 +17,7 @@ class SolusiController extends Controller
         $totalKerusakan = Kerusakan::count();
         $totalGejala    = Gejala::count();
         $totalSolusi    = Solusi::count();
-        $totalMotor     = 0;
+        $totalMotor     = RiwayatDiagnosa::count();
 
         return view('admin.solusi', compact(
             'solusies',
