@@ -22,7 +22,7 @@
                 <h3>{{ auth()->check() ? auth()->user()->name : session('username') }}</h3>
                 <small>{{ auth()->check() ? auth()->user()->username : session('username') }}</small>
             </div>
-
+            
             <div class="menu">
                 <a href="{{ route('admin.motor') }}">Data Motor</a>
                 <a href="#">Data Gejala</a>

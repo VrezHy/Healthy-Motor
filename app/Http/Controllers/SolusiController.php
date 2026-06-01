@@ -43,6 +43,11 @@ class SolusiController extends Controller
             'kerusakan_id.required' => 'Pilih kerusakan terlebih dahulu!',
         ]);
 
+        if (Solusi::where('nama_solusi', $request->nama_solusi)->where('kerusakan_id', $request->kerusakan_id)->exists()) {
+            return redirect()->back()
+                ->with('error', 'Data solusi sudah ada.');
+        }
+
         Solusi::create($request->only('nama_solusi', 'deskripsi', 'kerusakan_id'));
 
         return redirect()->route('admin.solusi')

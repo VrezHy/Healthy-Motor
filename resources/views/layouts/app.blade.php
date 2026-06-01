@@ -24,7 +24,7 @@
         }
 
         body {
-            background: #6b73b3;
+            background: #D4D7EA;
         }
 
         .sidebar {

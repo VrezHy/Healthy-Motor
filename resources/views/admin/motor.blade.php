@@ -88,6 +88,9 @@
   </div>
 
   <div class="bg-white overflow-x-auto">
+    @if($motors->isEmpty())
+    <x-shared.empty-state />
+    @else
     <table class="data-motor-table w-full text-sm">
       <thead>
         <tr>
@@ -100,45 +103,42 @@
       </thead>
 
       <tbody>
-        @forelse($motors as $item)
-          <tr>
-            <td class="font-semibold text-gray-500">{{ $loop->iteration }}</td>
 
-            <td class="font-semibold text-gray-800">
-              {{ $item->nama_pelanggan ?? '-' }}
-            </td>
+        @foreach($motors as $item)
+        <tr>
+          <td class="font-semibold text-gray-500">{{ $loop->iteration }}</td>
 
-            <td class="font-mono text-gray-700">
-              {{ $item->nomor_polisi ?? '-' }}
-            </td>
+          <td class="font-semibold text-gray-800">
+            {{ $item->nama_pelanggan ?? '-' }}
+          </td>
 
-            <td class="text-gray-700">
-              {{ $item->nama_kerusakan ?? '-' }}
-            </td>
+          <td class="font-mono text-gray-700">
+            {{ $item->nomor_polisi ?? '-' }}
+          </td>
 
-            <td>
-              @if($item->status === 'pending')
-                <span class="badge-pending">Pending</span>
-              @elseif($item->status === 'proses')
-                <span class="badge-proses">Proses</span>
-              @elseif($item->status === 'selesai')
-                <span class="badge-selesai">Selesai</span>
-              @else
-                <span class="badge-pending">{{ ucfirst($item->status ?? 'Pending') }}</span>
-              @endif
-            </td>
-          </tr>
-        @empty
-          <tr>
-            <td colspan="5" class="px-5 py-10 text-center text-gray-400 font-medium">
-              Belum ada data motor. Mekanik belum menambahkan log riwayat.
-              <a href="{{ route('mekanik.riwayat') }}" class="text-indigo-500 underline ml-1">Buka Dashboard Mekanik</a>
-            </td>
-          </tr>
-        @endforelse
+          <td class="text-gray-700">
+            {{ $item->nama_kerusakan ?? '-' }}
+          </td>
+
+          <td>
+            @if($item->status === 'pending')
+            <span class="badge-pending">Pending</span>
+            @elseif($item->status === 'proses')
+            <span class="badge-proses">Proses</span>
+            @elseif($item->status === 'selesai')
+            <span class="badge-selesai">Selesai</span>
+            @else
+            <span class="badge-pending">{{ ucfirst($item->status ?? 'Pending') }}</span>
+            @endif
+          </td>
+        </tr>
+        @endforeach
       </tbody>
     </table>
+
   </div>
+
+  @endif
 </div>
 
 @endsection

@@ -106,12 +106,12 @@
           <td class="px-5 py-3">
             <span class="badge-kerusakan">{{ $item->kerusakan->nama_kerusakan ?? '-' }}</span>
           </td>
-          <td class="px-5 py-3 text-right">
+          <td class="px-5 py-3 text-right flex items-end shrink-0justify-center flex-col gap-2">
             <form action="{{ route('admin.solusi.destroy', $item->id) }}" method="POST"
               class="inline-block" onsubmit="return confirm('Yakin ingin menghapus data ini?')">
               @csrf
               @method('DELETE')
-              <button type="submit" class="btn-hapus mr-2">Hapus</button>
+              <button type="submit" class="btn-hapus">Hapus</button>
             </form>
             <button type="button" class="btn-ubah"
               data-id="{{ $item->id }}"
