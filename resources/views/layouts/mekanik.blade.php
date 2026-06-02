@@ -96,7 +96,6 @@
     <div class="w-full h-10" style="background: #1b4332;"></div>
 
     <div class="flex min-h-screen" style="padding: 20px; gap: 20px;">
-
         {{-- Sidebar --}}
         <div class="sidebar flex flex-col rounded-2xl" style="width: 220px; min-height: calc(100vh - 80px); padding: 28px 16px; flex-shrink: 0;">
             {{-- Profile --}}

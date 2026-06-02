@@ -151,19 +151,19 @@
     @stack('styles')
 </head>
 
-<body class="min-h-screen">
+<body class="h-screen flex flex-col overflow-hidden">
 
     {{-- Top bar --}}
-    <div class="w-full" style="background: #4a5298; height: 65px;">
+    <div class="w-full flex-shrink-0" style="background: #4a5298; height: 65px;">
         <div class="header">
             DM5S
         </div>
     </div>
 
-    <div class="flex min-h-screen" style="padding: 20px; gap: 20px;">
+    <div class="flex flex-1 min-h-0" style="padding: 20px; gap: 20px;">
 
         {{-- Sidebar --}}
-        <div class="sidebar flex flex-col rounded-2xl" style="width: 220px; min-height: calc(100vh - 80px); padding: 28px 16px; flex-shrink: 0;">
+        <div class="sidebar flex flex-col rounded-2xl h-full overflow-y-auto" style="width: 220px; min-height: calc(100vh - 80px); padding: 28px 16px; flex-shrink: 0;">
             {{-- Profile --}}
             <div class="text-center mb-8">
                 <div class="w-20 h-20 rounded-full bg-white mx-auto mb-3 shadow-md overflow-hidden flex items-center justify-center">
@@ -252,11 +252,11 @@
         </div>
 
         {{-- Main Content --}}
-        <div class="main-content flex-1 p-8" style="min-height: calc(100vh - 80px);">
+        <div class="main-content flex-1 p-8 h-full flex flex-col overflow-hidden" style="min-height: calc(100vh - 80px);">
             <h1 class="text-2xl font-extrabold text-gray-800 mb-6">Dashboard Admin</h1>
 
             {{-- Stat Cards --}}
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6 flex-shrink-0">
                 <div class="stat-card">
                     <p class="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1">Data Motor</p>
                     <p class="text-4xl font-extrabold text-gray-800">{{ $totalMotor ?? 0 }}</p>
@@ -276,11 +276,29 @@
             </div>
 
             {{-- Page Content --}}
-            @yield('content')
+            <div class="flex-1 min-h-0 flex flex-col">
+                @yield('content')
+            </div>
         </div>
     </div>
 
     @stack('scripts')
+
+    <!-- CDN SweetAlert2 (Masukkan di bagian <head> atau sebelum tag </body>) -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Script untuk mendeteksi session flash dari middleware -->
+    @if(session('access_blocked'))
+    <script>
+        Swal.fire({
+            icon: 'error', // Ini akan memunculkan tanda silang (X) merah animasi
+            title: 'Akses Ditolak',
+            text: "{{ session('access_blocked') }}",
+            confirmButtonColor: '#d33', // Tombol konfirmasi warna merah
+            confirmButtonText: 'Tutup'
+        });
+    </script>
+    @endif
 </body>
 
 </html>

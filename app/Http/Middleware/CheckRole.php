@@ -18,12 +18,15 @@ class CheckRole
             return redirect()->route('login');
         }
 
-        // Periksa apakah role pengguna ada di dalam daftar role yang diperbolehkan
-        // (Asumsi Anda memiliki kolom 'role' di tabel users)
         if (!in_array($request->user()->role, $roles)) {
-            abort(403, 'Anda tidak memiliki akses ke halaman ini.');
-        }
 
+            $fallbackUrl = $request->user()->role === 'admin'
+                ? route('admin.dashboard')
+                : '/';
+            // Alihkan kembali dengan flash session bernama 'access_blocked'
+            return redirect()->to(url()->previous() !== url()->current() ? url()->previous() : $fallbackUrl)
+                ->with('access_blocked', 'Hanya Pemilik dan Mekanik yang dapat Mengakses Log Riwayat');
+        }
         return $next($request);
     }
 }
