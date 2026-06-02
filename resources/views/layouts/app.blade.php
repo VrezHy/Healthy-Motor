@@ -147,6 +147,8 @@
             color: white;
         }
     </style>
+
+    @stack('styles')
 </head>
 
 <body class="min-h-screen">

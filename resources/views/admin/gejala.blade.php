@@ -1,72 +1,10 @@
 @extends('layouts.app')
 
-@section('content')
+@push('styles')
+  <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+@endpush
 
-<style>
-  .table-header { background: #7c84d0; color: white; }
-  .btn-hapus {
-    background: #e53e3e; color: white; padding: 6px 16px;
-    border-radius: 999px; font-size: 12px; font-weight: 700;
-    border: none; cursor: pointer; transition: background 0.2s;
-  }
-  .btn-hapus:hover { background: #c53030; }
-  .btn-ubah {
-    background: #5a63a8; color: white; padding: 6px 16px;
-    border-radius: 999px; font-size: 12px; font-weight: 700;
-    border: none; cursor: pointer; transition: background 0.2s;
-  }
-  .btn-ubah:hover { background: #4a5298; }
-  .btn-add {
-    background: #7c84d0; color: white; width: 36px; height: 36px;
-    border-radius: 10px; font-size: 22px; font-weight: 700; border: none;
-    cursor: pointer; display: flex; align-items: center; justify-content: center;
-    transition: background 0.2s, transform 0.15s;
-  }
-  .btn-add:hover { background: #5a63a8; transform: scale(1.08); }
-  .modal-overlay {
-    position: fixed; inset: 0; background: rgba(74,82,152,0.45);
-    backdrop-filter: blur(2px); display: flex; align-items: center;
-    justify-content: center; z-index: 50; opacity: 0;
-    pointer-events: none; transition: opacity 0.25s;
-  }
-  .modal-overlay.active { opacity: 1; pointer-events: all; }
-  .modal-box {
-    background: #dde0f0; border-radius: 20px; padding: 48px 40px 36px;
-    width: 100%; max-width: 580px; box-shadow: 0 24px 60px rgba(74,82,152,0.25);
-    transform: translateY(20px) scale(0.97); transition: transform 0.25s; position: relative;
-  }
-  .modal-overlay.active .modal-box { transform: translateY(0) scale(1); }
-  .modal-input {
-    width: 100%; background: #c8ccdf; border: none; border-radius: 12px;
-    padding: 14px 20px; font-size: 15px; color: #2d3256; outline: none;
-    transition: background 0.2s, box-shadow 0.2s; margin-bottom: 12px;
-  }
-  .modal-input:focus { background: #bec3d8; box-shadow: 0 0 0 3px rgba(122,130,208,0.35); }
-  .modal-input.is-invalid { box-shadow: 0 0 0 2px #e53e3e; }
-  .modal-label { font-size: 12px; font-weight: 700; color: #5a63a8; margin-bottom: 4px; display: block; }
-  .btn-save {
-    background: transparent; border: none; font-size: 20px; font-weight: 800;
-    color: #2d3256; cursor: pointer; letter-spacing: 1px; padding: 6px 0; transition: color 0.2s;
-  }
-  .btn-save:hover { color: #5a63a8; }
-  .btn-close-modal {
-    position: absolute; top: 16px; right: 20px; background: transparent;
-    border: none; font-size: 22px; color: #7c84d0; cursor: pointer; font-weight: 700;
-  }
-  .btn-close-modal:hover { color: #e53e3e; }
-  .alert-success {
-    background: #d1fae5; border: 1.5px solid #6ee7b7; color: #065f46;
-    border-radius: 12px; padding: 12px 18px; font-size: 14px; font-weight: 600;
-    margin-bottom: 16px; display: flex; align-items: center; gap: 8px;
-  }
-  tr:nth-child(even) td { background: #f3f4fc; }
-  tr:nth-child(odd) td { background: white; }
-  .badge-kerusakan {
-    background: #ede9fe; color: #5a63a8; font-size: 11px; font-weight: 700;
-    padding: 3px 10px; border-radius: 999px;
-  }
-  select.modal-input { cursor: pointer; }
-</style>
+@section('content')
 
 @if(session('success'))
 <div class="alert-success">
@@ -78,7 +16,8 @@
 @endif
 
 <div class="mb-3">
-  <button class="btn-add" id="btnAddOpen" title="Tambah Data Gejala">+</button>
+  <x-shared.button id="btnAddOpen" title="Tambah Data Solusi" variant="primary" >+</x-shared.button>
+  <!-- <button class="btn-add" id="btnAddOpen" title="Tambah Data Solusi">+</button> -->
 </div>
 
 <div class="rounded-2xl overflow-hidden shadow-sm">
@@ -105,12 +44,12 @@
           <td class="px-5 py-3">
             <span class="badge-kerusakan">{{ $item->kerusakan->nama_kerusakan ?? '-' }}</span>
           </td>
-          <td class="px-5 py-3 text-right">
+          <td class="px-5 py-3 text-right flex items-end shrink-0justify-center flex-col gap-2">
             <form action="{{ route('admin.gejala.destroy', $item->id) }}" method="POST"
               class="inline-block" onsubmit="return confirm('Yakin ingin menghapus data ini?')">
               @csrf
               @method('DELETE')
-              <button type="submit" class="btn-hapus mr-2">Hapus</button>
+              <button type="submit" class="btn-hapus">Hapus</button>
             </form>
             <button type="button" class="btn-ubah"
               data-id="{{ $item->id }}"
