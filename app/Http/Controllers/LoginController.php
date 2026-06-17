@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -24,7 +26,7 @@ class LoginController extends Controller
             $request->username === 'pemilik bengkel' &&
             $request->password === 'DM5SPM'
         ) {
-             session(['username' => 'pemilik bengkel']);
+            session(['username' => 'pemilik bengkel']);
             return redirect()->route('admin.kerusakan');
         }
 
@@ -66,5 +68,37 @@ class LoginController extends Controller
         return back()->withErrors([
             'username' => 'Role tidak dikenali. Hubungi administrator.',
         ]);
+    }
+
+    public function resetPassword(Request $request)
+{
+    $request->validate([
+        'username' => 'required',
+        'recovery_code' => 'required',
+        'password' => 'required|confirmed|min:8',
+    ]);
+
+    $user = User::where('username', $request->username)
+        ->where('recovery_code', $request->recovery_code)
+        ->first();
+
+    if (!$user) {
+        return back()->withErrors([
+            'recovery_code' => 'Kode pemulihan tidak valid.'
+        ]);
+    }
+
+    $user->update([
+        'password' => Hash::make($request->password)
+    ]);
+
+    return redirect()
+        ->route('login')
+        ->with('success', 'Password berhasil diubah.');
+}
+
+    public function showForgotPassword()
+    {
+        return view('forgot_password');
     }
 }

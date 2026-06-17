@@ -14,21 +14,25 @@ Route::get('/', function () {
     return view('home');
 });
 
-Route::get('/register', [RegisterController::class, 'showForm'])->name('register.form');
-Route::post('/register', [RegisterController::class, 'register'])->name('register.regis');
+    Route::get('/register', [RegisterController::class, 'showForm'])->name('register.form');
+    Route::post('/register', [RegisterController::class, 'register'])->name('register.regis');
 
-Route::get('/login', [LoginController::class, 'index'])->name('login');
-Route::post('/login', [LoginController::class, 'login'])->name('login.login');
-Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+    Route::get('/login', [LoginController::class, 'index'])->name('login');
+    Route::post('/login', [LoginController::class, 'login'])->name('login.login');
+    Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+    Route::get('/forgot-password', [LoginController::class, 'showForgotPassword'])
+    ->name('forgot.password');
 
+    Route::post('/forgot-password', [LoginController::class, 'resetPassword'])
+    ->name('forgot.password.reset');
 
-Route::middleware(['auth', 'role:mekanik'])->group(function () {
-    
+    Route::middleware(['auth', 'role:mekanik'])->group(function () {
+
     // Analisis / Diagnosa Mekanik
     Route::get('/mekanik/diagnosa', [DiagnosaMekanikController::class, 'index'])->name('mekanik.diagnosa');
     Route::post('/mekanik/diagnosa', [DiagnosaMekanikController::class, 'proses'])->name('mekanik.diagnosa.proses');
     Route::post('/mekanik/diagnosa/simpan', [DiagnosaMekanikController::class, 'simpan'])->name('mekanik.diagnosa.simpan');
-    
+
     // Riwayat Mekanik
     Route::get('/mekanik/riwayat', [DiagnosaMekanikController::class, 'riwayat'])->name('mekanik.riwayat');
     Route::put('/mekanik/riwayat/{riwayatDiagnosa}/status', [DiagnosaMekanikController::class, 'updateStatus'])->name('mekanik.riwayat.status');
@@ -38,7 +42,7 @@ Route::middleware(['auth', 'role:mekanik'])->group(function () {
 
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
-    
+
     // Dashboard Admin (opsional)
     Route::get('/admin/dashboard_admin', [AdminController::class, 'index'])->name('admin.dashboard');
 

@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class RegisterService
 {
@@ -14,7 +15,8 @@ class RegisterService
 
     ) {}
 
-    public function register(string $name, string $username, string $password): string
+
+    public function register(string $name, string $username, string $password): array
     {
         if ($this->ownerGuard->isBlocked($username, $password)) {
             throw new \Exception('Tidak diizinkan untuk register dengan username dan password tersebut.');
@@ -28,16 +30,24 @@ class RegisterService
 
 
         $cleanUsername = $this->roleResolver->stripSuffix($username);
-         //dd($name, $username, $password, $role);
+
+        $recoveryCode = 'RC-' .
+        strtoupper(Str::random(4)) .
+        '-' .
+        strtoupper(Str::random(4));
 
         $user = User::create([
             'name' => $name,
             'username' => $username,
             'password' => $this->passwordHasher->hash($password),
             'role' => $role,
+            'recovery_code' => $recoveryCode,
         ]);
 
-        return 'login.login';
+       return [
+        'route' => 'login.login',
+        'recovery_code' => $recoveryCode,
+    ];
 
     }
 }

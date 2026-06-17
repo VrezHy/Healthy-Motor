@@ -309,85 +309,30 @@ function validatePolisi() {
     let value = polisiInput.value.toUpperCase();
     const errorSpan = getErrorSpan(polisiInput, 'errorPolisi');
 
-    // Hapus karakter yang tidak diizinkan (hanya huruf, angka, dan strip)
-    let clean = value.replace(/[^A-Z0-9-]/g, '');
 
-    // Split berdasarkan strip
-    let parts = clean.split('-');
-    let validParts = [];
+    value = value.replace(/[^A-Z0-9 ]/g, '');
+    polisiInput.value = value;
 
-    // Ambil maksimal 3 bagian
-    for (let i = 0; i < parts.length && i < 3; i++) {
-        if (parts[i].length > 0) {
-            validParts.push(parts[i]);
-        }
+
+    const regex = /^[A-Z]{1,2}\s[0-9]{3,4}\s[A-Z]{2,3}$/;
+
+    if (value.trim() === '') {
+        errorSpan.textContent = 'Silahkan isi sesuai dengan format no polisi contoh (AB 1005 NN)';
+        errorSpan.style.color = '#dc3545'; // merah
+        polisiInput.classList.add('error');
+        return false;
     }
 
-    // Format ulang
-    let formatted = validParts.join('-');
-    polisiInput.value = formatted;
-
-    // Regex untuk validasi: huruf(1-2) - angka(3-4) - huruf(2-3)
-    const regex = /^[A-Z]{1,2}-[0-9]{3,4}-[A-Z]{2,3}$/;
-
-    // Cek apakah input masih dalam proses pengisian
-    const isProgress = formatted.length > 0 && !regex.test(formatted);
-
-    if (formatted === '') {
-        polisiInput.classList.add('error');
-        errorSpan.textContent = '❌ Nomor polisi tidak boleh kosong';
-        errorSpan.style.color = '#dc3545';
-        return false;
-    } else if (regex.test(formatted)) {
-        // Format lengkap dan valid
+    if (regex.test(value)) {
+        errorSpan.textContent = '';
         polisiInput.classList.remove('error');
-        errorSpan.textContent = '✓ Format nomor polisi valid';
-        errorSpan.style.color = '#ffffff';
-        errorSpan.style.backgroundColor = '#28a745';
-        setTimeout(() => {
-            if (errorSpan.textContent === '✓ Format nomor polisi valid') {
-                errorSpan.textContent = '';
-                errorSpan.style.backgroundColor = '';
-            }
-        }, 1500);
         return true;
-    } else if (isProgress) {
-        // Masih dalam proses pengisian
-        polisiInput.classList.remove('error');
-
-        // Tampilkan pesan sesuai progress
-        let example = '';
-        if (validParts.length === 1) {
-            example = 'Contoh: AB-1234-CD atau L-123-CD';
-        } else if (validParts.length === 2) {
-            example = 'Contoh: AB-1234-CD (tambah huruf akhir)';
-        } else {
-            example = 'Contoh: AB-1234-CD';
-        }
-
-        errorSpan.textContent = `⏳ ${example}`;
-        errorSpan.style.color = '#6c757d';
-        errorSpan.style.backgroundColor = '#f8f9fa';
-        errorSpan.style.borderLeft = '3px solid #17a2b8';
-        return false;
-    } else {
-        // Format tidak sesuai
-        polisiInput.classList.add('error');
-
-        let errorMsg = '❌ Format harus: AB-1234-CD (contoh: AB-1009-RAB) atau L-123-CD';
-
-        if (validParts[0] && !/^[A-Z]{1,2}$/.test(validParts[0])) {
-            errorMsg = '❌ Awal harus 1-2 huruf (contoh: AB atau L)';
-        } else if (validParts[1] && !/^[0-9]{3,4}$/.test(validParts[1])) {
-            errorMsg = '❌ Tengah harus 3-4 angka (contoh: 123 atau 1234)';
-        } else if (validParts[2] && !/^[A-Z]{2,3}$/.test(validParts[2])) {
-            errorMsg = '❌ Akhir harus 2-3 huruf (contoh: CD atau ABC)';
-        }
-
-        errorSpan.textContent = errorMsg;
-        errorSpan.style.color = '#dc3545';
-        return false;
     }
+
+    // Selama mengetik dan format belum sesuai
+    errorSpan.textContent = 'Silahkan isi sesuai dengan format no polisi contoh (AB 1005 NN)';
+    polisiInput.classList.add('error');
+    return false;
 }
 
 // Validasi Nomor Telepon
@@ -415,7 +360,7 @@ function validateTelepon() {
         telponInput.classList.remove('error');
         errorSpan.textContent = '✓ Nomor telepon valid';
         errorSpan.style.color = '#ffffff'; // putih
-       // errorSpan.style.backgroundColor = '#28a745'; // background hijau
+
         setTimeout(() => {
             if (errorSpan.textContent === '✓ Nomor telepon valid') {
                 errorSpan.textContent = '';
@@ -425,9 +370,6 @@ function validateTelepon() {
         return true;
     }
 }
-
-    // ========== EVENT LISTENER ==========
-
     // Event untuk validasi Nama
     if (namaInput) {
         namaInput.addEventListener('input', validateNama);
@@ -498,14 +440,7 @@ function validateTelepon() {
         riwayatPanel.classList.remove('is-hidden');
     }
 
-    // HAPUS event listener yang lama (comment atau hapus 2 kode dibawah ini)
-    // nomorTelepon.addEventListener('input', () => {
-    //     nomorTelepon.value = nomorTelepon.value.replace(/\D/g, '').slice(0, 13);
-    // });
-    //
-    // nomorPolisi.addEventListener('input', () => {
-    //     nomorPolisi.value = nomorPolisi.value.replace(/[^A-Za-z0-9\s-]/g, '').toUpperCase();
-    // });
+
 
     function renderDetailList(target, items, formatter, emptyText) {
         target.innerHTML = '';

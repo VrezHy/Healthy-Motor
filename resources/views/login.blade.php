@@ -18,30 +18,87 @@
 
     <div class="container">
 
-         @if(session('success'))
-            <div id="successPopup" style="
-                position: fixed;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                background: white;
-                padding: 25px 40px;
-                border-radius: 12px;
-                text-align: center;
-                box-shadow: 0 5px 25px rgba(0,0,0,0.2);
-                z-index: 9999;
-                border-left: 5px solid green;
-            ">
+        @if (session('success'))
+            <div id="successPopup"
+                style="
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 25px 40px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.2);
+            z-index: 9999;
+            border-left: 5px solid green;
+        ">
+
                 <div style="font-size: 45px; color: green; margin-bottom: 10px;">✓</div>
-                <div style="font-size: 18px; font-weight: bold; margin-bottom: 8px;">{{ session('success') }}</div>
-                <div style="font-size: 13px; color: gray;">Mengalihkan ke halaman login</div>
+
+                <div style="font-size: 18px; font-weight: bold; margin-bottom: 8px;">
+                    {{ session('success') }}
+                </div>
+
+                @if (session('recovery_code'))
+                    <div style="margin-top:15px;">
+                        <strong>Kode Pemulihan:</strong>
+                        <br>
+
+                        <span id="recoveryCode"
+                            style="
+                        font-size:18px;
+                        color:#d35400;
+                        font-weight:bold;
+                    ">
+                            {{ session('recovery_code') }}
+                        </span>
+
+                        <br>
+
+                        <small>Simpan kode ini untuk reset password.</small>
+
+                        <br><br>
+
+                        <button type="button" onclick="copyRecoveryCode()">
+                            Salin Kode
+                        </button>
+
+                        <button type="button" onclick="closePopup()">
+                            Saya Sudah Menyimpan
+                        </button>
+                    </div>
+                @endif
+
             </div>
-             <script>
-                setTimeout(() => {
-                    const popup = document.getElementById('successPopup');
-                    if(popup) popup.style.display = 'none';
-                }, 4000);
-            </script>
+
+            @if (session('recovery_code'))
+                <script>
+                    function copyRecoveryCode() {
+                        const code = document.getElementById('recoveryCode').innerText;
+
+                        navigator.clipboard.writeText(code)
+                            .then(() => {
+                                alert('Kode pemulihan berhasil disalin');
+                            });
+                    }
+
+                    function closePopup() {
+                        document.getElementById('successPopup').style.display = 'none';
+                    }
+                </script>
+            @else
+                <script>
+                    setTimeout(() => {
+                        const popup = document.getElementById('successPopup');
+
+                        if (popup) {
+                            popup.style.display = 'none';
+                        }
+                    }, 4000);
+                </script>
+            @endif
+
         @endif
 
         <div class="card">
@@ -63,6 +120,11 @@
                     <small style="color: red;">{{ $message }}</small>
                 @enderror
 
+                <div style="text-align: right; margin-top: 5px; margin-bottom: 15px;">
+                    <a href="{{ route('forgot.password') }}">
+                        Lupa Password?
+                    </a>
+                </div>
                 <button type="submit">Login</button>
 
             </form>
@@ -143,7 +205,21 @@
 
             if (!valid) e.preventDefault();
         });
+
+        function copyRecoveryCode() {
+            const code = document.getElementById('recoveryCode').innerText;
+
+            navigator.clipboard.writeText(code)
+                .then(() => {
+                    alert('Kode pemulihan berhasil disalin');
+                });
+        }
+
+        function closePopup() {
+            document.getElementById('successPopup').style.display = 'none';
+        }
     </script>
+
 
 </body>
 

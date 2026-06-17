@@ -22,7 +22,7 @@ class RegisterController extends Controller
 
     public function register(RegisterRequest $request)
     {
-        //new
+
          $username = $request->input('username');
         $password = $request->input('password');
         $blockedUsernames = ['pemilik', 'pemilik bengkel', 'pemilikbengkel', 'owner'];
@@ -33,7 +33,7 @@ class RegisterController extends Controller
                 ->withErrors(['blocked' => 'Tidak diizinkan untuk register dengan username dan password tersebut.']);
         }
 
-        // Validasi normal untuk non-blocked users
+
         $validator = validator($request->all(), [
             'name' => 'required|string|max:255',
             'username' => 'required|string|max:255|unique:users,username',
@@ -56,7 +56,7 @@ class RegisterController extends Controller
             'password.regex' => 'Password harus mengandung huruf kapital, angka, dan karakter spesial.',
         ]);
 
-        // Validasi format username khusus
+
         if (!preg_match('/^[a-zA-Z0-9]+\.(admin|mekanik)$/', $username)) {
             $validator->errors()->add('username', 'Username harus diakhiri dengan .admin atau .mekanik');
         }
@@ -69,15 +69,16 @@ class RegisterController extends Controller
 
         try {
 
-            $redirectRoute = $this->registerService->register(
-                name:     $request->input('name'),
-                username: $request->input('username'),
-                password: $request->input('password'),
-            );
+           $result = $this->registerService->register(
+    name: $request->input('name'),
+    username: $request->input('username'),
+    password: $request->input('password'),
+);
 
 
-            //return redirect()->route($redirectRoute);
-            return redirect()->route('login')->with('success', 'Registrasi berhasil! Silahkan login');
+
+            return redirect()->route('login')->with('success', 'Registrasi berhasil! Silahkan login')->with('recovery_code', $result['recovery_code']);
+
 
         } catch (\Exception $e) {
 
