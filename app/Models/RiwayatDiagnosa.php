@@ -4,13 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes; // 1. Tambahkan import ini
 
 class RiwayatDiagnosa extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes; // 2. Tambahkan SoftDeletes di sini
 
     protected $table = 'riwayat_diagnosas';
 
+    // Tambahkan 'deleted_at' ke dalam fillable jika diperlukan, 
+    // tapi opsional karena Laravel mengaturnya secara otomatis.
     protected $fillable = [
         'user_id',
         'kerusakan_id',

@@ -240,5 +240,3 @@ class DiagnosaTest extends TestCase
         $this->assertEmpty($hasil);
     }
 }
-
-

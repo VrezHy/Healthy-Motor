@@ -147,4 +147,53 @@ class SolusiTest extends TestCase
             'nama_solusi' => 'Periksa radiator',
         ]);
     }
+
+    #[Test]
+    public function admin_tidak_bisa_menambahkan_solusi_jika_data_kosong()
+    {
+        $this->actingAs($this->admin);
+
+        $response = $this->post(route('admin.solusi.store'), []);
+
+        $response->assertSessionHasErrors([
+            'kerusakan_id',
+            'nama_solusi',
+        ]);
+
+        $this->assertDatabaseCount((new Solusi)->getTable(), 0);
+    }
+
+    #[Test]
+    public function admin_tidak_bisa_menambahkan_solusi_dengan_kerusakan_tidak_valid()
+    {
+        $this->actingAs($this->admin);
+
+        $response = $this->post(route('admin.solusi.store'), [
+            'kerusakan_id' => 9999,
+            'nama_solusi' => 'Test',
+            'deskripsi' => 'Test',
+        ]);
+
+        $response->assertSessionHasErrors('kerusakan_id');
+    }
+
+    #[Test]
+    public function admin_tidak_bisa_mengubah_solusi_jika_nama_kosong()
+    {
+        $this->actingAs($this->admin);
+
+        $solusi = Solusi::create([
+            'kerusakan_id' => $this->kerusakanOverheat->id,
+            'nama_solusi' => 'Lama',
+            'deskripsi' => 'Lama',
+        ]);
+
+        $response = $this->put(route('admin.solusi.update', $solusi->id), [
+            'kerusakan_id' => $this->kerusakanOverheat->id,
+            'nama_solusi' => '',
+            'deskripsi' => 'Baru',
+        ]);
+
+        $response->assertSessionHasErrors('nama_solusi');
+    }
 }

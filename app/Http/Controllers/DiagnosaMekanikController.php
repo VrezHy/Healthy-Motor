@@ -213,7 +213,32 @@ class DiagnosaMekanikController extends Controller
         $riwayatDiagnosa->delete();
 
         return redirect()->route('mekanik.riwayat')
-            ->with('success', 'Log riwayat berhasil dibatalkan.');
+            ->with('success', 'Log riwayat berhasil dipindahkan ke tempat sampah.'); // Ubah pesan agar sesuai
+    }
+
+    public function sampahRiwayat()
+    {
+        $riwayatsSampah = RiwayatDiagnosa::onlyTrashed()->with('user')->latest()->get();
+
+        return view('mekanik.riwayat_sampah', compact('riwayatsSampah'));
+    }
+
+    public function restoreRiwayat($id)
+    {
+        $riwayat = RiwayatDiagnosa::onlyTrashed()->findOrFail($id);
+        $riwayat->restore();
+
+        return redirect()->route('mekanik.riwayat.sampah')
+            ->with('success', 'Log riwayat berhasil dikembalikan.');
+    }
+
+    public function permanenHapusRiwayat($id)
+    {
+        $riwayat = RiwayatDiagnosa::onlyTrashed()->findOrFail($id);
+        $riwayat->forceDelete();
+
+        return redirect()->route('mekanik.riwayat.sampah')
+            ->with('success', 'Log riwayat berhasil dihapus permanen.');
     }
 
     public function updateStatus(Request $request, RiwayatDiagnosa $riwayatDiagnosa)

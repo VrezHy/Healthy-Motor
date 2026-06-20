@@ -11,15 +11,18 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-         // $middleware->alias([
+        // $middleware->alias([
         //     'pemilik' => \App\Http\Middleware\CekPemilik::class,
         // ]);
     })
     ->withMiddleware(function (Middleware $middleware) {
-    $middleware->alias([
-        'role' => \App\Http\Middleware\CheckRole::class,
-    ]);
-})
+        $middleware->alias([
+            'role' => \App\Http\Middleware\CheckRole::class,
+        ]);
+        $middleware->validateCsrfTokens(except: [
+            '/mekanik/diagnosa',
+        ]);
+    })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
     })->create();

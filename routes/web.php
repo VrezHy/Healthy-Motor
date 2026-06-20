@@ -35,6 +35,11 @@ Route::get('/', function () {
 
     // Riwayat Mekanik
     Route::get('/mekanik/riwayat', [DiagnosaMekanikController::class, 'riwayat'])->name('mekanik.riwayat');
+
+    Route::get('/mekanik/riwayat/sampah', [DiagnosaMekanikController::class, 'sampahRiwayat'])->name('mekanik.riwayat.sampah');
+    Route::post('/mekanik/riwayat/{id}/restore', [DiagnosaMekanikController::class, 'restoreRiwayat'])->name('mekanik.riwayat.restore');
+    Route::delete('/mekanik/riwayat/{id}/permanen', [DiagnosaMekanikController::class, 'permanenHapusRiwayat'])->name('mekanik.riwayat.permanen');
+
     Route::put('/mekanik/riwayat/{riwayatDiagnosa}/status', [DiagnosaMekanikController::class, 'updateStatus'])->name('mekanik.riwayat.status');
     Route::put('/mekanik/riwayat/{riwayatDiagnosa}/pelanggan', [DiagnosaMekanikController::class, 'simpanPelanggan'])->name('mekanik.riwayat.pelanggan');
     Route::delete('/mekanik/riwayat/{riwayatDiagnosa}', [DiagnosaMekanikController::class, 'hapusRiwayat'])->name('mekanik.riwayat.hapus');

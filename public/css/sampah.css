@@ -1,0 +1,98 @@
+.action-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-restore {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.btn-restore:hover {
+    background-color: #45a049;
+}
+
+.btn-permanen {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.btn-permanen:hover {
+    background-color: #da190b;
+}
+
+.btn-back-utama {
+    background-color: #2196F3;
+    color: white;
+    padding: 6px 12px;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+/* --- CSS Tambahan untuk Custom Modal --- */
+.custom-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.custom-modal-box {
+    background: #e0e0e0;
+    /* Warna abu-abu terang sesuai referensi */
+    padding: 40px;
+    border-radius: 12px;
+    text-align: center;
+    width: 400px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.custom-modal-box h2 {
+    margin-top: 0;
+    margin-bottom: 30px;
+    font-size: 1.2rem;
+    color: #000;
+}
+
+.custom-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+}
+
+.custom-btn {
+    padding: 8px 24px;
+    border: none;
+    border-radius: 20px;
+    /* Bentuk pill sesuai referensi */
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+    background-color: #aeb9cc;
+    /* Warna tombol sesuai referensi */
+    color: #000;
+    transition: opacity 0.2s;
+}
+
+.custom-btn:hover {
+    opacity: 0.8;
+}
