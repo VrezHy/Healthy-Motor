@@ -20,7 +20,7 @@
   <div class="mb-3 flex-shrink-0">
     <x-shared.button id="btnAddOpen" title="Tambah Data Solusi" variant="primary">+</x-shared.button>
   </div>
-  
+
   <div class="rounded-2xl overflow-hidden shadow-sm flex-1 min-h-0 flex flex-col bg-white">
     <div class="table-header px-5 py-3 flex-shrink-0">
       <span class="font-bold text-sm">Tabel Data Solusi</span>
@@ -50,11 +50,10 @@
               <span class="badge-kerusakan">{{ $item->kerusakan->nama_kerusakan ?? '-' }}</span>
             </td>
             <td class="px-5 py-3 text-right flex items-end shrink-0 justify-center flex-col gap-2">
-              <form action="{{ route('admin.solusi.destroy', $item->id) }}" method="POST"
-                class="inline-block" onsubmit="return confirm('Yakin ingin menghapus data ini?')">
+              <form action="{{ route('admin.solusi.destroy', $item->id) }}" method="POST" class="inline-block">
                 @csrf
                 @method('DELETE')
-                <button type="submit" class="btn-hapus">Hapus</button>
+                <button type="button" class="btn-hapus" onclick="bukaModalHapus(this)">Hapus</button>
               </form>
               <button type="button" class="btn-ubah"
                 data-id="{{ $item->id }}"
@@ -142,6 +141,16 @@
   </div>
 </div>
 
+<div class="custom-modal" id="hapusModal">
+  <div class="custom-modal-box">
+    <h2 style="font-size: 1.25rem; font-weight: bold; margin-bottom: 20px;">Hapus Data Solusi Ini?</h2>
+    <div class="custom-modal-actions">
+      <button type="button" class="custom-btn" onclick="tutupModalHapus()">batal</button>
+      <button type="button" class="custom-btn" id="confirmHapus">hapus</button>
+    </div>
+  </div>
+</div>
+
 @endsection
 
 @push('scripts')
@@ -177,5 +186,23 @@
   if (modalTambah.dataset.showModal === 'true') {
     openModal('modalTambah');
   }
+
+  let formHapus = null;
+
+  function bukaModalHapus(button) {
+    formHapus = button.closest('form');
+    document.getElementById('hapusModal').style.display = 'flex';
+  }
+
+  function tutupModalHapus() {
+    document.getElementById('hapusModal').style.display = 'none';
+    formHapus = null;
+  }
+
+  document.getElementById('confirmHapus').addEventListener('click', function() {
+    if (formHapus) {
+        formHapus.submit();
+    }
+  });
 </script>
 @endpush

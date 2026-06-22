@@ -7,7 +7,7 @@
 @section('content')
 
 <div class="flex-1 min-h-0 flex flex-col">
-  
+
   @if(session('success'))
   <div class="alert-success flex-shrink-0">
     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -46,12 +46,10 @@
             <td class="px-5 py-3 font-semibold text-gray-700">{{ $loop->iteration }}</td>
             <td class="px-5 py-3 text-gray-700">{{ $item->nama_kerusakan }}</td>
             <td class="px-5 py-3 text-right flex items-end justify-center flex-col gap-2">
-              <form action="{{ route('admin.kerusakan.destroy', $item->id) }}" method="POST"
-                class="inline-block"
-                onsubmit="return confirm('Yakin ingin menghapus data ini?')">
+              <form action="{{ route('admin.kerusakan.destroy', $item->id) }}" method="POST" class="inline-block">
                 @csrf
                 @method('DELETE')
-                <button type="submit" class="btn-hapus">Hapus</button>
+                <button type="button" class="btn-hapus" onclick="bukaModalHapus(this)">Hapus</button>
               </form>
               <button type="button" class="btn-ubah"
                 data-id="{{ $item->id }}"
@@ -70,7 +68,6 @@
 </div>
 
 
-{{-- ===== MODAL TAMBAH ===== --}}
 <div class="modal-overlay" id="modalTambah" data-show-modal="{{ $errors->has('nama_kerusakan') && !session('edit_id') ? 'true' : 'false' }}">
   <div class="modal-box">
     <button class="btn-close-modal" onclick="closeModal('modalTambah')">✕</button>
@@ -104,7 +101,6 @@
 </div>
 
 
-{{-- ===== MODAL UBAH ===== --}}
 <div class="modal-overlay" id="modalUbah" data-show-modal="{{ $errors->has('nama_kerusakan') && session('edit_id') ? 'true' : 'false' }}"
   data-edit-id="{{ session('edit_id') }}"
   data-edit-nama="{{ old('nama_kerusakan') }}">
@@ -137,6 +133,16 @@
         <button type="submit" class="btn-save">save</button>
       </div>
     </form>
+  </div>
+</div>
+
+<div class="custom-modal" id="hapusModal">
+  <div class="custom-modal-box">
+    <h2 style="font-size: 1.25rem; font-weight: bold; margin-bottom: 20px;">Hapus Data Kerusakan Ini?</h2>
+    <div class="custom-modal-actions">
+      <button type="button" class="custom-btn" onclick="tutupModalHapus()">batal</button>
+      <button type="button" class="custom-btn" id="confirmHapus">hapus</button>
+    </div>
   </div>
 </div>
 
@@ -204,5 +210,23 @@
     const editNama = modalUbah.dataset.editNama;
     openEditModal(editId, editNama);
   }
+
+  let formHapus = null;
+
+  function bukaModalHapus(button) {
+    formHapus = button.closest('form');
+    document.getElementById('hapusModal').style.display = 'flex';
+  }
+
+  function tutupModalHapus() {
+    document.getElementById('hapusModal').style.display = 'none';
+    formHapus = null;
+  }
+
+  document.getElementById('confirmHapus').addEventListener('click', function() {
+    if (formHapus) {
+      formHapus.submit();
+    }
+  });
 </script>
 @endpush

@@ -33,9 +33,10 @@ class KerusakanController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nama_kerusakan' => 'required|string|max:255',
+            'nama_kerusakan' => 'required|string|max:255|unique:kerusakans,nama_kerusakan',
         ], [
             'nama_kerusakan.required' => 'Field Not Must Be Empty!',
+            'nama_kerusakan.unique'   => 'Data Kerusakan sudah ada!',
         ]);
 
         Kerusakan::create([
@@ -47,11 +48,13 @@ class KerusakanController extends Controller
     }
 
     public function update(Request $request, Kerusakan $kerusakan)
-    {
+{
+    try {
         $request->validate([
-            'nama_kerusakan' => 'required|string|max:255',
+            'nama_kerusakan' => 'required|string|max:255|unique:kerusakans,nama_kerusakan,' . $kerusakan->id,
         ], [
             'nama_kerusakan.required' => 'Field Not Must Be Empty!',
+            'nama_kerusakan.unique'   => 'Data Kerusakan sudah ada!',
         ]);
 
         $kerusakan->update([
@@ -60,7 +63,14 @@ class KerusakanController extends Controller
 
         return redirect()->route('admin.kerusakan')
             ->with('success', 'Data kerusakan berhasil diubah.');
+            
+    } catch (\Illuminate\Validation\ValidationException $e) {
+        return redirect()->back()
+            ->withErrors($e->errors())
+            ->withInput()
+            ->with('edit_id', $kerusakan->id);
     }
+}
 
     public function destroy(Kerusakan $kerusakan)
     {

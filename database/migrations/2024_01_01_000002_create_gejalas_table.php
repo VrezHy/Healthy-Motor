@@ -14,6 +14,7 @@ return new class extends Migration
             $table->string('nama_gejala');
             $table->foreignId('kerusakan_id')->constrained('kerusakans')->onDelete('cascade');
             $table->timestamps();
+            $table->unique(['nama_gejala', 'kerusakan_id'], 'gejala_kerusakan_unique');
         });
     }
 

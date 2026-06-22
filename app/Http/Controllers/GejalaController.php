@@ -45,6 +45,22 @@ class GejalaController extends Controller
             'kerusakan_id.required' => 'Pilih kerusakan terlebih dahulu!',
         ]);
 
+        $exists = Gejala::where('nama_gejala', $request->nama_gejala)
+            ->where('kerusakan_id', $request->kerusakan_id)
+            ->exists();
+
+        if ($exists) {
+            return back()->withErrors(['nama_gejala' => 'Gejala ini sudah terdaftar untuk kerusakan tersebut!']);
+        }
+        $lastGejala = Gejala::orderBy('kode_gejala', 'desc')->first();
+        if ($lastGejala) {
+            $lastNum = (int) filter_var($lastGejala->kode_gejala, FILTER_SANITIZE_NUMBER_INT);
+            $inputNum = (int) filter_var($request->kode_gejala, FILTER_SANITIZE_NUMBER_INT);
+
+            if ($inputNum > ($lastNum + 1)) {
+                return back()->withErrors(['kode_gejala' => 'Kode tidak boleh loncat! Harus lanjut ke: G' . str_pad($lastNum + 1, 3, '0', STR_PAD_LEFT)]);
+            }
+        }
         Gejala::create($request->only('kode_gejala', 'nama_gejala', 'kerusakan_id'));
 
         return redirect()->route('admin.gejala')
