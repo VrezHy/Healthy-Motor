@@ -41,7 +41,7 @@ class KerusakanController extends Controller
         $request->validate([
             'nama_kerusakan' => 'required|string|max:255|unique:kerusakans,nama_kerusakan',
         ], [
-            'nama_kerusakan.required' => 'Field Not Must Be Empty!',
+            'nama_kerusakan.required' => 'Nama Kerusakan Tidak Boleh Kosong!',
             'nama_kerusakan.unique'   => 'Data Kerusakan sudah ada!',
         ]);
 
