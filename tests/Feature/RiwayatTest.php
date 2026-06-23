@@ -7,7 +7,7 @@ use App\Models\User;
 use App\Models\Kerusakan;
 use App\Models\RiwayatDiagnosa;
 
-class LogRiwayatTest extends TestCase
+class RiwayatTest extends TestCase
 {
 
     private function createRiwayat()
