@@ -17,11 +17,11 @@
   </div>
   @endif
 
- <div class="mb-3 flex-shrink-0 flex items-center justify-between">
+  <div class="mb-3 flex-shrink-0 flex items-center justify-between">
     <x-shared.button id="btnAddOpen" title="Tambah Data Solusi" variant="primary">+</x-shared.button>
-     <div>
+    <div>
       <x-shared.search />
-     </div>
+    </div>
   </div>
 
   <div class="rounded-2xl overflow-hidden shadow-sm flex-1 min-h-0 flex flex-col bg-white">
@@ -31,7 +31,19 @@
 
     <div class="overflow-x-auto overflow-y-auto flex-1 min-h-0">
       @if($solusies->isEmpty())
-      <x-shared.empty-state-plus namaHalaman="solusi" />
+      <div class="flex flex-col items-center justify-center h-full w-full py-10">
+        @if(request()->has('search') && !empty(request('search')))
+        <div class="text-center">
+          <p class="text-lg text-slate-800 font-semibold">Data tidak ditemukan</p>
+          <p class="text-sm text-gray-500 mt-2">
+            Tidak ada hasil untuk "{{ request('search') }}"
+          </p>
+        </div>
+        @else
+        <x-shared.empty-state-plus namaHalaman="solusi" />
+        @endif
+
+      </div>
       @else
       <table class="w-full text-sm border-collapse">
         <thead class="sticky top-0 bg-[#f0f1fa] z-10 shadow-[inset_0_-1px_0_rgba(0,0,0,0.05)]">
@@ -204,7 +216,7 @@
 
   document.getElementById('confirmHapus').addEventListener('click', function() {
     if (formHapus) {
-        formHapus.submit();
+      formHapus.submit();
     }
   });
 </script>
