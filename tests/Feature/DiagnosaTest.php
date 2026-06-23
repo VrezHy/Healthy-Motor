@@ -23,8 +23,6 @@ class DiagnosaTest extends TestCase
     {
         parent::setUp();
 
-
-
         $this->superAdmin = User::create([
             'name' => 'Super Admin',
             'username' => 'pemilik bengkel',
@@ -137,8 +135,6 @@ class DiagnosaTest extends TestCase
         ]);
     }
 
-
-
     #[Test]
     public function semua_gejala_overheat_dipilih()
     {
@@ -224,7 +220,10 @@ class DiagnosaTest extends TestCase
 
         $hasil = $response->viewData('hasil');
 
-        $this->assertTrue(true);
+
+        $this->assertNotEmpty($hasil);
+        $this->assertEquals('Mesin Overheat', $hasil[0]->kerusakan->nama_kerusakan);
+        $this->assertEquals(33, $hasil[0]->persentase);
     }
 
     #[Test]

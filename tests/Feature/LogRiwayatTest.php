@@ -6,35 +6,41 @@ use Tests\TestCase;
 use App\Models\User;
 use App\Models\Kerusakan;
 use App\Models\RiwayatDiagnosa;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Hash;
+use PHPUnit\Framework\Attributes\Test;
 
 class LogRiwayatTest extends TestCase
 {
-    private function createRiwayat()
+    use RefreshDatabase;
+
+    private $user;
+    private $kerusakan;
+
+    protected function setUp(): void
     {
-        $user = User::first();
+        parent::setUp();
 
-        if (!$user) {
-            $user = User::create([
-                'name' => 'Mekanik1',
-                'username' => 'Mekanik1.mekanik',
-                'password' => bcrypt('Mekanik123.'),
-                'role' => 'mekanik',
-            ]);
-        }
 
-        $kerusakan = Kerusakan::create([
-            'nama_kerusakan' => 'Aki Lemah'
+        $this->user = User::create([
+            'name' => 'Mekanik1',
+            'username' => 'Mekanik1.mekanik',
+            'password' => Hash::make('Mekanik123.'),
+            'role' => 'mekanik',
         ]);
 
-        $this->assertNotNull(
-            $kerusakan,
-            'Data kerusakan tidak ditemukan. Jalankan seeder terlebih dahulu.'
-        );
 
+        $this->kerusakan = Kerusakan::create([
+            'nama_kerusakan' => 'Aki Lemah'
+        ]);
+    }
+
+    private function createRiwayat()
+    {
         return RiwayatDiagnosa::create([
-            'user_id' => $user->id,
-            'kerusakan_id' => $kerusakan->id,
-            'nama_kerusakan' => $kerusakan->nama_kerusakan,
+            'user_id' => $this->user->id,
+            'kerusakan_id' => $this->kerusakan->id,
+            'nama_kerusakan' => $this->kerusakan->nama_kerusakan,
             'persentase' => 80,
             'jumlah_gejala_cocok' => 4,
             'total_gejala' => 5,
@@ -44,27 +50,24 @@ class LogRiwayatTest extends TestCase
         ]);
     }
 
+    #[Test]
     public function test_halaman_riwayat_dapat_diakses()
     {
-        $user = User::first();
-
         $response = $this
-            ->actingAs($user)
+            ->actingAs($this->user)
             ->get(route('mekanik.riwayat'));
 
         $response->assertStatus(200);
-
         $response->assertViewIs('mekanik.riwayat');
     }
 
+    #[Test]
     public function test_status_berhasil_diubah()
     {
-        $user = User::first();
-
         $riwayat = $this->createRiwayat();
 
         $response = $this
-            ->actingAs($user)
+            ->actingAs($this->user)
             ->put(
                 route('mekanik.riwayat.status', $riwayat->id),
                 [
@@ -72,27 +75,22 @@ class LogRiwayatTest extends TestCase
                 ]
             );
 
-        $response->assertRedirect(
-            route('mekanik.riwayat')
-        );
+        $response->assertRedirect(route('mekanik.riwayat'));
+        $response->assertStatus(302);
 
-        $this->assertDatabaseHas(
-            'riwayat_diagnosas',
-            [
-                'id' => $riwayat->id,
-                'status' => 'Done'
-            ]
-        );
+        $this->assertDatabaseHas('riwayat_diagnosas', [
+            'id' => $riwayat->id,
+            'status' => 'Done'
+        ]);
     }
 
+    #[Test]
     public function test_data_pelanggan_berhasil_disimpan()
     {
-        $user = User::first();
-
         $riwayat = $this->createRiwayat();
 
         $response = $this
-            ->actingAs($user)
+            ->actingAs($this->user)
             ->put(
                 route('mekanik.riwayat.pelanggan', $riwayat->id),
                 [
@@ -103,45 +101,32 @@ class LogRiwayatTest extends TestCase
                 ]
             );
 
-        $response->assertRedirect(
-            route('mekanik.riwayat')
-        );
+        $response->assertRedirect(route('mekanik.riwayat'));
+        $response->assertStatus(302);
 
-        $this->assertDatabaseHas(
-            'riwayat_diagnosas',
-            [
-                'id' => $riwayat->id,
-                'nama_pelanggan' => 'Ariana',
-                'alamat_pelanggan' => 'Surabaya',
-                'nomor_polisi' => 'L 1234 AB',
-                'nomor_telepon' => '081234567890',
-            ]
-        );
+        $this->assertDatabaseHas('riwayat_diagnosas', [
+            'id' => $riwayat->id,
+            'nama_pelanggan' => 'Ariana',
+            'alamat_pelanggan' => 'Surabaya',
+            'nomor_polisi' => 'L 1234 AB',
+            'nomor_telepon' => '081234567890',
+        ]);
     }
 
+    #[Test]
     public function test_riwayat_berhasil_dihapus()
     {
-        $user = User::first();
-
         $riwayat = $this->createRiwayat();
-
         $id = $riwayat->id;
 
         $response = $this
-            ->actingAs($user)
-            ->delete(
-                route('mekanik.riwayat.hapus', $id)
-            );
+            ->actingAs($this->user)
+            ->delete(route('mekanik.riwayat.hapus', $id));
 
-        $response->assertRedirect(
-            route('mekanik.riwayat')
-        );
-
-        $this->assertDatabaseMissing(
-            'riwayat_diagnosas',
-            [
-                'id' => $id
-            ]
-        );
+        $response->assertRedirect(route('mekanik.riwayat'));
+        $response->assertStatus(302);
+        $this->assertDatabaseMissing('riwayat_diagnosas', [
+            'id' => $id
+        ]);
     }
 }
