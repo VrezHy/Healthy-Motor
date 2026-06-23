@@ -185,8 +185,8 @@
         <div class="custom-modal-box">
             <h2>Kembalikan Data Riwayat Ini?</h2>
             <div class="custom-modal-actions">
-                <button type="button" class="custom-btn" onclick="tutupModalRestore()">batal</button>
-                <button type="button" class="custom-btn" id="confirmRestore">kembalikan</button>
+                <button type="button" class="custom-btn" onclick="tutupModalRestore()">Batal</button>
+                <button type="button" class="custom-btn" id="confirmRestore" style="background-color: green;color: white;">Ya!</button>
             </div>
         </div>
     </div>
@@ -196,7 +196,7 @@
             <h2>Hapus Permanen Riwayat Ini?</h2>
             <div class="custom-modal-actions">
                 <button type="button" class="custom-btn" onclick="tutupModalPermanen()">batal</button>
-                <button type="button" class="custom-btn" id="confirmPermanen">hapus</button>
+                <button type="button" class="custom-btn" id="confirmPermanen" style="background-color: #dc2626;color: white;">hapus</button>
             </div>
         </div>
     </div>

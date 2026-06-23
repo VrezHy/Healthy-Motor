@@ -11,25 +11,21 @@ use Illuminate\Support\Facades\Schema;
 
 class SolusiController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $solusies       = Solusi::with('kerusakan')->orderBy('id')->get();
-        $kerusakans     = Kerusakan::orderBy('id')->get(); // untuk dropdown
+        $query = Solusi::with('kerusakan');
+        if ($request->has('search') && !empty($request->search)) {
+            $query->where('nama_solusi', 'LIKE', '%' . $request->search . '%');
+        }
+
+        $solusies       = $query->orderBy('id')->get();
+        $kerusakans     = Kerusakan::orderBy('id')->get();
         $totalKerusakan = Kerusakan::count();
         $totalGejala    = Gejala::count();
         $totalSolusi    = Solusi::count();
-        $totalMotor = Schema::hasTable('riwayat_diagnosas')
-            ? RiwayatDiagnosa::count()
-            : 0;
+        $totalMotor     = Schema::hasTable('riwayat_diagnosas') ? RiwayatDiagnosa::count() : 0;
 
-        return view('admin.solusi', compact(
-            'solusies',
-            'kerusakans',
-            'totalMotor',
-            'totalKerusakan',
-            'totalGejala',
-            'totalSolusi'
-        ));
+        return view('admin.solusi', compact('solusies', 'kerusakans', 'totalMotor', 'totalKerusakan', 'totalGejala', 'totalSolusi'));
     }
 
     public function store(Request $request)

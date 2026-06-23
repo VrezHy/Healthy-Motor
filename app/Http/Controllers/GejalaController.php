@@ -11,25 +11,21 @@ use Illuminate\Support\Facades\Schema;
 
 class GejalaController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $gejalas        = Gejala::with('kerusakan')->orderBy('kode_gejala')->get();
-        $kerusakans     = Kerusakan::orderBy('id')->get(); // untuk dropdown
+        $query = Gejala::with('kerusakan');
+        if ($request->has('search') && !empty($request->search)) {
+            $query->where('nama_gejala', 'LIKE', '%' . $request->search . '%');
+        }
+
+        $gejalas        = $query->orderBy('kode_gejala')->get();
+        $kerusakans     = Kerusakan::orderBy('id')->get();
         $totalKerusakan = Kerusakan::count();
         $totalGejala    = Gejala::count();
         $totalSolusi    = Solusi::count();
-        $totalMotor = Schema::hasTable('riwayat_diagnosas')
-            ? RiwayatDiagnosa::count()
-            : 0;
+        $totalMotor     = Schema::hasTable('riwayat_diagnosas') ? RiwayatDiagnosa::count() : 0;
 
-        return view('admin.gejala', compact(
-            'gejalas',
-            'kerusakans',
-            'totalMotor',
-            'totalKerusakan',
-            'totalGejala',
-            'totalSolusi'
-        ));
+        return view('admin.gejala', compact('gejalas', 'kerusakans', 'totalMotor', 'totalKerusakan', 'totalGejala', 'totalSolusi'));
     }
 
     public function store(Request $request)

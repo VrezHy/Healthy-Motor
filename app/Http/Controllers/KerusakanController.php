@@ -11,15 +11,21 @@ use Illuminate\Support\Facades\Schema;
 
 class KerusakanController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $kerusakans     = Kerusakan::orderBy('id')->get();
+        $query = Kerusakan::query();
+        if ($request->has('search') && !empty($request->search)) {
+            $query->where('nama_kerusakan', 'LIKE', '%' . $request->search . '%');
+        }
+
+        $kerusakans = $query->orderBy('id')->get();
+
         $totalKerusakan = Kerusakan::count();
         $totalGejala    = Gejala::count();
         $totalSolusi    = Solusi::count();
-        $totalMotor = Schema::hasTable('riwayat_diagnosas')
+        $totalMotor     = Schema::hasTable('riwayat_diagnosas')
             ? RiwayatDiagnosa::count()
-            : 0; // ganti nanti setelah model Motor dibuat
+            : 0;
 
         return view('admin.kerusakan', compact(
             'kerusakans',
@@ -48,29 +54,28 @@ class KerusakanController extends Controller
     }
 
     public function update(Request $request, Kerusakan $kerusakan)
-{
-    try {
-        $request->validate([
-            'nama_kerusakan' => 'required|string|max:255|unique:kerusakans,nama_kerusakan,' . $kerusakan->id,
-        ], [
-            'nama_kerusakan.required' => 'Field Not Must Be Empty!',
-            'nama_kerusakan.unique'   => 'Data Kerusakan sudah ada!',
-        ]);
+    {
+        try {
+            $request->validate([
+                'nama_kerusakan' => 'required|string|max:255|unique:kerusakans,nama_kerusakan,' . $kerusakan->id,
+            ], [
+                'nama_kerusakan.required' => 'Field Not Must Be Empty!',
+                'nama_kerusakan.unique'   => 'Data Kerusakan sudah ada!',
+            ]);
 
-        $kerusakan->update([
-            'nama_kerusakan' => $request->nama_kerusakan,
-        ]);
+            $kerusakan->update([
+                'nama_kerusakan' => $request->nama_kerusakan,
+            ]);
 
-        return redirect()->route('admin.kerusakan')
-            ->with('success', 'Data kerusakan berhasil diubah.');
-            
-    } catch (\Illuminate\Validation\ValidationException $e) {
-        return redirect()->back()
-            ->withErrors($e->errors())
-            ->withInput()
-            ->with('edit_id', $kerusakan->id);
+            return redirect()->route('admin.kerusakan')
+                ->with('success', 'Data kerusakan berhasil diubah.');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return redirect()->back()
+                ->withErrors($e->errors())
+                ->withInput()
+                ->with('edit_id', $kerusakan->id);
+        }
     }
-}
 
     public function destroy(Kerusakan $kerusakan)
     {
