@@ -36,10 +36,10 @@
                 <div class="error-message" data-error="password" style="color: red; font-size: 12px; display: none;"></div>
                 <div id="password-strength"></div>
                 <ul id="password-checklist" style="font-size: 12px; padding-left: 16px; margin: 4px 0;">
-                    <li id="check-length" style="color: red;">✗ Minimal 8 karakter</li>
-                    <li id="check-upper" style="color: red;">✗ Mengandung huruf kapital</li>
-                    <li id="check-number" style="color: red;">✗ Mengandung angka</li>
-                    <li id="check-special" style="color: red;">✗ Mengandung karakter spesial (~`!@#$%^&*-+=|\:;"</>?,.)
+                    <li id="check-length" style="color: #9e0e0e;">✗ Minimal 8 karakter</li>
+                    <li id="check-upper" style="color: #9e0e0e;">✗ Mengandung huruf kapital</li>
+                    <li id="check-number" style="color: #9e0e0e;">✗ Mengandung angka</li>
+                    <li id="check-special" style="color: #9e0e0e;">✗ Mengandung karakter spesial (~`!@#$%^&*-+=|\:;"</>?,.)
                     </li>
                 </ul>
 
@@ -203,10 +203,10 @@ function checkBlockedPassword() {
     return true;
 }
 
-        document.getElementById('check-length').style.color = hasLength ? 'green' : 'red';
-        document.getElementById('check-upper').style.color = hasUpper ? 'green' : 'red';
-        document.getElementById('check-number').style.color = hasNumber ? 'green' : 'red';
-        document.getElementById('check-special').style.color = hasSpecial ? 'green' : 'red';
+        document.getElementById('check-length').style.color = hasLength ? '#045404' : '#9e0e0e';
+        document.getElementById('check-upper').style.color = hasUpper ? '#045404' : '#9e0e0e';
+        document.getElementById('check-number').style.color = hasNumber ? '#045404' : '#9e0e0e';
+        document.getElementById('check-special').style.color = hasSpecial ? '#045404' : '#9e0e0e';
 
         document.getElementById('check-length').textContent = (hasLength ? '✓' : '✗') + ' Minimal 8 karakter';
         document.getElementById('check-upper').textContent = (hasUpper ? '✓' : '✗') + ' Mengandung huruf kapital';
@@ -222,13 +222,13 @@ function checkBlockedPassword() {
                 strengthEl.textContent = '';
             } else if (score <= 1) {
                 strengthEl.textContent = 'Kekuatan password: Lemah';
-                strengthEl.style.color = 'red';
+                strengthEl.style.color = '#9e0e0e';
             } else if (score === 2 || score === 3) {
                 strengthEl.textContent = 'Kekuatan password: Sedang';
-                strengthEl.style.color = 'orange';
+                strengthEl.style.color = '#a97617';
             } else {
                 strengthEl.textContent = 'Kekuatan password: Kuat';
-                strengthEl.style.color = 'green';
+                strengthEl.style.color = '#045404';
             }
         }
 

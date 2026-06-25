@@ -1,18 +1,25 @@
 /* styles css untuk Gejala dan Solusi Admin */
 
 .table-header { background: #7c84d0; color: white; }
+
 .btn-hapus {
-  background: #e53e3e; color: white; padding: 6px 16px;
-  border-radius: 999px; font-size: 12px; font-weight: 700;
-  border: none; cursor: pointer; transition: background 0.2s;
-}
-.btn-hapus:hover { background: #c53030; }
-.btn-ubah {
   background: #5a63a8; color: white; padding: 6px 16px;
   border-radius: 999px; font-size: 12px; font-weight: 700;
   border: none; cursor: pointer; transition: background 0.2s;
 }
-.btn-ubah:hover { background: #4a5298; }
+.btn-hapus:hover {
+  background: #434982;
+}
+
+.btn-ubah {
+  background: white; color: #5a63a8; padding: 6px 16px;
+  border-radius: 999px; font-size: 12px; font-weight: 700;
+  border: 2px solid #5a63a8; cursor: pointer; transition: background 0.2s;
+}
+.btn-ubah:hover {
+  background: #f4f5fa;
+}
+
 .btn-add {
   background: #7c84d0; color: white; width: 36px; height: 36px;
   border-radius: 10px; font-size: 22px; font-weight: 700; border: none;
@@ -20,6 +27,7 @@
   transition: background 0.2s, transform 0.15s;
 }
 .btn-add:hover { background: #5a63a8; transform: scale(1.08); }
+
 .modal-overlay {
   position: fixed; inset: 0; background: rgba(74,82,152,0.45);
   backdrop-filter: blur(2px); display: flex; align-items: center;

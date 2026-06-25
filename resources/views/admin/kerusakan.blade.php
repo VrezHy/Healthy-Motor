@@ -18,7 +18,7 @@
   @endif
 
   <div class="mb-3 flex-shrink-0 flex items-center justify-between">
-    <x-shared.button id="btnAddOpen" title="Tambah Data Solusi" variant="primary">+</x-shared.button>
+    <x-shared.button id="btnAddOpen" title="Tambah Data Kerusakan" variant="primary">Tambah Data Kerusakan +</x-shared.button>
     <div>
       <x-shared.search />
     </div>
@@ -155,7 +155,7 @@
     <h2 style="font-size: 1.25rem; font-weight: bold; margin-bottom: 20px;">Hapus Data Kerusakan Ini?</h2>
     <div class="custom-modal-actions">
       <button type="button" class="custom-btn" onclick="tutupModalHapus()">batal</button>
-      <button type="button" class="custom-btn" id="confirmHapus" style="background-color: #dc2626;color: white;">hapus</button>
+      <button type="button" class="custom-btn" id="confirmHapus" style="background-color: #5a63a8;color: white;">hapus</button>
     </div>
   </div>
 </div>

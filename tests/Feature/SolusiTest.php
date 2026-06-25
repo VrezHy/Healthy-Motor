@@ -25,7 +25,7 @@ class SolusiTest extends TestCase
 
         $this->admin = User::create([
             'name' => 'Admin',
-            'username' => 'admin1',
+            'username' => 'admin.admin',
             'password' => Hash::make('A123456.'),
             'role' => 'admin',
         ]);
