@@ -106,7 +106,7 @@ class RegisterController extends Controller
             $role = Auth::user()-> role;
 
             return match ($role) {
-                'admin' => redirect() -> route('admin.dashboard'),
+                'admin' => redirect()->route('admin.motor'),
                 'mekanik' => redirect()-> route('mekanik.dashboard'),
                 default => redirect() -> route ('login.login')->with('success', 'Registrasi berhasil! Silahkan login'),
             };

@@ -51,8 +51,10 @@ Route::get('/', function () {
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
 
-    // Dashboard Admin (opsional)
-    Route::get('/admin/dashboard_admin', [AdminController::class, 'index'])->name('admin.dashboard');
+    // Dashboard Admin (opsional) - Redirected to Data Motor
+    Route::get('/admin/dashboard_admin', function() {
+        return redirect()->route('admin.motor');
+    })->name('admin.dashboard');
 
     // Data Motor
     Route::get('/admin/data-motor', [MotorController::class, 'index'])->name('admin.motor');

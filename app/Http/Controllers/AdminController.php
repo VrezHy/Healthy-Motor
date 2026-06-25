@@ -3,15 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Models\RiwayatDiagnosa;
+use App\Models\Kerusakan;
+use App\Models\Gejala;
+use App\Models\Solusi;
+use Illuminate\Support\Facades\Schema;
 
 class AdminController extends Controller
 {
    public function index()
-{
-    $dataMotor = RiwayatDiagnosa::where('status', 'Done')->get();
+   {
+       $dataMotor = RiwayatDiagnosa::where('status', 'Done')->get();
+       $totalKerusakan = Kerusakan::count();
+       $totalGejala    = Gejala::count();
+       $totalSolusi    = Solusi::count();
+       $totalMotor     = Schema::hasTable('riwayat_diagnosas') ? RiwayatDiagnosa::count() : 0;
 
-    return view('admin.dashboard_admin', compact('dataMotor'));
-}
+       return view('admin.dashboard_admin', compact('dataMotor', 'totalMotor', 'totalKerusakan', 'totalGejala', 'totalSolusi'));
+   }
 
     public function motor()
     {
