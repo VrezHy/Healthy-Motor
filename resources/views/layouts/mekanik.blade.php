@@ -7,18 +7,18 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Dashboard Mekanik — Healthy Motor</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
     <style>
         * {
-            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
         }
 
         body {
-            background: #2d6a4f;
+            background: #f8fafc;
         }
 
         .sidebar {
-            background: linear-gradient(180deg, #40916c 0%, #2d6a4f 100%);
+            background: #7d88e6;
         }
 
         .nav-item {
@@ -37,12 +37,13 @@
 
         .nav-item.active {
             background: white;
-            color: #2d6a4f;
+            color: #453bcf;
             font-weight: 700;
         }
 
         .main-content {
-            background: #e8f5e9;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
             border-radius: 20px;
         }
 
@@ -51,11 +52,12 @@
             border-radius: 16px;
             padding: 20px 24px;
             border: 2px solid transparent;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
             transition: border-color 0.2s, transform 0.2s;
         }
 
         .stat-card:hover {
-            border-color: #52b788;
+            border-color: #453bcf;
             transform: translateY(-2px);
         }
 
@@ -93,7 +95,7 @@
 <body class="min-h-screen">
 
     {{-- Top bar --}}
-    <div class="w-full h-10" style="background: #1b4332;"></div>
+    <div class="w-full h-10" style="background: #7d88e6;"></div>
 
     <div class="flex min-h-screen" style="padding: 20px; gap: 20px;">
         {{-- Sidebar --}}
@@ -101,7 +103,7 @@
             {{-- Profile --}}
             <div class="text-center mb-8">
                 <div class="w-20 h-20 rounded-full bg-white mx-auto mb-3 shadow-md overflow-hidden flex items-center justify-center">
-                    <span class="text-2xl font-extrabold" style="color: #2d6a4f;">M</span>
+                    <span class="text-2xl font-extrabold" style="color: #453bcf;">M</span>
                 </div>
                 <p class="text-white font-bold text-base leading-tight">Mekanik</p>
                 <p class="text-white/60 text-xs mt-1">Dashboard Mekanik</p>
@@ -136,7 +138,7 @@
                 </div>
                 <div class="stat-card">
                     <p class="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1">Status Selesai</p>
-                    <p class="text-4xl font-extrabold" style="color: #2d6a4f;">
+                    <p class="text-4xl font-extrabold" style="color: #10b981;">
                         {{ isset($motors) ? $motors->where('status','selesai')->count() : 0 }}
                     </p>
                 </div>

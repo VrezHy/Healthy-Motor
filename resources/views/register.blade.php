@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
     <link rel ="stylesheet" href = "{{ asset('css/register.css') }}">
     <title>Register - Healthy Motor</title>
 </head>
@@ -32,14 +33,51 @@
 
 
                 <label>Password</label>
-                <input type="password" name="password" data-required>
+                <div class="password-wrapper">
+                    <input type="password" name="password" data-required>
+                    <span class="toggle-password" id="togglePassword">
+                        <!-- Eye icon (Open) -->
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="eye-open" viewBox="0 0 24 24">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                        <!-- Eye icon (Closed) -->
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="eye-closed" viewBox="0 0 24 24" style="display: none;">
+                            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                            <line x1="1" y1="1" x2="23" y2="23"></line>
+                        </svg>
+                    </span>
+                </div>
                 <div class="error-message" data-error="password" style="color: red; font-size: 12px; display: none;"></div>
-                <div id="password-strength"></div>
-                <ul id="password-checklist" style="font-size: 12px; padding-left: 16px; margin: 4px 0;">
-                    <li id="check-length" style="color: #9e0e0e;">✗ Minimal 8 karakter</li>
-                    <li id="check-upper" style="color: #9e0e0e;">✗ Mengandung huruf kapital</li>
-                    <li id="check-number" style="color: #9e0e0e;">✗ Mengandung angka</li>
-                    <li id="check-special" style="color: #9e0e0e;">✗ Mengandung karakter spesial (~`!@#$%^&*-+=|\:;"</>?,.)
+                
+                <!-- Password Strength Bar -->
+                <div class="strength-wrapper">
+                    <div class="strength-bar-container">
+                        <div class="strength-segment"></div>
+                        <div class="strength-segment"></div>
+                        <div class="strength-segment"></div>
+                        <div class="strength-segment"></div>
+                    </div>
+                    <div id="password-strength-label"></div>
+                </div>
+
+                <!-- Password Checklist Grid -->
+                <ul id="password-checklist" class="checklist-grid">
+                    <li id="check-length" class="checklist-item neutral">
+                        <span class="checklist-icon">○</span>
+                        <span class="checklist-text">Minimal 8 karakter</span>
+                    </li>
+                    <li id="check-upper" class="checklist-item neutral">
+                        <span class="checklist-icon">○</span>
+                        <span class="checklist-text">Huruf kapital (A-Z)</span>
+                    </li>
+                    <li id="check-number" class="checklist-item neutral">
+                        <span class="checklist-icon">○</span>
+                        <span class="checklist-text">Mengandung angka (0-9)</span>
+                    </li>
+                    <li id="check-special" class="checklist-item neutral">
+                        <span class="checklist-icon">○</span>
+                        <span class="checklist-text">Karakter spesial (~`!@#$%^&*-+=|\:;"?,.)</span>
                     </li>
                 </ul>
 
@@ -51,7 +89,7 @@
 
             </form>
 
-            <div class="login-text">
+            <div class="register-text">
                 Already Have Account?
                 <a href="{{ route('login.login') }}">Login here!</a>
             </div>
@@ -184,51 +222,80 @@ function isBlockedUsername(username) {
             const hasNumber = /[0-9]/.test(value);
             const hasSpecial = /[~`!@#$%^&*-+=|\:;"</>?,.]/.test(value);
 
+            const isEmpty = value.length === 0;
 
-function checkBlockedPassword() {
-    const username = document.querySelector('input[name="username"]').value;
-    const password = document.querySelector('input[name="password"]').value;
-    const errorDiv = document.querySelector('.error-message[data-error="password"]');
+            function updateChecklistItem(id, isValid) {
+                const el = document.getElementById(id);
+                if (!el) return;
+                
+                el.className = 'checklist-item';
+                const iconEl = el.querySelector('.checklist-icon');
+                
+                if (isEmpty) {
+                    el.classList.add('neutral');
+                    if (iconEl) iconEl.textContent = '○';
+                } else if (isValid) {
+                    el.classList.add('valid');
+                    if (iconEl) iconEl.textContent = '✓';
+                } else {
+                    el.classList.add('invalid');
+                    if (iconEl) iconEl.textContent = '✗';
+                }
+            }
 
-    if (isBlockedUsername(username) && password === 'DM5SPM') {
-        errorDiv.textContent = 'Kombinasi username dan password ini tidak diizinkan untuk registrasi.';
-        errorDiv.style.display = 'block';
-        return false;
-    } else if (password === 'DM5SPM') {
-        errorDiv.textContent = 'Password ini tidak diizinkan. Silakan gunakan password lain.';
-        errorDiv.style.display = 'block';
-        return false;
-    }
+            updateChecklistItem('check-length', hasLength);
+            updateChecklistItem('check-upper', hasUpper);
+            updateChecklistItem('check-number', hasNumber);
+            updateChecklistItem('check-special', hasSpecial);
 
-    return true;
-}
-
-        document.getElementById('check-length').style.color = hasLength ? '#045404' : '#9e0e0e';
-        document.getElementById('check-upper').style.color = hasUpper ? '#045404' : '#9e0e0e';
-        document.getElementById('check-number').style.color = hasNumber ? '#045404' : '#9e0e0e';
-        document.getElementById('check-special').style.color = hasSpecial ? '#045404' : '#9e0e0e';
-
-        document.getElementById('check-length').textContent = (hasLength ? '✓' : '✗') + ' Minimal 8 karakter';
-        document.getElementById('check-upper').textContent = (hasUpper ? '✓' : '✗') + ' Mengandung huruf kapital';
-        document.getElementById('check-number').textContent = (hasNumber ? '✓' : '✗') + ' Mengandung angka';
-        document.getElementById('check-special').textContent = (hasSpecial ? '✓' : '✗') +
-            ' Mengandung karakter spesial (~`!@#$%^&*-+=|:";</>?,\.)';
-
-            // Hitung strength
             const score = [hasLength, hasUpper, hasNumber, hasSpecial].filter(Boolean).length;
+            const segments = document.querySelectorAll('.strength-segment');
+            const labelEl = document.getElementById('password-strength-label');
 
-            const strengthEl = document.getElementById('password-strength');
-            if (value.length === 0) {
-                strengthEl.textContent = '';
-            } else if (score <= 1) {
-                strengthEl.textContent = 'Kekuatan password: Lemah';
-                strengthEl.style.color = '#9e0e0e';
-            } else if (score === 2 || score === 3) {
-                strengthEl.textContent = 'Kekuatan password: Sedang';
-                strengthEl.style.color = '#a97617';
+            segments.forEach(seg => {
+                seg.style.backgroundColor = '#e2e8f0';
+            });
+
+            if (isEmpty) {
+                if (labelEl) labelEl.textContent = '';
             } else {
-                strengthEl.textContent = 'Kekuatan password: Kuat';
-                strengthEl.style.color = '#045404';
+                let color = '';
+                let label = '';
+
+                switch (score) {
+                    case 1:
+                        color = '#ef4444';
+                        label = 'Kekuatan password: Lemah';
+                        break;
+                    case 2:
+                        color = '#f97316';
+                        label = 'Kekuatan password: Cukup';
+                        break;
+                    case 3:
+                        color = '#84cc16';
+                        label = 'Kekuatan password: Kuat';
+                        break;
+                    case 4:
+                        color = '#22c55e';
+                        label = 'Kekuatan password: Sangat kuat';
+                        break;
+                    default:
+                        color = '#ef4444';
+                        label = 'Kekuatan password: Lemah';
+                        break;
+                }
+
+                if (labelEl) {
+                    labelEl.textContent = label;
+                    labelEl.style.color = color;
+                }
+
+                const fillCount = score === 0 ? 1 : score;
+                for (let i = 0; i < fillCount; i++) {
+                    if (segments[i]) {
+                        segments[i].style.backgroundColor = color;
+                    }
+                }
             }
         }
 
@@ -323,6 +390,28 @@ function validateRequiredFields() {
         e.preventDefault();
     }
 });
+
+// Toggle password visibility
+const togglePassword = document.getElementById('togglePassword');
+const passwordInput = document.querySelector('input[name="password"]');
+if (togglePassword && passwordInput) {
+    togglePassword.addEventListener('click', () => {
+        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordInput.setAttribute('type', type);
+        
+        const eyeOpen = togglePassword.querySelector('.eye-open');
+        const eyeClosed = togglePassword.querySelector('.eye-closed');
+        if (eyeOpen && eyeClosed) {
+            if (type === 'password') {
+                eyeOpen.style.display = 'block';
+                eyeClosed.style.display = 'none';
+            } else {
+                eyeOpen.style.display = 'none';
+                eyeClosed.style.display = 'block';
+            }
+        }
+    });
+}
     </script>
 
 </body>

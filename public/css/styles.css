@@ -87,26 +87,35 @@ textarea.modal-input { resize: vertical; min-height: 90px; }
 }
 
 .custom-modal-box {
-    background: #f3f4f6;
-    padding: 30px;
-    border-radius: 16px;
+    background: #ffffff;
+    padding: 32px;
+    border-radius: 12px;
     text-align: center;
-    width: 350px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    width: min(400px, 92vw);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    border: 1px solid #e2e8f0;
 }
 
 .custom-modal-actions {
-    margin-top: 25px;
+    margin-top: 24px;
     display: flex;
-    gap: 15px;
+    gap: 12px;
     justify-content: center;
 }
 
 .custom-btn {
-    padding: 10px 25px;
-    border-radius: 20px;
-    border: none;
-    background: #c7d2fe;
+    padding: 8px 20px;
+    border-radius: 6px;
+    border: 1px solid #e2e8f0;
+    background: #f1f5f9;
+    color: #475569;
     cursor: pointer;
     font-weight: 600;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.custom-btn:hover {
+    background: #e2e8f0;
+    color: #1e293b;
 }

@@ -165,7 +165,7 @@
     <h2 style="font-size: 1.25rem; font-weight: bold; margin-bottom: 20px;">Hapus Data Gejala Ini?</h2>
     <div class="custom-modal-actions">
       <button type="button" class="custom-btn" onclick="tutupModalHapus()">batal</button>
-      <button type="button" class="custom-btn" id="confirmHapus" style="background-color: #5a63a8; color: white;">hapus</button>
+      <button type="button" class="custom-btn" id="confirmHapus" style="background-color: #453bcf; color: white;">hapus</button>
     </div>
   </div>
 </div>

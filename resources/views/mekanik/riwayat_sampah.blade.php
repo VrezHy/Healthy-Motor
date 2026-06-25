@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('css/dashboard_mekanik.css') }}">
     <link rel="stylesheet" href="{{ asset('css/sampah.css') }}">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -222,7 +223,7 @@
             <h2>Kembalikan Data Riwayat Ini?</h2>
             <div class="custom-modal-actions">
                 <button type="button" class="custom-btn" onclick="tutupModalRestore()">Batal</button>
-                <button type="button" class="custom-btn" id="confirmRestore" style="background-color: green;color: white;">Ya!</button>
+                <button type="button" class="custom-btn" id="confirmRestore" style="background-color: var(--success); color: white;">Ya!</button>
             </div>
         </div>
     </div>
@@ -232,7 +233,7 @@
             <h2>Hapus Permanen Riwayat Ini?</h2>
             <div class="custom-modal-actions">
                 <button type="button" class="custom-btn" onclick="tutupModalPermanen()">batal</button>
-                <button type="button" class="custom-btn" id="confirmPermanen" style="background-color: #dc2626;color: white;">hapus</button>
+                <button type="button" class="custom-btn" id="confirmPermanen" style="background-color: var(--danger); color: white;">hapus</button>
             </div>
         </div>
     </div>

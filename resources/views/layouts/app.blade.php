@@ -8,10 +8,10 @@
     <title>Dashboard Admin</title>
     {{-- Tailwind CDN - ganti dengan Vite/mix jika sudah setup --}}
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
     <style>
         * {
-            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
         }
 
         .header {
@@ -24,11 +24,11 @@
         }
 
         body {
-            background: #D4D7EA;
+            background: #f8fafc;
         }
 
         .sidebar {
-            background: linear-gradient(180deg, #5a63a8 0%, #4a5298 100%);
+            background: #7d88e6;
         }
 
         .nav-item {
@@ -47,12 +47,13 @@
 
         .nav-item.active {
             background: white;
-            color: #4a5298;
+            color: #453bcf;
             font-weight: 700;
         }
 
         .main-content {
-            background: #e8e9f3;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
             border-radius: 20px;
         }
 
@@ -61,11 +62,12 @@
             border-radius: 16px;
             padding: 20px 24px;
             border: 2px solid transparent;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
             transition: border-color 0.2s, transform 0.2s;
         }
 
         .stat-card:hover {
-            border-color: #7c84d0;
+            border-color: #453bcf;
             transform: translateY(-2px);
         }
 
@@ -143,7 +145,7 @@
         }
 
         .modal-btn.confirm {
-            background: #4a5298;
+            background: #453bcf;
             color: white;
         }
     </style>
@@ -154,7 +156,7 @@
 <body class="h-screen flex flex-col overflow-hidden">
 
     {{-- Top bar --}}
-    <div class="w-full flex-shrink-0" style="background: #4a5298; height: 65px;">
+    <div class="w-full flex-shrink-0" style="background: #7d88e6; height: 65px;">
         <div class="header">
             DM5S
         </div>

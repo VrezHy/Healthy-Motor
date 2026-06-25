@@ -127,3 +127,92 @@ button:hover {
 .forgot-password a:hover {
     text-decoration: underline;
 }
+
+/* Password Wrapper & Toggle Eye */
+.password-wrapper {
+    position: relative;
+    margin-bottom: 18px;
+}
+.password-wrapper input {
+    margin-bottom: 0 !important;
+    padding-right: 42px;
+}
+.toggle-password {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #64748b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s ease;
+}
+.toggle-password:hover {
+    color: #1e293b;
+}
+
+/* Password Strength Bar */
+.strength-wrapper {
+    margin-top: 8px;
+    margin-bottom: 14px;
+}
+.strength-bar-container {
+    display: flex;
+    gap: 4px;
+    height: 6px;
+}
+.strength-segment {
+    flex: 1;
+    height: 100%;
+    background-color: #e2e8f0;
+    border-radius: 2px;
+    transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+#password-strength-label {
+    font-size: 12px;
+    font-weight: 600;
+    margin-top: 5px;
+    transition: color 0.3s ease;
+}
+
+/* Checklist Grid */
+.checklist-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 12px;
+    margin: 12px 0 18px 0;
+    padding: 0;
+    list-style: none;
+}
+.checklist-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 500;
+    transition: color 0.25s ease;
+}
+.checklist-icon {
+    font-weight: 800;
+    font-size: 13px;
+    display: inline-block;
+    width: 14px;
+    text-align: center;
+    transition: transform 0.2s ease;
+}
+
+/* Checklist states */
+.checklist-item.neutral {
+    color: #64748b;
+}
+.checklist-item.valid {
+    color: #16a34a;
+}
+.checklist-item.valid .checklist-icon {
+    transform: scale(1.1);
+}
+.checklist-item.invalid {
+    color: #dc2626;
+}

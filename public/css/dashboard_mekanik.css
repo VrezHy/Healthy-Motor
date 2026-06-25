@@ -199,7 +199,7 @@ textarea {
 }
 
 .logout {
-    background-color: #6c7ae0;
+    background-color: var(--primary);
     color: #ffffff;
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: var(--radius-sm);
@@ -213,7 +213,7 @@ textarea {
 }
 
 .logout:hover {
-    background-color: #5f6ce0;
+    background-color: var(--primary-hover);
     color: #ffffff;
     border-color: rgba(255, 255, 255, 0.2);
 }
