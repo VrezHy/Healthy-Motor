@@ -441,7 +441,7 @@ textarea {
     display: grid;
     grid-template-columns: 1fr 2fr;
     gap: 28px;
-    align-items: start;
+    align-items: stretch;
 }
 
 .dashboard-card {
@@ -471,31 +471,33 @@ textarea {
 
 .btn-diagnosa {
     display: inline-flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     justify-content: center;
     background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
     color: white;
     border: none;
-    padding: 24px 32px;
-    font-size: 16px;
-    font-weight: 700;
-    border-radius: var(--radius-md);
+    padding: 12px 24px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: var(--radius-sm);
     cursor: pointer;
     text-decoration: none;
     transition: var(--transition-normal);
-    box-shadow: 0 4px 14px rgba(79, 70, 229, 0.4);
-    gap: 12px;
-    width: 100%;
+    box-shadow: 0 4px 10px rgba(79, 70, 229, 0.2);
+    gap: 8px;
+    width: auto;
+    max-width: 100%;
+    margin: 0 auto;
 }
 
 .btn-diagnosa:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(79, 70, 229, 0.6);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(79, 70, 229, 0.35);
 }
 
 .btn-diagnosa span.icon {
-    font-size: 32px;
+    font-size: 18px;
 }
 
 /* RECENT ACTIVITY LIST */
@@ -2386,4 +2388,116 @@ textarea {
         margin-left: 44px;
     }
 }
+
+/* DETAIL MODAL FOR RECENT ACTIVITIES */
+.detail-modal {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    inset: 0;
+    background-color: rgba(15, 23, 42, 0.4);
+    backdrop-filter: blur(4px);
+    z-index: 1000;
+    padding: 24px;
+}
+
+.detail-modal-box {
+    background-color: var(--bg-card);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    max-width: 520px;
+    width: 100%;
+    padding: 32px;
+    position: relative;
+    animation: modalFadeIn 0.2s ease-out;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.detail-modal-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: var(--text-muted);
+    transition: var(--transition-fast);
+}
+
+.detail-modal-close:hover {
+    color: var(--text-primary);
+}
+
+.detail-modal-box h2 {
+    font-size: 18px;
+    font-weight: 800;
+    margin: 0 0 16px 0;
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 12px;
+}
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px dashed rgba(0, 0, 0, 0.05);
+}
+
+.detail-label {
+    font-size: 13px;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.detail-value {
+    font-size: 13px;
+    color: var(--text-primary);
+    font-weight: 600;
+    text-align: right;
+}
+
+@media (max-width: 576px) {
+    .detail-modal {
+        padding: 12px;
+    }
+    
+    .detail-modal-box {
+        padding: 24px 16px 20px;
+        max-height: 95vh;
+    }
+
+    .detail-modal-close {
+        top: 16px;
+        right: 16px;
+    }
+    
+    .detail-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2px;
+        padding: 8px 0;
+    }
+    
+    .detail-value {
+        text-align: left;
+    }
+
+    .recent-header-wrap {
+        flex-direction: column;
+        align-items: stretch !important;
+        gap: 8px;
+    }
+    
+    #recentSearchInput {
+        width: 100% !important;
+    }
+}
+
 
