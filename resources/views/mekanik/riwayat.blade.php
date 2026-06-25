@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('css/dashboard_mekanik.css') }}">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -11,14 +12,20 @@
 
 <body>
 
-    <div class="header">
-        DM5S
+<div class="header">
+    <div style="display: flex; align-items: center; gap: 12px;">
+        <button class="mobile-menu-btn" id="mobileMenuBtn">
+            <span class="material-icons">menu</span>
+        </button>
+        <span>DM5S</span>
     </div>
+</div>
 
-    <div class="container">
+<div class="container">
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-
-        <div class="sidebar">
+    <!-- SIDEBAR -->
+    <div class="sidebar">
             <button class="sidebar-toggle" id="sidebarToggle">
                 <span class="material-icons">chevron_left</span>
             </button>
@@ -303,6 +310,22 @@
                 icon.textContent = isCollapsed ? 'chevron_right' : 'chevron_left';
             }
         });
+
+        // MOBILE DRAWER MENU LOGIC
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+        if (mobileMenuBtn && sidebarOverlay && sidebar) {
+            mobileMenuBtn.addEventListener('click', () => {
+                sidebar.classList.toggle('show-mobile');
+                sidebarOverlay.classList.toggle('active');
+            });
+
+            sidebarOverlay.addEventListener('click', () => {
+                sidebar.classList.remove('show-mobile');
+                sidebarOverlay.classList.remove('active');
+            });
+        }
 
         let pendingLogoutForm = null;
         let pendingCancelRiwayatForm = null;

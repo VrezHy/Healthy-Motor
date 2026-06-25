@@ -92,6 +92,27 @@ textarea {
     color: var(--text-muted);
 }
 
+.mobile-menu-btn {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    color: var(--text-primary);
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background-color var(--transition-fast);
+}
+
+.mobile-menu-btn:hover {
+    background-color: var(--bg-primary);
+}
+
+.mobile-menu-btn .material-icons {
+    font-size: 24px;
+}
+
 .container {
     display: flex;
     height: calc(100vh - 64px);
@@ -1982,42 +2003,71 @@ textarea {
         overflow: visible;
     }
 
-    .sidebar {
-        width: 100%;
-        height: auto;
-        position: static;
-        padding: 20px;
-        border-right: none;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    }
-    
-    .profile {
-        margin-bottom: 20px;
-        padding-bottom: 16px;
+    .mobile-menu-btn {
         display: flex;
-        align-items: center;
-        text-align: left;
-        gap: 16px;
+        margin-right: 12px;
     }
-    
+
+    .sidebar {
+        position: fixed !important;
+        top: 64px;
+        left: -220px;
+        width: 220px;
+        height: calc(100vh - 64px);
+        z-index: 100;
+        transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
+        background-color: var(--bg-sidebar);
+        padding: 24px 16px;
+        border-right: 1px solid rgba(255, 255, 255, 0.05);
+        border-bottom: none;
+    }
+
+    .sidebar.show-mobile {
+        left: 0 !important;
+    }
+
+    .sidebar-toggle {
+        display: none !important;
+    }
+
+    .sidebar-overlay {
+        display: none;
+        position: fixed;
+        top: 64px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(15, 23, 42, 0.4);
+        backdrop-filter: blur(2px);
+        z-index: 99;
+    }
+
+    .sidebar-overlay.active {
+        display: block;
+    }
+
+    .profile {
+        margin-bottom: 24px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        text-align: center;
+    }
+
     .profile img {
-        width: 48px;
-        height: 48px;
-        margin-bottom: 0;
+        width: 60px;
+        height: 60px;
+        margin-bottom: 10px;
     }
-    
+
     .profile h3 {
         font-size: 15px;
-    }
-    
-    .profile small {
-        margin-top: 2px;
     }
 
     .content {
         padding: 20px;
         height: auto;
-        min-height: calc(100vh - 64px - 180px);
+        min-height: calc(100vh - 64px);
         overflow: visible;
     }
 
@@ -2026,7 +2076,7 @@ textarea {
     .riwayat-panel {
         max-width: 100%;
     }
-    
+
     .riwayat-table-wrap {
         overflow-x: auto;
     }
@@ -2232,8 +2282,13 @@ textarea {
     min-height: 0;
 }
 
-/* RESPONSIVE LAYOUTS FOR DIAGNOSA */
+/* RESPONSIVE LAYOUTS FOR DIAGNOSA & CONTENT WRAPPERS */
 @media (max-width: 992px) {
+    .content.content-fixed-layout {
+        overflow: visible !important;
+        height: auto !important;
+    }
+
     .diagnosa-layout {
         grid-template-columns: 1fr;
         height: auto;
@@ -2254,10 +2309,81 @@ textarea {
         height: auto;
         min-height: unset;
     }
+
+    .wizard-card {
+        height: auto !important;
+        min-height: unset !important;
+    }
+
+    .symptom-list-container {
+        max-height: 320px;
+        overflow-y: auto;
+    }
     
     .diagnosa-layout .diagnosa-result {
-        max-height: calc(100vh - 180px);
-        min-height: 360px;
+        max-height: none !important;
+        min-height: unset !important;
+        height: auto !important;
+    }
+
+    /* Standardize riwayat layout on mobile/tablet */
+    .content-fixed-layout .riwayat-panel {
+        height: auto !important;
+        flex: none !important;
+    }
+    
+    .content-fixed-layout .riwayat-table-wrap {
+        height: auto !important;
+        max-height: none !important;
+        overflow-y: visible !important;
+        flex: none !important;
+    }
+}
+
+/* OPTIMIZATIONS FOR MOBILE VIEWPORTS (<= 576px) */
+@media (max-width: 576px) {
+    .riwayat-table-title {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+        padding: 16px 20px;
+    }
+
+    .riwayat-table-title span {
+        text-align: center;
+    }
+
+    .riwayat-table-title a.btn-trash-bin,
+    .riwayat-table-title a.btn-back-utama {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .search-form {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+    }
+
+    .search-form .search-input {
+        width: 100%;
+    }
+
+    .search-form .btn-search,
+    .search-form .btn-clear-search {
+        width: 100%;
+        text-align: center;
+        justify-content: center;
+    }
+
+    .pelanggan-form {
+        padding: 32px 20px 24px;
+        border-radius: var(--radius-md);
+    }
+
+    .pelanggan-form h2 {
+        font-size: 18px;
+        margin-left: 44px;
     }
 }
 
