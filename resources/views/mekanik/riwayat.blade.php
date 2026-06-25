@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="{{ asset('css/dashboard_mekanik.css') }}">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <title>Log Riwayat Mekanik</title>
 </head>
 
@@ -24,8 +25,18 @@
             </div>
 
             <div class="menu">
-                <a href="{{ route('mekanik.diagnosa') }}">Analisis Diagnosa</a>
-                <a href="{{ route('mekanik.riwayat') }}" class="active">Log Riwayat</a>
+                <a href="{{ route('mekanik.dashboard') }}">
+                    <span class="material-icons">dashboard</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="{{ route('mekanik.diagnosa') }}">
+                    <span class="material-icons">search</span>
+                    <span>Analisis Diagnosa</span>
+                </a>
+                <a href="{{ route('mekanik.riwayat') }}" class="active">
+                    <span class="material-icons">history</span>
+                    <span>Log Riwayat</span>
+                </a>
 
                 <form action="{{ route('logout') }}" method="POST" class="logout-form">
                     @csrf
@@ -35,20 +46,38 @@
         </div>
 
 
-        <div class="content">
-            <div class="title">Dashboard Mekanik</div>
+        <div class="content content-fixed-layout">
+            <!-- BREADCRUMB -->
+            <nav class="breadcrumb">
+                <a href="{{ route('mekanik.dashboard') }}">Mekanik</a> / <span>Log Riwayat</span>
+            </nav>
 
             <div class="riwayat-panel" id="riwayatPanel">
                 <div class="riwayat-table-title" style="display: flex; justify-content: space-between; align-items: center;">
                     <span>Tabel Perbaikan Motor</span>
-                    <a href="{{ route('mekanik.riwayat.sampah') }}" style="background-color: #ff9800; color: white; padding: 6px 12px; text-decoration: none; border-radius: 4px; font-size: 14px; border: none; cursor: pointer;">
-                        🗑️ Tempat Sampah
+                    <a href="{{ route('mekanik.riwayat.sampah') }}" class="btn-trash-bin">
+                        <span class="material-icons">delete</span>
+                        <span>Tempat Sampah</span>
                     </a>
                 </div>
 
                 @if (session('success'))
-                <div class="riwayat-alert">{{ session('success') }}</div>
+                <div class="toast-notification" id="toastNotification">
+                    <span class="material-icons toast-icon">check_circle</span>
+                    <span class="toast-message">{{ session('success') }}</span>
+                </div>
                 @endif
+
+                <!-- SEARCH BAR -->
+                <div class="riwayat-search-bar">
+                    <form action="{{ route('mekanik.riwayat') }}" method="GET" class="search-form">
+                        <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama pelanggan, nomor polisi, kerusakan, atau status..." class="search-input">
+                        <button type="submit" class="btn-search">Cari</button>
+                        @if(request('search'))
+                            <a href="{{ route('mekanik.riwayat') }}" class="btn-clear-search">Batal</a>
+                        @endif
+                    </form>
+                </div>
 
                 <div class="riwayat-table-wrap">
                     <table class="riwayat-table">
@@ -64,7 +93,7 @@
                         <tbody>
                             @forelse($riwayats as $riwayat)
                             <tr>
-                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ ($riwayats->currentPage() - 1) * $riwayats->perPage() + $loop->iteration }}</td>
                                 <td>
                                     <div class="damage-info">
                                         <div>
@@ -79,26 +108,26 @@
                                             data-solusi='@json($riwayat->solusi ?? [])'
                                             onclick="openKerusakanModal(this)"
                                             aria-label="Lihat detail gejala, penyakit, dan solusi">
-                                            ...
+                                            Detail
                                         </button>
                                     </div>
                                 </td>
                                 <td>
-                                    <form action="{{ route('mekanik.riwayat.status', $riwayat->id) }}"
-                                        method="POST" class="status-form">
-                                        @csrf
-                                        @method('PUT')
-                                        <select name="status"
-                                            class="status-select status-{{ strtolower($riwayat->status) }}"
-                                            onchange="this.form.submit()">
-                                            <option value="Draft"
-                                                {{ $riwayat->status === 'Draft' ? 'selected' : '' }}>Draft</option>
-                                            <option value="Aktif"
-                                                {{ $riwayat->status === 'Aktif' ? 'selected' : '' }}>Aktif</option>
-                                            <option value="Done"
-                                                {{ $riwayat->status === 'Done' ? 'selected' : '' }}>Done</option>
-                                        </select>
-                                    </form>
+                                    <div class="custom-dropdown status-dropdown">
+                                        <div class="dropdown-toggle status-{{ strtolower($riwayat->status) }}" onclick="toggleDropdown(this)">
+                                            <span>{{ $riwayat->status }}</span>
+                                        </div>
+                                        <div class="dropdown-menu">
+                                            <div class="dropdown-item {{ $riwayat->status === 'Draft' ? 'active' : '' }}" onclick="selectStatus(this, 'Draft')">Draft</div>
+                                            <div class="dropdown-item {{ $riwayat->status === 'Aktif' ? 'active' : '' }}" onclick="selectStatus(this, 'Aktif')">Aktif</div>
+                                            <div class="dropdown-item {{ $riwayat->status === 'Done' ? 'active' : '' }}" onclick="selectStatus(this, 'Done')">Done</div>
+                                        </div>
+                                        <form action="{{ route('mekanik.riwayat.status', $riwayat->id) }}" method="POST" class="status-form-hidden">
+                                            @csrf
+                                            @method('PUT')
+                                            <input type="hidden" name="status" value="{{ $riwayat->status }}">
+                                        </form>
+                                    </div>
                                 </td>
                                 <td>
                                     <button type="button" class="btn-view" data-id="{{ $riwayat->id }}"
@@ -115,7 +144,9 @@
                                         method="POST" class="cancel-riwayat-form">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn-cancel-riwayat">Cancel</button>
+                                        <button type="submit" class="btn-cancel-riwayat" aria-label="Hapus Riwayat">
+                                            <span class="material-icons">delete</span>
+                                        </button>
                                     </form>
                                 </td>
                             </tr>
@@ -127,6 +158,9 @@
                         </tbody>
                     </table>
                 </div>
+
+                <!-- PAGINATION -->
+                {{ $riwayats->links('partials.pagination') }}
             </div>
 
             <div class="pelanggan-panel" id="pelangganPanel">
@@ -554,6 +588,42 @@
                 pendingCancelRiwayatForm.submit();
             }
         });
+
+        // CUSTOM DROPDOWN SCRIPTS
+        function toggleDropdown(toggle) {
+            document.querySelectorAll('.custom-dropdown').forEach(dropdown => {
+                if (dropdown !== toggle.parentElement) {
+                    dropdown.classList.remove('open');
+                }
+            });
+            toggle.parentElement.classList.toggle('open');
+        }
+
+        function selectStatus(item, value) {
+            const dropdown = item.closest('.custom-dropdown');
+            const form = dropdown.querySelector('.status-form-hidden');
+            form.querySelector('input[name="status"]').value = value;
+            form.submit();
+        }
+
+        window.addEventListener('click', function(e) {
+            if (!e.target.closest('.custom-dropdown')) {
+                document.querySelectorAll('.custom-dropdown').forEach(dropdown => {
+                    dropdown.classList.remove('open');
+                });
+            }
+        });
+
+        // TOAST NOTIFICATION AUTO HIDE
+        const toast = document.getElementById('toastNotification');
+        if (toast) {
+            setTimeout(() => {
+                toast.classList.add('hide');
+                setTimeout(() => {
+                    toast.remove();
+                }, 400);
+            }, 3000);
+        }
     </script>
 
 </body>

@@ -12,6 +12,20 @@ use Illuminate\Support\Facades\Schema;
 
 class DiagnosaMekanikController extends Controller
 {
+    public function dashboard()
+    {
+        $totalLogs = Schema::hasTable('riwayat_diagnosas') ? RiwayatDiagnosa::count() : 0;
+        $totalDone = Schema::hasTable('riwayat_diagnosas') ? RiwayatDiagnosa::where('status', 'Done')->count() : 0;
+        $totalActive = Schema::hasTable('riwayat_diagnosas') ? RiwayatDiagnosa::where('status', 'Aktif')->count() : 0;
+        $totalDraft = Schema::hasTable('riwayat_diagnosas') ? RiwayatDiagnosa::where('status', 'Draft')->count() : 0;
+
+        $recentRiwayats = Schema::hasTable('riwayat_diagnosas')
+            ? RiwayatDiagnosa::with('user')->latest()->take(5)->get()
+            : collect();
+
+        return view('mekanik.dashboard_mekanik', compact('totalLogs', 'totalDone', 'totalActive', 'totalDraft', 'recentRiwayats'));
+    }
+
     public function index()
     {
         $gejalas = Gejala::orderBy('kode_gejala')->get();
@@ -199,13 +213,29 @@ class DiagnosaMekanikController extends Controller
             ->with('success', 'Hasil diagnosa berhasil disimpan ke log riwayat.');
     }
 
-    public function riwayat()
+    public function riwayat(Request $request)
     {
-        $riwayats = Schema::hasTable('riwayat_diagnosas')
-            ? RiwayatDiagnosa::with('user')->latest()->get()
-            : collect();
+        if (!Schema::hasTable('riwayat_diagnosas')) {
+            $riwayats = collect();
+            return view('mekanik.riwayat', compact('riwayats'));
+        }
 
-        return view('mekanik.riwayat', compact('riwayats'));
+        $search = $request->input('search');
+
+        $query = RiwayatDiagnosa::with('user');
+
+        if ($search) {
+            $query->where(function($q) use ($search) {
+                $q->where('nama_pelanggan', 'like', "%{$search}%")
+                  ->orWhere('nomor_polisi', 'like', "%{$search}%")
+                  ->orWhere('nama_kerusakan', 'like', "%{$search}%")
+                  ->orWhere('status', 'like', "%{$search}%");
+            });
+        }
+
+        $riwayats = $query->latest()->paginate(10)->withQueryString();
+
+        return view('mekanik.riwayat', compact('riwayats', 'search'));
     }
 
     public function hapusRiwayat(RiwayatDiagnosa $riwayatDiagnosa)
@@ -216,11 +246,24 @@ class DiagnosaMekanikController extends Controller
             ->with('success', 'Log riwayat berhasil dipindahkan ke tempat sampah.'); // Ubah pesan agar sesuai
     }
 
-    public function sampahRiwayat()
+    public function sampahRiwayat(Request $request)
     {
-        $riwayatsSampah = RiwayatDiagnosa::onlyTrashed()->with('user')->latest()->get();
+        $search = $request->input('search');
 
-        return view('mekanik.riwayat_sampah', compact('riwayatsSampah'));
+        $query = RiwayatDiagnosa::onlyTrashed()->with('user');
+
+        if ($search) {
+            $query->where(function($q) use ($search) {
+                $q->where('nama_pelanggan', 'like', "%{$search}%")
+                  ->orWhere('nomor_polisi', 'like', "%{$search}%")
+                  ->orWhere('nama_kerusakan', 'like', "%{$search}%")
+                  ->orWhere('status', 'like', "%{$search}%");
+            });
+        }
+
+        $riwayatsSampah = $query->latest()->paginate(10)->withQueryString();
+
+        return view('mekanik.riwayat_sampah', compact('riwayatsSampah', 'search'));
     }
 
     public function restoreRiwayat($id)

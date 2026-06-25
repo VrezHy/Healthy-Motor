@@ -1,98 +1,119 @@
+/* CSS untuk Halaman Tempat Sampah Mekanik */
+
 .action-buttons {
     display: flex;
     gap: 8px;
 }
 
 .btn-restore {
-    background-color: #4CAF50;
+    background-color: var(--success);
     color: white;
     border: none;
-    padding: 6px 12px;
-    border-radius: 20px;
+    padding: 6px 14px;
+    border-radius: 6px;
     cursor: pointer;
     font-size: 13px;
-    font-weight: bold;
+    font-weight: 600;
+    transition: var(--transition-fast);
 }
 
 .btn-restore:hover {
-    background-color: #45a049;
+    background-color: #059669;
 }
 
 .btn-permanen {
-    background-color: #f44336;
-    color: white;
-    border: none;
-    padding: 6px 12px;
-    border-radius: 20px;
+    background-color: var(--danger-bg);
+    color: var(--danger-text);
+    border: 1px solid rgba(239, 68, 68, 0.1);
+    padding: 6px 14px;
+    border-radius: 6px;
     cursor: pointer;
     font-size: 13px;
-    font-weight: bold;
+    font-weight: 600;
+    transition: var(--transition-fast);
 }
 
 .btn-permanen:hover {
-    background-color: #da190b;
+    background-color: var(--danger);
+    color: white;
 }
 
 .btn-back-utama {
-    background-color: #2196F3;
-    color: white;
-    padding: 6px 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background-color: #f1f5f9;
+    color: var(--text-secondary);
+    border: 1px solid var(--border-color);
+    padding: 8px 16px;
     text-decoration: none;
-    border-radius: 4px;
-    font-size: 14px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    transition: var(--transition-fast);
 }
 
-/* --- CSS Tambahan untuk Custom Modal --- */
+.btn-back-utama .material-icons {
+    font-size: 16px;
+}
+
+.btn-back-utama:hover {
+    background-color: #e2e8f0;
+    color: var(--text-primary);
+}
+
+/* Modals di sampah memakai class .custom-modal yang sudah didefinisikan secara global */
 .custom-modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.4);
-    justify-content: center;
     align-items: center;
+    background-color: rgba(15, 23, 42, 0.4);
+    backdrop-filter: blur(4px);
+    display: none;
+    inset: 0;
+    justify-content: center;
+    padding: 24px;
+    position: fixed;
     z-index: 1000;
 }
 
 .custom-modal-box {
-    background: #e0e0e0;
-    /* Warna abu-abu terang sesuai referensi */
-    padding: 40px;
-    border-radius: 12px;
+    background-color: var(--bg-card);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border-color);
+    padding: 32px;
     text-align: center;
-    width: 400px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    width: min(400px, 92vw);
+    animation: modalFadeIn 0.2s ease-out;
 }
 
 .custom-modal-box h2 {
     margin-top: 0;
-    margin-bottom: 30px;
-    font-size: 1.2rem;
-    color: #000;
+    margin-bottom: 24px;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.4;
 }
 
 .custom-modal-actions {
     display: flex;
     justify-content: flex-end;
-    gap: 15px;
+    gap: 12px;
 }
 
 .custom-btn {
-    padding: 8px 24px;
-    border: none;
-    border-radius: 20px;
-    /* Bentuk pill sesuai referensi */
+    padding: 8px 20px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
     cursor: pointer;
-    font-weight: bold;
+    font-weight: 600;
     font-size: 14px;
-    background-color: #aeb9cc;
-    /* Warna tombol sesuai referensi */
-    color: #000;
-    transition: opacity 0.2s;
+    background-color: #f1f5f9;
+    color: var(--text-secondary);
+    transition: var(--transition-fast);
 }
 
 .custom-btn:hover {
-    opacity: 0.8;
+    background-color: #e2e8f0;
+    color: var(--text-primary);
 }

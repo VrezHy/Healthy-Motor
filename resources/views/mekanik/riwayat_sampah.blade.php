@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="{{ asset('css/dashboard_mekanik.css') }}">
     <link rel="stylesheet" href="{{ asset('css/sampah.css') }}">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <title>Tempat Sampah - Log Riwayat</title>
 </head>
 
@@ -24,8 +25,18 @@
             </div>
 
             <div class="menu">
-                <a href="{{ route('mekanik.diagnosa') }}">Analisis Diagnosa</a>
-                <a href="{{ route('mekanik.riwayat') }}" class="active">Log Riwayat</a>
+                <a href="{{ route('mekanik.dashboard') }}">
+                    <span class="material-icons">dashboard</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="{{ route('mekanik.diagnosa') }}">
+                    <span class="material-icons">search</span>
+                    <span>Analisis Diagnosa</span>
+                </a>
+                <a href="{{ route('mekanik.riwayat') }}" class="active">
+                    <span class="material-icons">history</span>
+                    <span>Log Riwayat</span>
+                </a>
 
                 <form action="{{ route('logout') }}" method="POST" class="logout-form">
                     @csrf
@@ -34,18 +45,38 @@
             </div>
         </div>
 
-        <div class="content">
-            <div class="title">Recycle Bin (Tempat Sampah)</div>
+        <div class="content content-fixed-layout">
+            <!-- BREADCRUMB -->
+            <nav class="breadcrumb">
+                <a href="{{ route('mekanik.dashboard') }}">Mekanik</a> / <a href="{{ route('mekanik.riwayat') }}">Log Riwayat</a> / <span>Tempat Sampah</span>
+            </nav>
 
             <div class="riwayat-panel" id="riwayatPanel">
                 <div class="riwayat-table-title" style="display: flex; justify-content: space-between; align-items: center;">
                     <span>Data Riwayat yang Dihapus</span>
-                    <a href="{{ route('mekanik.riwayat') }}" class="btn-back-utama">← Kembali ke Riwayat Utama</a>
+                    <a href="{{ route('mekanik.riwayat') }}" class="btn-back-utama">
+                        <span class="material-icons">arrow_back</span>
+                        <span>Kembali ke Riwayat Utama</span>
+                    </a>
                 </div>
 
                 @if (session('success'))
-                <div class="riwayat-alert">{{ session('success') }}</div>
+                <div class="toast-notification" id="toastNotification">
+                    <span class="material-icons toast-icon">check_circle</span>
+                    <span class="toast-message">{{ session('success') }}</span>
+                </div>
                 @endif
+
+                <!-- SEARCH BAR -->
+                <div class="riwayat-search-bar">
+                    <form action="{{ route('mekanik.riwayat.sampah') }}" method="GET" class="search-form">
+                        <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama pelanggan, nomor polisi, kerusakan, atau status..." class="search-input">
+                        <button type="submit" class="btn-search">Cari</button>
+                        @if(request('search'))
+                            <a href="{{ route('mekanik.riwayat.sampah') }}" class="btn-clear-search">Batal</a>
+                        @endif
+                    </form>
+                </div>
 
                 <div class="riwayat-table-wrap">
                     <table class="riwayat-table">
@@ -61,7 +92,7 @@
                         <tbody>
                             @forelse($riwayatsSampah as $riwayat)
                             <tr>
-                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ ($riwayatsSampah->currentPage() - 1) * $riwayatsSampah->perPage() + $loop->iteration }}</td>
                                 <td>
                                     <div class="damage-info">
                                         <div>
@@ -76,7 +107,7 @@
                                             data-solusi='@json($riwayat->solusi ?? [])'
                                             onclick="openKerusakanModal(this)"
                                             aria-label="Lihat detail gejala, penyakit, dan solusi">
-                                            ...
+                                            Detail
                                         </button>
                                     </div>
                                 </td>
@@ -119,6 +150,8 @@
                     </table>
                 </div>
 
+                <!-- PAGINATION -->
+                {{ $riwayatsSampah->links('partials.pagination') }}
             </div>
 
             <!-- PANEL DETAIL DATA PELANGGAN (Hanya View, Read-Only) -->
@@ -285,6 +318,17 @@
         function closePelangganForm() {
             pelangganPanel.classList.remove('active');
             riwayatPanel.classList.remove('is-hidden');
+        }
+
+        // TOAST NOTIFICATION AUTO HIDE
+        const toast = document.getElementById('toastNotification');
+        if (toast) {
+            setTimeout(() => {
+                toast.classList.add('hide');
+                setTimeout(() => {
+                    toast.remove();
+                }, 400);
+            }, 3000);
         }
     </script>
 </body>

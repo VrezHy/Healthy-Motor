@@ -28,6 +28,9 @@ Route::get('/', function () {
 
     Route::middleware(['auth', 'role:mekanik'])->group(function () {
 
+    // Dashboard Mekanik
+    Route::get('/mekanik/dashboard', [DiagnosaMekanikController::class, 'dashboard'])->name('mekanik.dashboard');
+
     // Analisis / Diagnosa Mekanik
     Route::get('/mekanik/diagnosa', [DiagnosaMekanikController::class, 'index'])->name('mekanik.diagnosa');
     Route::post('/mekanik/diagnosa', [DiagnosaMekanikController::class, 'proses'])->name('mekanik.diagnosa.proses');

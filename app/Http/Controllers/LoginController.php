@@ -43,7 +43,7 @@ class LoginController extends Controller
 
             return match ($role) {
                 'admin'   => redirect()->route('admin.kerusakan'),
-                'mekanik' => redirect()->route('mekanik.diagnosa'),
+                'mekanik' => redirect()->route('mekanik.dashboard'),
                 default   => $this->invalidRole($request),
             };
         }

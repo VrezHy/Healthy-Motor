@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="{{ asset('css/dashboard_mekanik.css') }}">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <title>Diagnosa Mekanik</title>
 </head>
 <body>
@@ -22,8 +23,18 @@
         </div>
 
         <div class="menu">
-            <a href="{{ route('mekanik.diagnosa') }}" class="active">Analisis Diagnosa</a>
-            <a href="{{ route('mekanik.riwayat') }}">Log Riwayat</a>
+            <a href="{{ route('mekanik.dashboard') }}">
+                <span class="material-icons">dashboard</span>
+                <span>Dashboard</span>
+            </a>
+            <a href="{{ route('mekanik.diagnosa') }}" class="active">
+                <span class="material-icons">search</span>
+                <span>Analisis Diagnosa</span>
+            </a>
+            <a href="{{ route('mekanik.riwayat') }}">
+                <span class="material-icons">history</span>
+                <span>Log Riwayat</span>
+            </a>
 
             <form action="{{ route('logout') }}" method="POST" class="logout-form">
                 @csrf
@@ -34,7 +45,10 @@
 
     <!-- CONTENT -->
     <div class="content">
-        <div class="title">Dashboard Mekanik</div>
+        <!-- BREADCRUMB -->
+        <nav class="breadcrumb">
+            <a href="{{ route('mekanik.dashboard') }}">Mekanik</a> / <span>Analisis Diagnosa</span>
+        </nav>
 
         <div class="wizard-center">
             <form action="{{ route('mekanik.diagnosa.proses') }}" method="POST" class="wizard-card" id="diagnosaForm">
