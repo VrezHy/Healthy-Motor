@@ -1,59 +1,69 @@
-body{
-            margin:0;
-            font-family: Helvetica;
-            background-color:#9aa3b1;
-            text-align:center;
-        }
+body {
+    margin: 0;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: #f8fafc;
+    color: #1e293b;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
 
-        /* Header */
-        .header{
-            background-color:#6f78b3;
-            padding:15px 30px;
-            text-align:left;
-            font-size:24px;
-            font-weight:bold;
-            color:black;
-        }
+/* Header */
+.header {
+    background-color: #7d88e6;
+    padding: 18px 40px;
+    font-size: 22px;
+    font-weight: 800;
+    color: white;
+    letter-spacing: 0.5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
 
-        /* Container tengah */
-        .container{
-            display:flex;
-            flex-direction:column;
-            justify-content:center;
-            align-items:center;
-            height:85vh;
-        }
+/* Container tengah */
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    padding: 24px;
+}
 
-        /* Logo mesin */
-        .logo img{
-            width:200px;
-            margin-bottom:10px;
-        }
+/* Logo mesin */
+.logo img {
+    width: 180px;
+    margin-bottom: 24px;
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.05));
+}
 
-        /* Judul */
-        .title{
-            font-size:36px;
-            font-weight:600;
-            margin-bottom:30px;
-        }
+/* Judul */
+.title {
+    font-size: 32px;
+    font-weight: 800;
+    color: #1e293b;
+    margin-bottom: 30px;
+    letter-spacing: -0.5px;
+}
 
-        /* Tombol */
-        .button-group{
-            display:flex;
-            gap:20px;
-        }
+/* Tombol */
+.button-group {
+    display: flex;
+    gap: 20px;
+}
 
-        .btn{
-            background-color:#6f78b3;
-            border:none;
-            padding:10px 35px;
-            border-radius:20px;
-            font-size:16px;
-            cursor:pointer;
-            color:black;
-            font-weight:600;
-        }
+.btn {
+    background-color: #453bcf;
+    border: none;
+    padding: 12px 36px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    color: white;
+    transition: background-color 0.2s ease;
+    box-shadow: 0 4px 6px rgba(69, 59, 207, 0.15);
+}
 
-        .btn:hover{
-            opacity:0.85;
-        }
+.btn:hover {
+    background-color: #382fb3;
+}

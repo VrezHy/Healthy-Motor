@@ -1,98 +1,129 @@
- body {
-     margin: 0;
-     font-family: Arial, Helvetica, sans-serif;
-     background: #9aa3b1;
- }
+body {
+    margin: 0;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background-color: #f8fafc;
+    color: #1e293b;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
 
- /* Header */
- .header {
-     background: #6f78b3;
-     padding: 15px 30px;
-     font-size: 24px;
-     font-weight: bold;
- }
+/* Header */
+.header {
+    background-color: #7d88e6;
+    padding: 18px 40px;
+    font-size: 22px;
+    font-weight: 800;
+    color: white;
+    letter-spacing: 0.5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
 
- /* Container tengah */
- .container {
-     display: flex;
-     justify-content: center;
-     align-items: center;
-     height: 85vh;
- }
+/* Container tengah */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    padding: 24px;
+}
 
- /* Card login */
- .card {
-     background: #a7b4c5;
-     padding: 40px;
-     width: 380px;
-     border-radius: 20px;
-     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
- }
+/* Card login */
+.card {
+    background-color: #ffffff;
+    padding: 40px;
+    width: 100%;
+    max-width: 400px;
+    border-radius: 16px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.025);
+}
 
- /* Judul */
- .title {
-     text-align: center;
-     font-size: 26px;
-     font-weight: bold;
-     margin-bottom: 30px;
- }
+/* Judul */
+.title {
+    text-align: center;
+    font-size: 24px;
+    font-weight: 800;
+    color: #1e293b;
+    margin-bottom: 24px;
+}
 
- /* Label */
- label {
-     display: block;
-     margin-bottom: 6px;
-     font-size: 14px;
- }
+/* Label */
+label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #475569;
+}
 
- /* Input */
- input {
-     width: 100%;
-     padding: 12px;
-     border: none;
-     border-radius: 10px;
-     margin-bottom: 20px;
-     font-size: 14px;
- }
+/* Input */
+input {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    margin-bottom: 18px;
+    font-size: 14px;
+    outline: none;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+}
 
- /* Tombol */
- button {
-     width: 100%;
-     padding: 12px;
-     border: none;
-     border-radius: 10px;
-     background: #6f78b3;
-     font-size: 16px;
-     font-weight: bold;
-     cursor: pointer;
- }
+input:focus {
+    border-color: #453bcf;
+    box-shadow: 0 0 0 3px rgba(69, 59, 207, 0.15);
+}
 
- button:hover {
-     opacity: 0.9;
- }
- 
- /* Link register */
- .register-text {
-     text-align: center;
-     font-size: 13px;
-     margin-top: 10px;
- }
+/* Tombol */
+button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    background-color: #453bcf;
+    color: white;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
 
- .register-text a {
-     color: blue;
-     text-decoration: none;
- }
+button:hover {
+    background-color: #382fb3;
+}
 
- .forgot-password {
-     text-align: right;
-     margin-top: 5px;
-     margin-bottom: 15px;
- }
+/* Link register & forgot */
+.register-text {
+    text-align: center;
+    font-size: 13px;
+    margin-top: 16px;
+    color: #64748b;
+}
 
- .forgot-password a {
-     font-size: 14px;
-     text-decoration: none;
- }
+.register-text a {
+    color: #453bcf;
+    font-weight: 600;
+    text-decoration: none;
+}
 
- .forgot-password a:hover {
-     text-decoration: underline;
- }
+.register-text a:hover {
+    text-decoration: underline;
+}
+
+.forgot-password {
+    text-align: right;
+    margin-top: -10px;
+    margin-bottom: 20px;
+}
+
+.forgot-password a {
+    font-size: 13px;
+    color: #453bcf;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.forgot-password a:hover {
+    text-decoration: underline;
+}

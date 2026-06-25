@@ -5,7 +5,7 @@
         }
 
         .header{
-            background:#6c7ae0;
+            background:#7d88e6;
             color:white;
             padding:15px 25px;
             font-weight:bold;
@@ -51,12 +51,12 @@
         }
 
         .menu a:hover{
-            background:#5f6ce0;
+            background:#453bcf;
         }
 
         .logout{
             margin-top:30px;
-            background:#6c7ae0;
+            background:#453bcf;
             text-align:center;
         }
 

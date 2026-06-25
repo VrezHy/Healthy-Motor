@@ -1,5 +1,5 @@
 .table-header {
-    background: #7c84d0;
+    background: #7d88e6;
     color: white;
   }
 
@@ -13,11 +13,11 @@
   .data-motor-table th {
     font-weight: 800;
     color: #111827;
-    background: #f0f1fa;
+    background: #f8fafc;
   }
 
   .data-motor-table tbody tr:nth-child(even) td {
-    background: #f3f4fc;
+    background: #f8fafc;
   }
 
   .data-motor-table tbody tr:nth-child(odd) td {
@@ -55,13 +55,13 @@
   }
 
   .info-banner {
-    background: #e0e3f8;
-    border: 1.5px solid #a5aee8;
+    background: #eceaff;
+    border: 1.5px solid #cbd5e1;
     border-radius: 12px;
     padding: 12px 18px;
     font-size: 13px;
     font-weight: 600;
-    color: #3730a3;
+    color: #453bcf;
     margin-bottom: 16px;
     display: flex;
     align-items: center;

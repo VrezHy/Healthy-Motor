@@ -29,9 +29,14 @@ class DiagnosaMekanikController extends Controller
     public function index()
     {
         $gejalas = Gejala::orderBy('kode_gejala')->get();
+        $pelanggan = [
+            'nama_pelanggan' => '',
+            'alamat_pelanggan' => '',
+            'nomor_polisi' => '',
+            'nomor_telepon' => '',
+        ];
 
-        // Ubah ke analisis_diagnosa
-        return view('mekanik.analisis_diagnosa', compact('gejalas'));
+        return view('mekanik.analisis_diagnosa', compact('gejalas', 'pelanggan'));
     }
 
     public function proses(Request $request)
@@ -82,6 +87,14 @@ class DiagnosaMekanikController extends Controller
         $request->validate([
             'jawaban' => 'nullable|array',
             'jawaban.*' => 'nullable|in:ya,tidak',
+            'nama_pelanggan' => ['sometimes', 'required', 'string', 'max:255', 'regex:/^[A-Za-z\s.\']+$/'],
+            'alamat_pelanggan' => 'sometimes|required|string|max:255',
+            'nomor_polisi' => ['sometimes', 'required', 'string', 'max:50', 'regex:/^[A-Za-z]{1,2}[\s-]?\d{1,4}[\s-]?[A-Za-z]{1,3}$/'],
+            'nomor_telepon' => ['sometimes', 'required', 'string', 'regex:/^[0-9]{10,13}$/'],
+        ], [
+            'nama_pelanggan.regex' => 'Nama hanya boleh berisi huruf, spasi, titik, dan apostrof.',
+            'nomor_polisi.regex' => 'Format nomor polisi tidak valid. Contoh: AB 1234 CD atau B 1234 ABC.',
+            'nomor_telepon.regex' => 'Nomor telepon harus berisi 10 sampai 13 angka.',
         ]);
 
         $gejalas = Gejala::orderBy('kode_gejala')->get();
@@ -100,11 +113,19 @@ class DiagnosaMekanikController extends Controller
 
         $hasil = $this->hitungHasil($selectedIds);
 
+        $pelanggan = [
+            'nama_pelanggan' => $request->input('nama_pelanggan', ''),
+            'alamat_pelanggan' => $request->input('alamat_pelanggan', ''),
+            'nomor_polisi' => $request->input('nomor_polisi', ''),
+            'nomor_telepon' => $request->input('nomor_telepon', ''),
+        ];
+
         return view('mekanik.analisis_diagnosa', compact(
             'gejalas',
             'jawaban',
             'selectedGejalas',
-            'hasil'
+            'hasil',
+            'pelanggan'
         ));
     }
 
@@ -115,6 +136,14 @@ class DiagnosaMekanikController extends Controller
             $request->validate([
                 'gejala_ids' => 'required|array|min:1',
                 'gejala_ids.*' => 'integer|exists:gejalas,id',
+                'nama_pelanggan' => ['sometimes', 'required', 'string', 'max:255', 'regex:/^[A-Za-z\s.\']+$/'],
+                'alamat_pelanggan' => 'sometimes|required|string|max:255',
+                'nomor_polisi' => ['sometimes', 'required', 'string', 'max:50', 'regex:/^[A-Za-z]{1,2}[\s-]?\d{1,4}[\s-]?[A-Za-z]{1,3}$/'],
+                'nomor_telepon' => ['sometimes', 'required', 'string', 'regex:/^[0-9]{10,13}$/'],
+            ], [
+                'nama_pelanggan.regex' => 'Nama hanya boleh berisi huruf, spasi, titik, dan apostrof.',
+                'nomor_polisi.regex' => 'Format nomor polisi tidak valid. Contoh: AB 1234 CD atau B 1234 ABC.',
+                'nomor_telepon.regex' => 'Nomor telepon harus berisi 10 sampai 13 angka.',
             ]);
 
             $selectedIds = collect($request->input('gejala_ids'))
@@ -156,6 +185,10 @@ class DiagnosaMekanikController extends Controller
                 'gejala_terpilih' => $selectedGejalas,
                 'solusi' => $solusies,
                 'status' => 'Aktif',
+                'nama_pelanggan' => $request->input('nama_pelanggan'),
+                'alamat_pelanggan' => $request->input('alamat_pelanggan'),
+                'nomor_polisi' => $request->input('nomor_polisi'),
+                'nomor_telepon' => $request->input('nomor_telepon'),
             ]);
 
             return response()->json([
@@ -168,6 +201,14 @@ class DiagnosaMekanikController extends Controller
         $request->validate([
             'gejala_ids' => 'required|array|min:1',
             'gejala_ids.*' => 'integer|exists:gejalas,id',
+            'nama_pelanggan' => ['sometimes', 'required', 'string', 'max:255', 'regex:/^[A-Za-z\s.\']+$/'],
+            'alamat_pelanggan' => 'sometimes|required|string|max:255',
+            'nomor_polisi' => ['sometimes', 'required', 'string', 'max:50', 'regex:/^[A-Za-z]{1,2}[\s-]?\d{1,4}[\s-]?[A-Za-z]{1,3}$/'],
+            'nomor_telepon' => ['sometimes', 'required', 'string', 'regex:/^[0-9]{10,13}$/'],
+        ], [
+            'nama_pelanggan.regex' => 'Nama hanya boleh berisi huruf, spasi, titik, dan apostrof.',
+            'nomor_polisi.regex' => 'Format nomor polisi tidak valid. Contoh: AB 1234 CD atau B 1234 ABC.',
+            'nomor_telepon.regex' => 'Nomor telepon harus berisi 10 sampai 13 angka.',
         ]);
 
         $selectedIds = collect($request->input('gejala_ids'))
@@ -207,6 +248,10 @@ class DiagnosaMekanikController extends Controller
             'gejala_terpilih' => $selectedGejalas,
             'solusi' => $solusies,
             'status' => 'Aktif',
+            'nama_pelanggan' => $request->input('nama_pelanggan'),
+            'alamat_pelanggan' => $request->input('alamat_pelanggan'),
+            'nomor_polisi' => $request->input('nomor_polisi'),
+            'nomor_telepon' => $request->input('nomor_telepon'),
         ]);
 
         return redirect()->route('mekanik.riwayat')
@@ -301,12 +346,12 @@ class DiagnosaMekanikController extends Controller
         $validator = Validator::make($request->all(), [
             'nama_pelanggan' => ['required', 'string', 'max:255', 'regex:/^[A-Za-z\s.\']+$/'],
             'alamat_pelanggan' => 'required|string|max:255',
-            'nomor_polisi' => ['required', 'string', 'max:50', 'regex:/^[A-Za-z0-9\s-]+$/'],
+            'nomor_polisi' => ['required', 'string', 'max:50', 'regex:/^[A-Za-z]{1,2}[\s-]?\d{1,4}[\s-]?[A-Za-z]{1,3}$/'],
             'nomor_telepon' => ['required', 'string', 'regex:/^[0-9]{10,13}$/'],
         ], [
             '*.required' => 'Field Not Must Be Empty!',
             'nama_pelanggan.regex' => 'Nama hanya boleh berisi huruf, spasi, titik, dan apostrof.',
-            'nomor_polisi.regex' => 'Nomor polisi hanya boleh berisi huruf, angka, spasi, dan tanda hubung.',
+            'nomor_polisi.regex' => 'Format nomor polisi tidak valid. Contoh: AB 1234 CD atau B 1234 ABC.',
             'nomor_telepon.regex' => 'Nomor telepon harus berisi 10 sampai 13 angka.',
         ]);
 

@@ -18,6 +18,9 @@
     <div class="container">
 
         <div class="sidebar">
+            <button class="sidebar-toggle" id="sidebarToggle">
+                <span class="material-icons">chevron_left</span>
+            </button>
             <div class="profile">
                 <img src="{{ asset('assets/images/mekanik.jpg') }}" alt="Foto Profil">
                 <h3>{{ auth()->user()->name }}</h3>
@@ -235,6 +238,28 @@
     </div>
 
     <script>
+        // SIDEBAR COLLAPSE LOGIC
+        const sidebar = document.querySelector('.sidebar');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        
+        if (localStorage.getItem('sidebar-collapsed') === 'true') {
+            sidebar.classList.add('collapsed');
+            if (sidebarToggle) {
+                sidebarToggle.querySelector('.material-icons').textContent = 'chevron_right';
+            }
+        }
+        
+        sidebarToggle?.addEventListener('click', () => {
+            sidebar.classList.toggle('collapsed');
+            const isCollapsed = sidebar.classList.contains('collapsed');
+            localStorage.setItem('sidebar-collapsed', isCollapsed);
+            
+            const icon = sidebarToggle.querySelector('.material-icons');
+            if (icon) {
+                icon.textContent = isCollapsed ? 'chevron_right' : 'chevron_left';
+            }
+        });
+
         // -- Logika Modal Kerusakan --
         function openKerusakanModal(button) {
             const modal = document.getElementById('kerusakanModal');

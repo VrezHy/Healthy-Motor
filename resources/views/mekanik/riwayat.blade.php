@@ -18,6 +18,9 @@
 
 
         <div class="sidebar">
+            <button class="sidebar-toggle" id="sidebarToggle">
+                <span class="material-icons">chevron_left</span>
+            </button>
             <div class="profile">
                 <img src="{{ asset('assets/images/mekanik.jpg') }}" alt="Foto Profil">
                 <h3>{{ auth()->user()->name }}</h3>
@@ -130,24 +133,42 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <button type="button" class="btn-view" data-id="{{ $riwayat->id }}"
-                                        data-nama="{{ $riwayat->nama_pelanggan }}"
-                                        data-alamat="{{ $riwayat->alamat_pelanggan }}"
-                                        data-polisi="{{ $riwayat->nomor_polisi }}"
-                                        data-telepon="{{ $riwayat->nomor_telepon }}"
-                                        onclick="openPelangganForm(this)">
-                                        View
-                                    </button>
-                                </td>
-                                <td>
-                                    <form action="{{ route('mekanik.riwayat.hapus', $riwayat->id) }}"
-                                        method="POST" class="cancel-riwayat-form">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn-cancel-riwayat" aria-label="Hapus Riwayat">
-                                            <span class="material-icons">delete</span>
-                                        </button>
-                                    </form>
+                                     <div style="font-weight: 600; color: var(--text-primary);">{{ $riwayat->nama_pelanggan ?? '-' }}</div>
+                                     <div style="font-size: 12px; color: var(--text-muted);">{{ $riwayat->nomor_polisi ?? '-' }}</div>
+                                 </td>
+                                 <td>
+                                     <div class="riwayat-actions-wrap" style="display: flex; gap: 8px; align-items: center;">
+                                         <!-- VIEW BUTTON -->
+                                         <button type="button" class="btn-view-riwayat" data-id="{{ $riwayat->id }}"
+                                             data-nama="{{ $riwayat->nama_pelanggan }}"
+                                             data-alamat="{{ $riwayat->alamat_pelanggan }}"
+                                             data-polisi="{{ $riwayat->nomor_polisi }}"
+                                             data-telepon="{{ $riwayat->nomor_telepon }}"
+                                             onclick="openPelangganForm(this, 'view')"
+                                             aria-label="Lihat Data Pelanggan">
+                                             <span class="material-icons">visibility</span>
+                                         </button>
+
+                                         <!-- EDIT BUTTON -->
+                                         <button type="button" class="btn-edit-riwayat" data-id="{{ $riwayat->id }}"
+                                             data-nama="{{ $riwayat->nama_pelanggan }}"
+                                             data-alamat="{{ $riwayat->alamat_pelanggan }}"
+                                             data-polisi="{{ $riwayat->nomor_polisi }}"
+                                             data-telepon="{{ $riwayat->nomor_telepon }}"
+                                             onclick="openPelangganForm(this, 'edit')"
+                                             aria-label="Edit Data Pelanggan">
+                                             <span class="material-icons">edit</span>
+                                         </button>
+
+                                         <form action="{{ route('mekanik.riwayat.hapus', $riwayat->id) }}"
+                                             method="POST" class="cancel-riwayat-form" style="margin: 0;">
+                                             @csrf
+                                             @method('DELETE')
+                                             <button type="submit" class="btn-cancel-riwayat" aria-label="Hapus Riwayat">
+                                                <span class="material-icons">delete</span>
+                                            </button>
+                                         </form>
+                                     </div>
                                 </td>
                             </tr>
                             @empty
@@ -164,7 +185,7 @@
             </div>
 
             <div class="pelanggan-panel" id="pelangganPanel">
-                <form method="POST" class="pelanggan-form" id="pelangganForm">
+                <form class="pelanggan-form" id="pelangganForm" method="POST">
                     @csrf
                     @method('PUT')
 
@@ -173,36 +194,42 @@
                         &#8592;
                     </button>
 
-                    <h2>Data Pelanggan</h2>
+                    <h2 id="pelangganTitle">Data Pelanggan</h2>
+
+                    @if($errors->any() && session('pelanggan_form_id'))
+                        <div class="alert alert-danger" style="color: var(--danger); margin-bottom: 15px; font-size: 13px; font-weight: 600;">
+                            <ul style="list-style-type: none; padding-left: 0;">
+                                @foreach($errors->all() as $error)
+                                    <li>• {{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
 
                     <div class="form-group">
                         <label for="namaPelanggan">Nama</label>
-                        <input type="text" name="nama_pelanggan" id="namaPelanggan" autocomplete="off" required>
-                        <span class="error-message" id="errorNama"></span>
+                        <input type="text" id="namaPelanggan" name="nama_pelanggan" required>
                     </div>
 
                     <div class="form-group">
                         <label for="alamatPelanggan">Alamat</label>
-                        <input type="text" name="alamat_pelanggan" id="alamatPelanggan" autocomplete="off" required>
-                        <span class="error-message" id="errorAlamat"></span>
+                        <input type="text" id="alamatPelanggan" name="alamat_pelanggan" required>
                     </div>
 
                     <div class="form-group">
                         <label for="nomorPolisi">Nomor Polisi</label>
-                        <input type="text" name="nomor_polisi" id="nomorPolisi" autocomplete="off" required>
-                        <span class="error-message" id="errorPolisi"></span>
+                        <input type="text" id="nomorPolisi" name="nomor_polisi" required>
                     </div>
 
                     <div class="form-group">
                         <label for="nomorTelepon">Nomor Telepon</label>
-                        <input type="tel" name="nomor_telepon" id="nomorTelepon" autocomplete="off" required>
-                        <span class="error-message" id="errorTelepon"></span>
+                        <input type="tel" id="nomorTelepon" name="nomor_telepon" required>
                     </div>
 
                     <div class="pelanggan-actions">
                         <button type="button" class="pelanggan-btn cancel"
-                            onclick="closePelangganForm()">Cancel</button>
-                        <button type="submit" class="pelanggan-btn save">Simpan</button>
+                            onclick="closePelangganForm()">Batal</button>
+                        <button type="submit" class="pelanggan-btn save" id="btnSimpanPelanggan">Simpan</button>
                     </div>
                 </form>
             </div>
@@ -254,242 +281,95 @@
     </div>
 
     <script>
+        // SIDEBAR COLLAPSE LOGIC
+        const sidebar = document.querySelector('.sidebar');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        
+        if (localStorage.getItem('sidebar-collapsed') === 'true') {
+            sidebar.classList.add('collapsed');
+            if (sidebarToggle) {
+                sidebarToggle.querySelector('.material-icons').textContent = 'chevron_right';
+            }
+        }
+        
+        sidebarToggle?.addEventListener('click', () => {
+            sidebar.classList.toggle('collapsed');
+            const isCollapsed = sidebar.classList.contains('collapsed');
+            localStorage.setItem('sidebar-collapsed', isCollapsed);
+            
+            const icon = sidebarToggle.querySelector('.material-icons');
+            if (icon) {
+                icon.textContent = isCollapsed ? 'chevron_right' : 'chevron_left';
+            }
+        });
+
         let pendingLogoutForm = null;
         let pendingCancelRiwayatForm = null;
         const logoutModal = document.getElementById('logoutModal');
         const cancelRiwayatModal = document.getElementById('cancelRiwayatModal');
-
         const riwayatPanel = document.getElementById('riwayatPanel');
         const pelangganPanel = document.getElementById('pelangganPanel');
-        const pelangganForm = document.getElementById('pelangganForm');
-        const nomorTelepon = document.getElementById('nomorTelepon');
-        const nomorPolisi = document.getElementById('nomorPolisi');
         const kerusakanModal = document.getElementById('kerusakanModal');
         const detailKerusakan = document.getElementById('detailKerusakan');
         const detailGejala = document.getElementById('detailGejala');
         const detailSolusi = document.getElementById('detailSolusi');
 
-        const namaInput = document.getElementById('namaPelanggan');
-        const alamatInput = document.getElementById('alamatPelanggan');
-        const polisiInput = document.getElementById('nomorPolisi');
-        const telponInput = document.getElementById('nomorTelepon');
+          function openPelangganForm(button, mode = 'view') {
+              const id = button.dataset.id;
+              const form = document.getElementById('pelangganForm');
+              form.action = `/mekanik/riwayat/${id}/pelanggan`;
 
-        // Fungsi untuk membuat atau mendapatkan span error
-        function getErrorSpan(input, id) {
-            let errorSpan = document.getElementById(id);
-            if (!errorSpan) {
-                errorSpan = document.createElement('span');
-                errorSpan.className = 'error-message';
-                errorSpan.id = id;
-                input.parentNode.appendChild(errorSpan);
-            }
-            return errorSpan;
-        }
+              const inputs = [
+                  document.getElementById('namaPelanggan'),
+                  document.getElementById('alamatPelanggan'),
+                  document.getElementById('nomorPolisi'),
+                  document.getElementById('nomorTelepon')
+              ];
 
-        // Validasi Nama (hanya huruf, spasi, titik, apostrof)
-        function validateNama() {
-            const value = namaInput.value.trim();
-            const regex = /^[A-Za-z\s.\']+$/;
-            const errorSpan = getErrorSpan(namaInput, 'errorNama');
+              inputs[0].value = button.dataset.nama || '';
+              inputs[1].value = button.dataset.alamat || '';
+              inputs[2].value = button.dataset.polisi || '';
+              inputs[3].value = button.dataset.telepon || '';
 
-            if (value === '') {
-                namaInput.classList.add('error');
-                errorSpan.textContent = '❌ Nama tidak boleh kosong';
-                errorSpan.style.color = '#dc3545'; // merah
-                return false;
-            } else if (!regex.test(value)) {
-                namaInput.classList.add('error');
-                errorSpan.textContent = '❌ Nama hanya boleh berisi huruf, spasi, titik, dan apostrof';
-                errorSpan.style.color = '#dc3545'; // merah
-                return false;
-            } else {
-                namaInput.classList.remove('error');
-                errorSpan.textContent = '✓ Nama valid';
-                errorSpan.style.color = '#ffffff'; // putih
-                //errorSpan.style.backgroundColor = '#28a745'; // background hijau
-                setTimeout(() => {
-                    if (errorSpan.textContent === '✓ Nama valid') {
-                        errorSpan.textContent = '';
-                        errorSpan.style.backgroundColor = '';
-                    }
-                }, 1500);
-                return true;
-            }
-        }
+              const title = document.getElementById('pelangganTitle');
+              const btnSimpan = document.getElementById('btnSimpanPelanggan');
 
-        // Validasi Alamat
-        function validateAlamat() {
-            const value = alamatInput.value.trim();
-            const errorSpan = getErrorSpan(alamatInput, 'errorAlamat');
+              if (mode === 'edit') {
+                  title.textContent = 'Edit Data Pelanggan';
+                  inputs.forEach(input => input.removeAttribute('readonly'));
+                  if (btnSimpan) btnSimpan.style.display = 'inline-flex';
+              } else {
+                  title.textContent = 'Detail Data Pelanggan';
+                  inputs.forEach(input => input.setAttribute('readonly', true));
+                  if (btnSimpan) btnSimpan.style.display = 'none';
+              }
 
-            if (value === '') {
-                alamatInput.classList.add('error');
-                errorSpan.textContent = '❌ Alamat tidak boleh kosong';
-                errorSpan.style.color = '#dc3545'; // merah
-                return false;
-            } else {
-                alamatInput.classList.remove('error');
-                errorSpan.textContent = '✓ Alamat valid';
-                errorSpan.style.color = '#ffffff'; // putih
-                //errorSpan.style.backgroundColor = '#28a745'; // background hijau
-                setTimeout(() => {
-                    if (errorSpan.textContent === '✓ Alamat valid') {
-                        errorSpan.textContent = '';
-                        errorSpan.style.backgroundColor = '';
-                    }
-                }, 1500);
-                return true;
-            }
-        }
-
-        // Validasi Nomor Polisi
-        // Validasi Nomor Polisi dengan format: AB-1234-MM atau L-123-MM
-        function validatePolisi() {
-            let value = polisiInput.value.toUpperCase();
-            const errorSpan = getErrorSpan(polisiInput, 'errorPolisi');
-
-
-            value = value.replace(/[^A-Z0-9 ]/g, '');
-            polisiInput.value = value;
-
-
-            const regex = /^[A-Z]{1,2}\s[0-9]{3,4}\s[A-Z]{2,3}$/;
-
-            if (value.trim() === '') {
-                errorSpan.textContent = 'Silahkan isi sesuai dengan format no polisi contoh (AB 1005 NN)';
-                errorSpan.style.color = '#dc3545'; // merah
-                polisiInput.classList.add('error');
-                return false;
-            }
-
-            if (regex.test(value)) {
-                errorSpan.textContent = '';
-                polisiInput.classList.remove('error');
-                return true;
-            }
-
-            // Selama mengetik dan format belum sesuai
-            errorSpan.textContent = 'Silahkan isi sesuai dengan format no polisi contoh (AB 1005 NN)';
-            polisiInput.classList.add('error');
-            return false;
-        }
-
-        // Validasi Nomor Telepon
-        function validateTelepon() {
-            let value = telponInput.value.replace(/\D/g, '');
-            telponInput.value = value;
-            const errorSpan = getErrorSpan(telponInput, 'errorTelepon');
-
-            if (value === '') {
-                telponInput.classList.add('error');
-                errorSpan.textContent = '❌ Nomor telepon tidak boleh kosong';
-                errorSpan.style.color = '#dc3545'; // merah
-                return false;
-            } else if (value.length < 10) {
-                telponInput.classList.add('error');
-                errorSpan.textContent = '❌ Nomor telepon minimal 10 angka';
-                errorSpan.style.color = '#dc3545'; // merah
-                return false;
-            } else if (value.length > 13) {
-                telponInput.classList.add('error');
-                errorSpan.textContent = '❌ Nomor telepon maksimal 13 angka';
-                errorSpan.style.color = '#dc3545'; // merah
-                return false;
-            } else {
-                telponInput.classList.remove('error');
-                errorSpan.textContent = '✓ Nomor telepon valid';
-                errorSpan.style.color = '#ffffff'; // putih
-
-                setTimeout(() => {
-                    if (errorSpan.textContent === '✓ Nomor telepon valid') {
-                        errorSpan.textContent = '';
-                        errorSpan.style.backgroundColor = '';
-                    }
-                }, 1500);
-                return true;
-            }
-        }
-        // Event untuk validasi Nama
-        if (namaInput) {
-            namaInput.addEventListener('input', validateNama);
-            namaInput.addEventListener('blur', validateNama);
-        }
-
-        // Event untuk validasi Alamat
-        if (alamatInput) {
-            alamatInput.addEventListener('input', validateAlamat);
-            alamatInput.addEventListener('blur', validateAlamat);
-        }
-
-        // Event untuk validasi Nomor Polisi (sudah termasuk auto-format)
-        if (polisiInput) {
-            polisiInput.addEventListener('input', validatePolisi);
-            polisiInput.addEventListener('blur', validatePolisi);
-        }
-
-        // Event untuk validasi Nomor Telepon
-        if (telponInput) {
-            telponInput.addEventListener('input', validateTelepon);
-            telponInput.addEventListener('blur', validateTelepon);
-        }
-
-        // Validasi sebelum submit form
-        if (pelangganForm) {
-            pelangganForm.addEventListener('submit', function(e) {
-                const isNamaValid = validateNama();
-                const isAlamatValid = validateAlamat();
-                const isPolisiValid = validatePolisi();
-                const isTeleponValid = validateTelepon();
-
-                if (!isNamaValid || !isAlamatValid || !isPolisiValid || !isTeleponValid) {
-                    e.preventDefault();
-                    // Scroll ke field yang pertama kali error
-                    if (!isNamaValid) {
-                        namaInput.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'center'
-                        });
-                        namaInput.focus();
-                    } else if (!isAlamatValid) {
-                        alamatInput.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'center'
-                        });
-                        alamatInput.focus();
-                    } else if (!isPolisiValid) {
-                        polisiInput.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'center'
-                        });
-                        polisiInput.focus();
-                    } else if (!isTeleponValid) {
-                        telponInput.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'center'
-                        });
-                        telponInput.focus();
-                    }
-                }
-            });
-        }
-
-        function openPelangganForm(button) {
-            const id = button.dataset.id;
-
-            pelangganForm.action = `/mekanik/riwayat/${id}/pelanggan`;
-            document.getElementById('namaPelanggan').value = button.dataset.nama || '';
-            document.getElementById('alamatPelanggan').value = button.dataset.alamat || '';
-            document.getElementById('nomorPolisi').value = button.dataset.polisi || '';
-            document.getElementById('nomorTelepon').value = button.dataset.telepon || '';
-
-            riwayatPanel.classList.add('is-hidden');
-            pelangganPanel.classList.add('active');
-        }
+              riwayatPanel.classList.add('is-hidden');
+              pelangganPanel.classList.add('active');
+          }
 
         function closePelangganForm() {
             pelangganPanel.classList.remove('active');
             riwayatPanel.classList.remove('is-hidden');
         }
+
+        document.getElementById('pelangganForm')?.addEventListener('submit', (event) => {
+            const nopolInput = document.getElementById('nomorPolisi');
+            const val = nopolInput.value.trim();
+            const plateRegex = /^[A-Za-z]{1,2}[\s-]?\d{1,4}[\s-]?[A-Za-z]{1,3}$/;
+
+            if (!val) {
+                event.preventDefault();
+                alert('Nomor polisi tidak boleh kosong.');
+                return;
+            }
+
+            if (!plateRegex.test(val)) {
+                event.preventDefault();
+                alert('Format nomor polisi tidak valid. Contoh: AB 1234 CD atau B 1234 ABC.');
+                return;
+            }
+        });
 
 
 
