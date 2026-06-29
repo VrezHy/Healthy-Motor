@@ -151,9 +151,12 @@ class DiagnosaTest extends TestCase
         $response = $this->post('/mekanik/diagnosa', ['jawaban' => $jawaban]);
 
         $response->assertStatus(200);
+        $response->assertViewHas('hasil');
 
         $hasil = $response->viewData('hasil');
+
         $this->assertNotEmpty($hasil);
+        $this->assertFalse($hasil->isEmpty());
         $this->assertEquals('Mesin Overheat', $hasil[0]->kerusakan->nama_kerusakan);
         $this->assertEquals(100, $hasil[0]->persentase);
     }
@@ -176,7 +179,9 @@ class DiagnosaTest extends TestCase
         $response->assertStatus(200);
 
         $hasil = $response->viewData('hasil');
+
         $this->assertNotEmpty($hasil);
+        $this->assertFalse($hasil->isEmpty());
         $this->assertEquals('Mesin Overheat', $hasil[0]->kerusakan->nama_kerusakan);
         $this->assertEquals(67, $hasil[0]->persentase);
     }
@@ -199,6 +204,7 @@ class DiagnosaTest extends TestCase
         $response->assertStatus(200);
 
         $hasil = $response->viewData('hasil');
+        $this->assertFalse($hasil->isEmpty());
         $this->assertNotEmpty($hasil);
         $this->assertEquals('Mesin Overheat', $hasil[0]->kerusakan->nama_kerusakan);
         $this->assertEquals(67, $hasil[0]->persentase);
@@ -222,6 +228,7 @@ class DiagnosaTest extends TestCase
 
 
         $this->assertNotEmpty($hasil);
+        $this->assertFalse($hasil->isEmpty());
         $this->assertEquals('Mesin Overheat', $hasil[0]->kerusakan->nama_kerusakan);
         $this->assertEquals(33, $hasil[0]->persentase);
     }
@@ -236,6 +243,8 @@ class DiagnosaTest extends TestCase
         $response->assertStatus(200);
 
         $hasil = $response->viewData('hasil');
+
         $this->assertEmpty($hasil);
+        $this->assertTrue($hasil->isEmpty());
     }
 }

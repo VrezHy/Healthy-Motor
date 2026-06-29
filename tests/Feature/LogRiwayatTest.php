@@ -59,6 +59,7 @@ class LogRiwayatTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertViewIs('mekanik.riwayat');
+        $response->assertViewHas('riwayats');
     }
 
     #[Test]
@@ -77,6 +78,7 @@ class LogRiwayatTest extends TestCase
 
         $response->assertRedirect(route('mekanik.riwayat'));
         $response->assertStatus(302);
+        $response->assertSessionHas('success');
 
         $this->assertDatabaseHas('riwayat_diagnosas', [
             'id' => $riwayat->id,
@@ -103,6 +105,7 @@ class LogRiwayatTest extends TestCase
 
         $response->assertRedirect(route('mekanik.riwayat'));
         $response->assertStatus(302);
+        $response->assertSessionHas('success');
 
         $this->assertDatabaseHas('riwayat_diagnosas', [
             'id' => $riwayat->id,
@@ -117,16 +120,16 @@ class LogRiwayatTest extends TestCase
     public function test_riwayat_berhasil_dihapus()
     {
         $riwayat = $this->createRiwayat();
-        $id = $riwayat->id;
 
         $response = $this
             ->actingAs($this->user)
-            ->delete(route('mekanik.riwayat.hapus', $id));
+            ->delete(route('mekanik.riwayat.hapus', $riwayat));
 
         $response->assertRedirect(route('mekanik.riwayat'));
-        $response->assertStatus(302);
-        $this->assertDatabaseMissing('riwayat_diagnosas', [
-            'id' => $id
+        $response->assertSessionHas('success');
+
+        $this->assertSoftDeleted('riwayat_diagnosas', [
+            'id' => $riwayat->id,
         ]);
     }
 }

@@ -16,12 +16,6 @@ class LoginTest extends TestCase
     public function test_login_pemilik_bengkel_berhasil()
     {
 
-        User::create([
-            'name' => 'Super Admin',
-            'username' => 'pemilik bengkel',
-            'password' => Hash::make('DM5SPM'),
-            'role' => 'superadmin'
-        ]);
 
         $response = $this->post('/login', [
             'username' => 'pemilik bengkel',
@@ -29,6 +23,7 @@ class LoginTest extends TestCase
         ]);
 
         $response->assertRedirect('/admin/kerusakan');
+        $response->assertSessionHas('username', 'pemilik bengkel');
     }
 
     #[Test]
@@ -48,6 +43,7 @@ class LoginTest extends TestCase
         ]);
 
         $response->assertRedirect('/admin/kerusakan');
+        $this->assertAuthenticated();
     }
 
     #[Test]
@@ -66,7 +62,8 @@ class LoginTest extends TestCase
             'password' => 'M123456.'
         ]);
 
-        $response->assertRedirect('/mekanik/diagnosa');
+        $response->assertRedirect('/mekanik/dashboard');
+        $this->assertAuthenticated();
     }
 
     #[Test]
@@ -78,6 +75,7 @@ class LoginTest extends TestCase
             'password' => 'salahpss'
         ]);
 
+        $response->assertRedirect();
         $response->assertSessionHasErrors('username');
         $this->assertGuest();
     }
@@ -98,6 +96,7 @@ class LoginTest extends TestCase
             'password' => 'An123456.'
         ]);
 
+        $response->assertRedirect();
         $response->assertSessionHasErrors('username');
         $this->assertGuest();
     }
@@ -107,6 +106,7 @@ class LoginTest extends TestCase
     {
         $response = $this->post('/login', []);
 
+        $response->assertRedirect();
         $response->assertSessionHasErrors(['username', 'password']);
         $this->assertGuest();
     }
